@@ -1,0 +1,231 @@
+﻿TOPIC 
+	about_Office365DnsChecker
+	
+SHORT DESCRIPTION	
+	Office365DnsChecker will validate that a domain's Office 365 DNS records
+	are all complete and correct.
+	
+LONG DESCRIPTION
+	Office365DnsChecker will check one or more domains, to make sure that their
+	current DNS records are set up correctly for Office 365.
+
+	You can check all applicable Office 365 DNS records at once with the cmdlet
+	Test-Office365DnsRecords.
+
+	The above cmdlet works by calling these three cmdlets, which can be used to
+	test Office 365's three major services independently:
+		1. Test-AzureADRecords
+		2. Test-ExchangeOnlineRecords
+		3. Test-TeamsRecords
+		
+	Finally, the above three cmdlets themselves call the following cmdlets.  To
+	test a single DNS record on its own, use one of these:
+		1. To test Azure Active Directory's client configuration record:
+			Cmdlet = Test-AzureADClientConfigurationRecord
+			Name   = msoid
+			Type   = CNAME
+			Target = clientconfig.microsoftonline-p.net.
+			
+		2. Azure Active Directory's enterprise enrollment record:
+			Cmdlet = Test-AzureADEnterpriseEnrollmentRecord
+			Name   = enterpriseenrollment
+			Type   = CNAME
+			Target = enterpriseenrollment.manage.microsoft.com.
+			
+		3. Azure Active Directory's enterprise registration record:
+			Cmdlet = Test-AzureADEnterpriseRegistrationRecord
+			Name   = enterpriseregistration
+			Type   = CNAME
+			Target = enterpriseregistration.windows.net.
+		
+		4. Exchange Online's Autodiscover CNAME record:
+			Cmdlet = Test-ExchangeOnlineAutodiscoverRecord
+			Name   = autodiscover
+			Type   = CNAME
+			Target = autodiscover.outlook.com.
+		
+		5. The absence of any Autodiscover service records.  This type of DNS
+		   record is not compatible with Exchange Online.
+			Cmdlet = Test-ExchangeOnlineAutodiscoverRecord
+			Name   = _autodiscover._tcp
+			Type   = SRV
+		
+		6. Exchange Online's two DKIM records:
+			Cmdlet  = Test-ExchangeOnlineDkimRecords
+		    Names   = selector1._domainkey and selector2._domainkey
+			Types   = CNAME
+			Targets = (may vary, see below)
+			
+			The target names will vary depending on whether or not the domain
+			name has any hyphens or special characters,  and depending on the
+			CSP name assigned by whomever originally provisioned this tenant.
+			To get your exact value, consult the Exchange Admin Center's DKIM
+			page, or use the *-DkimSigningConfig cmdlets in Exchange Online.
+			
+			For illustrative purposes, the two CNAME records' targets for the
+			domain contoso.com would probably be:
+				1. selector1-contoso-com._domainkey.contoso.onmicrosoft.com
+				2. selector2-contoso-com._domainkey.contoso.onmicrosoft.com
+			
+			As this value can be somewhat unpredictable, this check will only
+			verify that the CNAMEs' targets begin with "selector1._domainkey"
+			or "selector2._domainkey", and they end with ".onmicrosoft.com".
+			
+		7. Exchange Online's mail exchanger record.
+			Cmdlet = Test-ExchangeOnlineMxRecord
+			Name   = (none)
+			Type   = MX
+			
+			The target's name will vary, depending on whether or not the domain
+			name has any hyphens or special characters in it.  To find out your
+			exact value, consult the Microsoft 365 Admin Center's Domains page.
+			
+			For illustrative purposes, the MX record for the domain contoso.com
+			would probably be "contoso-com.mail.protection.outlook.com."
+			
+			As this value can be somewhat unpredictable, this check will only
+			verify that there is exactly one MX record, and that is ends with
+			".mail.protection.outlook.com."
+			
+			If there are no MX records present, or if there are additional ones
+			in addition to the correct MX record, then that will cause an error
+			to be printed.  However, if every MX record is incorrect, then this
+			will only show a warning: some organizations prefer to use a third-
+			party spam filtering service in front of Exchange Online, so the MX
+			records would intentionally be incorrect and should not be changed.
+			
+		8. Exchange Online's Sender ID record, if present.
+			Cmdlet = Test-ExchangeOnlineSenderIdRecord
+			Name   = @
+			Type   = TXT
+			Value  = Anything that starts with "spf2.0" and contains the token
+			         "include:spf.protection.outlook.com".  Additionally, that
+			         token MUST NOT be preceded by -, ~, or ?.
+
+			         A redirect modifier may be used in the Sender ID record,
+			         but it will not be evaluated by this cmdlet.
+			
+			Sender ID never really got off the ground and is considered to be
+			obsolete.  A missing Sender ID record will not generate an error,
+			but a malformed one will.
+
+		9. Exchange Online's SPF record.
+			Cmdlet = Test-ExchangeOnlineSpfRecord
+			Name   = @
+			Type   = TXT (not SPF!)
+			Value  = Anything that starts with "v=spf1" and contains the token
+			         "include:spf.protection.outlook.com".  Additionally, that
+			         token MUST NOT be preceded by -, ~, or ?.
+
+			         A redirect modifier may be used in the SPF record, but it
+			         will not be evaluated by this cmdlet.
+		
+		The remaining checks say they are for Microsoft Teams, but they apply
+		equally to Skype for Business Online.  Please note that some of these
+		records may intentionally be incorrect if the organization is using a
+		Lync Server or Skype for Business Server deployment on-premises.
+
+		10. Microsoft Teams' autodiscover record.
+			Cmdlet = Test-TeamsAutodiscoverRecord
+			Name   = lyncdiscover
+			Type   = CNAME
+			Target = webdir.online.lync.com.
+			
+		11. Microsoft Teams' SIP record.
+			Cmdlet = Test-TeamsSipCnameRecord
+			Name   = sip
+			Type   = CNAME
+			Target = sipdir.online.lync.com.
+			
+		12. Microsoft Teams' SIP-over-TLS service record.
+			Cmdlet = Test-TeamsSipSrvRecord
+			Name   = _sip._tls
+			Type   = SRV
+			Target = sipdir.online.lync.com.
+			Port   = 443
+			
+			The priority and weight may be any value, provided this SRV record
+			is always ranked first.
+			
+		13. Microsoft Teams' SIP federation service record.
+			Cmdlet = Test-TeamsSipFederationSrvRecord
+			Name   = _sipfederationtls._tcp
+			Type   = SRV
+			Target = sipfed.online.lync.com.
+			Port   = 5061
+			
+			The priority and weight may be any value, provided this SRV record
+			is always ranked first.
+	
+IDENTIFYING PROBLEMS
+	When you run one of this module's commands, the corresponding DNS records
+	are retrieved and evaluated.  In case of an incorrect record, a warning or
+	an error may be printed to the screen, telling you which records are wrong
+	or missing.
+	
+	If an error is printed, you can retrieve the error object through the $error
+	automatic variable, just like PowerShell supports normally:
+	
+	PS C:\> $error[0]
+	
+HOW TO RESOLVE PROBLEMS
+	In addition, basic steps to resolving the error may be available through the
+	information pipeline. You can make this information visible by regular means
+	such as adding  -InformationAction Continue, setting $InformationPreference,
+	or redirecting the information pipeline (six).
+	
+	PS C:\> Test-Office365DnsRecords contoso.com -InformationAction Continue
+	
+	PS C:\> Test-Office365DnsRecords contoso.com 6> howtofixcontoso.txt
+	
+	While these one- or two-sentence tips may be useful for giving Office 365
+	administrators some idea on how to fix any DNS problems, you should still
+	consult the Microsoft 365 Admin Center's domain page, which will tell you
+	exactly how to fix your DNS records for common scenarios.
+	
+	In some cases, DNS records may intentionally be incorrect -- for example,
+	if you have a third-party spam filter sitting in front of Exchange Online
+	that requires custom MX records; or, if you have an on-premises Skype for
+	Business Server that requires your Teams-/Skype-related DNS CNAME records
+	to be incorrect intentionally.  Please consult your IT department or your
+	local MCSE to make sure that following this module's generic advice won't
+	interrupt your company's operations.
+	
+PREREQUISITES FOR NON-WINDOWS SYSTEMS
+	The code examples used in this module's documentation show a Windows C:\>
+	prompt.  However, this module works equally well on all operating systems
+	supported by PowerShell 5.1, PowerShell Core 6, and PowerShell 7.
+	
+	On Windows, this module relies on the DnsClient module to perform lookups,
+	even on Core editions of PowerShell.
+	
+	However, this module is only available on Windows systems.  On macOS and
+	Linux, the external command (Domain Internet Grouper) is used to perform
+	DNS lookups.  While this app is built into recent versions of macOS, all
+	Linux users will need to ensure that it is installed either manually, or
+	from your distribution's package manager.
+
+OTHER NOTES
+	It is recommended to sign your zone with DNSSEC, if only so DKIM validators
+	see that your public key is secure instead of unprotected.  However, DNSSEC
+	validation is beyond the scope of this tool.
+	
+EXAMPLES
+	PS C:\> Test-Office365DnsRecords "contoso.com"
+	
+	PS C:\> Get-AcceptedDomain | Test-Office365DnsRecords
+	
+KEYWORDS
+	Some keywords that you might use to search for this module include:
+	
+		Office 365, DNS, CNAME, SRV, service, TXT, text, RR;
+		Azure AD, AAD, join, hybrid join, registered, client configuration,
+		msoid, enterprise enrollment, enterprise registration;
+		Exchange Online, SPF, Sender ID, DKIM, DomainKeys, Autodiscover,
+		Outlook, Anywhere, ActiveSync, EAS, EWS, MX record, mail exchanger;
+		Microsoft Teams, Teams, Skype for Business, Skype for Business Online,
+		Lync, Lync Online, SIP, federation, SIPFederationTLS, TCP, TLS,
+		LyncDiscover.
+	
+SEE ALSO
+	Test-Office365DnsRecords

@@ -1,0 +1,11 @@
+{
+	"settings": {
+		"editor.insertSpaces": false,
+		"editor.tabSize": 4
+	},
+	"folders": [
+		{
+			"path": "."
+		}
+	]
+}
