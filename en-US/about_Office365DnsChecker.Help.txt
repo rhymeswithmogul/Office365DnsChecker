@@ -200,8 +200,8 @@ PREREQUISITES FOR NON-WINDOWS SYSTEMS
 	even on Core editions of PowerShell.
 	
 	However, this module is only available on Windows systems.  On macOS and
-	Linux, the external command (Domain Internet Grouper) is used to perform
-	DNS lookups.  While this app is built into recent versions of macOS, all
+	Linux, the external command dig (i.e., the domain information groper) is
+	used to perform DNS lookups. While this is included in macOS as of late,
 	Linux users will need to ensure that it is installed either manually, or
 	from your distribution's package manager.
 
