@@ -8,6 +8,12 @@ This module requires Windows PowerShell 5.1, PowerShell Core 6, or PowerShell 7 
 
 Additionally, Linux users will need to install the app `dig` (part of [`bind-utils`](https://github.com/tigeli/bind-utils)).  It is installed by default on macOS (at least in High Sierra).
 
+## Installation
+You can clone this repository and put it in your `$PSModulePath`, or grab it from PSGallery:
+````powershell
+Install-Module -Name Office365DnsChecker
+````
+
 ## Usage
 You can check all applicable Office 365 DNS records at once with the cmdlet `Test-Office365DnsRecords`:
 ````powershell
