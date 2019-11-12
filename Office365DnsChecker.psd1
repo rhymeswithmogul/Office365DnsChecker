@@ -130,7 +130,7 @@ FileList = @(
 	"Office365DnsChecker.psm1",
 	"LICENSE",
 	"README.md",
-	"en-US\about_Office365DnsChecker.txt",
+	"en-US\about_Office365DnsChecker.Help.txt",
 	"en-US\Office365DnsChecker.psm1-Help.xml",
 	"Logo\Office365DnsChecker.svg",
 	"Logo\Office365DnsChecker.png",
