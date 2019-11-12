@@ -131,7 +131,10 @@ FileList = @(
 	"LICENSE",
 	"README.md",
 	"en-US\about_Office365DnsChecker.txt",
-	"en-US\Office365DnsChecker.psm1-Help.xml"
+	"en-US\Office365DnsChecker.psm1-Help.xml",
+	"Logo\Office365DnsChecker.svg",
+	"Logo\Office365DnsChecker.png",
+	"Logo\Office365DnsChecker.webp"
 )
 
 # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
@@ -149,7 +152,7 @@ PrivateData = @{
 		ProjectUri = 'https://github.com/rhymeswithmogul/Office365DNSChecker/'
 
 		# A URL to an icon representing this module.
-		# IconUri = ''
+		IconUri = 'https://github.com/rhymeswithmogul/Office365DnsChecker/Logo/Office365DnsChecker.png'
 
 		# ReleaseNotes of this module
 		ReleaseNotes = 'https://github.com/rhymeswithmogul/Office365DNSChecker/blob/master/CHANGELOG'
