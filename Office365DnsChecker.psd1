@@ -152,7 +152,7 @@ PrivateData = @{
 		ProjectUri = 'https://github.com/rhymeswithmogul/Office365DNSChecker/'
 
 		# A URL to an icon representing this module.
-		IconUri = 'https://github.com/rhymeswithmogul/Office365DnsChecker/Logo/Office365DnsChecker.png'
+		IconUri = 'https://raw.githubusercontent.com/rhymeswithmogul/Office365DnsChecker/master/Logo/Office365DnsChecker.png'
 
 		# ReleaseNotes of this module
 		ReleaseNotes = 'https://github.com/rhymeswithmogul/Office365DNSChecker/blob/master/CHANGELOG'
