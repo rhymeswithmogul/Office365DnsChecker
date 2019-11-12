@@ -143,7 +143,7 @@ PrivateData = @{
 	PSData = @{
 
 		# Tags applied to this module. These help with module discovery in online galleries.
-		Tags = @("PSModule", "Office 365", "Exchange Online", "Skype for Business Online", "Microsoft Teams", "DNS", "Azure AD", "SPF", "DKIM")
+		Tags = @("PSModule", "Office365", "ExchangeOnline", "SkypeForBusinessOnline", "MicrosoftTeams", "DNS", "AzureAD", "AAD", "SPF", "DKIM")
 
 		# A URL to the license for this module.
 		LicenseUri = 'https://github.com/rhymeswithmogul/Office365DNSChecker/blob/master/LICENSE'
