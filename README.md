@@ -4,7 +4,7 @@ Office365DnsChecker will check one or more domains, to make sure that their curr
 <img src="https://raw.githubusercontent.com/rhymeswithmogul/Office365DnsChecker/master/Logo/Office365DnsChecker.png" alt="Office365DnsChecker logo" width="432" height="300" style="margin:0 auto">
 
 ## System Requirements
-This module requires Windows PowerShell 5.1 or greater.  It works great on PoewrShell Core.
+This module requires Windows PowerShell 5.1 or greater.  It works great on PoewrShell Core 6 and PowerShell 7, and supports constrained language mode.
 
 Additionally, Linux users will need to install the app `dig` (part of [`bind-utils`](https://github.com/tigeli/bind-utils)).  It is installed by default on macOS (at least in High Sierra).
 
