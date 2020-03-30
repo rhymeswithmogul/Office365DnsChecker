@@ -572,13 +572,13 @@
 					<maml:description>
 						<maml:para>Exchange Online requires both selector1 and selector2 to exist.  However, if you would like to check only one of the keys, specify its number here.</maml:para>
 					</maml:description>
-					<command:parameterValue required="true" variableLength="false">UInt32[]</command:parameterValue>
+					<command:parameterValue required="true" variableLength="false">int[]</command:parameterValue>
 					<command:parameterValueGroup>
 						<command:parameterValue required="false" variableLength="false">1</command:parameterValue>
 						<command:parameterValue required="false" variableLength="false">2</command:parameterValue>
 					</command:parameterValueGroup>
 					<dev:type>
-						<maml:name>UInt32[]</maml:name>
+						<maml:name>int[]</maml:name>
 						<maml:uri />
 					</dev:type>
 					<dev:defaultValue>1,2</dev:defaultValue>
@@ -604,13 +604,13 @@
 				<maml:description>
 					<maml:para>Exchange Online requires both selector1 and selector2 to exist.  However, if you would like to check only one of the keys, specify its number here.</maml:para>
 				</maml:description>
-				<command:parameterValue required="true" variableLength="false">UInt32[]</command:parameterValue>
+				<command:parameterValue required="true" variableLength="false">int[]</command:parameterValue>
 				<command:parameterValueGroup>
 					<command:parameterValue required="false" variableLength="false">1</command:parameterValue>
 					<command:parameterValue required="false" variableLength="false">2</command:parameterValue>
 				</command:parameterValueGroup>
 				<dev:type>
-					<maml:name>UInt32[]</maml:name>
+					<maml:name>int[]</maml:name>
 					<maml:uri />
 				</dev:type>
 				<dev:defaultValue>1,2</dev:defaultValue>

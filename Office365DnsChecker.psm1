@@ -447,7 +447,7 @@ Function Test-ExchangeOnlineDkimRecords {
 
 		[ValidateNotNullOrEmpty()]
 		[ValidateSet(1,2)]
-		[UInt[]] $Selectors = @(1,2)
+		[Int[]] $Selectors = @(1,2)
 	)
 
 	Process {
