@@ -495,7 +495,6 @@ Function Test-ExchangeOnlineDkimRecords {
 					If ($null -ne $dnsTxtLookup) {
 						$dnsTxtRecords = $dnsTxtLookup | Where-Object {$_.Strings -NotMatch $shouldBeLike}
 					}
-
 					If (-Not $dnsTxtLookup) {
 						$errorReport = @{
 							Message = "The DKIM CNAME record exists, but the TXT record for selector$i is missing."
@@ -509,22 +508,33 @@ Function Test-ExchangeOnlineDkimRecords {
 						}
 						Write-Error @errorReport
 						Write-Information $errorReport.RecommendedAction
+						Continue
 					}
-					ElseIf (($dnsTxtRecords | Measure-Object).Count -gt 1) {
-						$errorReport = @{
-							Message = "Multiple DKIM TXT records for selector$i were found."
-							Category = [System.Management.Automation.ErrorCategory]::InvalidData
-							CategoryReason = "The DNS TXT record that $record points to was found, but returned multiple records."
-							CategoryTargetName = $record
-							CategoryTargetType = "TXT"
-							ErrorID = "DkimSelector${i}TxtTooManyResults"
-							RecommendedAction = "Try regenerating the DKIM key."
-							TargetObject = $dnsTxtLookup
+
+					If (($dnsTxtRecords | Measure-Object).Count -gt 1) {
+						If ($dnsTxtRecords[0] -Match $DomainName) {
+							$dnsTxtRecords[0].Strings = $dnsTxtRecords[1].Strings
 						}
-						Write-Error @errorReport
-						Write-Information $errorReport.RecommendedAction
+						Else {
+							$errorReport = @{
+								Message = "Multiple DKIM TXT records for selector$i were found."
+								Category = [System.Management.Automation.ErrorCategory]::InvalidData
+								CategoryReason = "The DNS TXT record that $record points to was found, but returned multiple records."
+								CategoryTargetName = $record
+								CategoryTargetType = "TXT"
+								ErrorID = "DkimSelector${i}TxtTooManyResults"
+								RecommendedAction = "Try regenerating the DKIM key."
+								TargetObject = $dnsTxtLookup
+							}
+							Write-Error @errorReport
+							Write-Information $errorReport.RecommendedAction
+							Continue
+						}
 					}
-					ElseIf ($dnsTxtRecords[0].Strings[0] -NotLike 'v=DKIM1;*') {
+
+					# Sometimes, the TXT record will wrap into two records, depending on the DNS server.
+					# Check them both, just to be sure.
+					If ($dnsTxtRecords[0].Strings -NotLike 'v=DKIM1;*' -and $dnsTxtRecords[0].Strings[0] -NotLike 'v=DKIM1;*') {
 						$errorReport = @{
 							Message = "The DKIM TXT record for selector$i is not a valid key."
 							Category = [System.Management.Automation.ErrorCategory]::InvalidData
@@ -537,10 +547,10 @@ Function Test-ExchangeOnlineDkimRecords {
 						}
 						Write-Error @errorReport
 						Write-Information $errorReport.RecommendedAction
+						Continue
 					}
-					Else {
-						Write-Success -Product "Exchange Online" "The DKIM key selector$i appears to be correct."
-					}
+
+					Write-Success -Product "Exchange Online" "The DKIM key selector$i appears to be correct."
 				}
 			}
 		}
