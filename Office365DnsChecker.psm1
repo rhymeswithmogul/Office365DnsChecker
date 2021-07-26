@@ -457,7 +457,7 @@ Function Test-ExchangeOnlineDkimRecords {
 			ForEach ($i in $Selectors) {
 				$record = "selector$i._domainkey.$domain"
 				$dnsCnameLookup = Resolve-DnsNameCrossPlatform -Type CNAME -Name $record
-				$shouldBeLike   = "selector$i-*.onmicrosoft.com"
+				$shouldBeLike   = "selector$i-*._domainkey.*.onmicrosoft.com"
 				If (-Not $dnsCnameLookup) {
 					$errorReport = @{
 						Message = "The DKIM CNAME record for selector$i is missing."
@@ -471,8 +471,9 @@ Function Test-ExchangeOnlineDkimRecords {
 					}
 					Write-Error @errorReport
 					Write-Information $errorReport.RecommendedAction
-					}
+				}
 				ElseIf ($dnsCnameLookup.NameHost -NotLike $shouldBeLike) {
+					Write-Output $dnsCnameLookup
 					$errorReport = @{
 						Message = "The DKIM CNAME record for selector$i exists, but is incorrect."
 						Category = [System.Management.Automation.ErrorCategory]::InvalidData
@@ -485,13 +486,19 @@ Function Test-ExchangeOnlineDkimRecords {
 					}
 					Write-Error @errorReport
 					Write-Information $errorReport.RecommendedAction
-					}
+				}
 				Else {
-					$dnsTxtLookup = Resolve-DnsNameCrossPlatform -Type TXT -Name $record | Where-Object {$_.Strings -NotMatch [RegEx]"onmicrosoft\.com\.?$"}
-					$shouldBeLike = "v=DKIM1;*"
+					$dnsTxtLookup  = Resolve-DnsNameCrossPlatform -Type TXT -Name $record
+					$dnsTxtRecords = $null
+
+					# Wrapping this in a null check to avoid strict mode warnings.
+					If ($null -ne $dnsTxtLookup) {
+						$dnsTxtRecords = $dnsTxtLookup | Where-Object {$_.Strings -NotMatch $shouldBeLike}
+					}
+
 					If (-Not $dnsTxtLookup) {
 						$errorReport = @{
-							Message = "The DKIM TXT record for selector$i is missing."
+							Message = "The DKIM CNAME record exists, but the TXT record for selector$i is missing."
 							Category = [System.Management.Automation.ErrorCategory]::ObjectNotFound
 							CategoryReason = "The DNS TXT record $record was not found."
 							CategoryTargetName = $record
@@ -502,8 +509,8 @@ Function Test-ExchangeOnlineDkimRecords {
 						}
 						Write-Error @errorReport
 						Write-Information $errorReport.RecommendedAction
-							}
-					ElseIf (($dnsTxtLookup | Measure-Object | Select-Object -ExpandProperty Count) -gt 1) {
+					}
+					ElseIf (($dnsTxtRecords | Measure-Object).Count -gt 1) {
 						$errorReport = @{
 							Message = "Multiple DKIM TXT records for selector$i were found."
 							Category = [System.Management.Automation.ErrorCategory]::InvalidData
@@ -516,8 +523,8 @@ Function Test-ExchangeOnlineDkimRecords {
 						}
 						Write-Error @errorReport
 						Write-Information $errorReport.RecommendedAction
-							}
-					ElseIf ($dnsTxtLookup[0].Strings -NotLike $shouldBeLike) {
+					}
+					ElseIf ($dnsTxtRecords[0].Strings[0] -NotLike 'v=DKIM1;*') {
 						$errorReport = @{
 							Message = "The DKIM TXT record for selector$i is not a valid key."
 							Category = [System.Management.Automation.ErrorCategory]::InvalidData
@@ -530,7 +537,7 @@ Function Test-ExchangeOnlineDkimRecords {
 						}
 						Write-Error @errorReport
 						Write-Information $errorReport.RecommendedAction
-							}
+					}
 					Else {
 						Write-Success -Product "Exchange Online" "The DKIM key selector$i appears to be correct."
 					}
