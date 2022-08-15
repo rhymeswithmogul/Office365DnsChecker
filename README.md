@@ -1,3 +1,5 @@
+[![PowerShell Gallery Version (including pre-releases)](https://img.shields.io/powershellgallery/v/Office365DnsChecker?include_prereleases)](https://powershellgallery.com/packages/Office365DnsChecker/) [![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/Office365DnsChecker)](https://powershellgallery.com/packages/v/Office365DnsChecker)
+
 # Office365DnsChecker
 Office365DnsChecker will check one or more domains, to make sure that their current DNS records are set up correctly and completely for Office 365.
 
