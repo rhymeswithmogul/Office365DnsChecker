@@ -15,7 +15,7 @@ RootModule = 'src/Office365DnsChecker.psm1'
 ModuleVersion = '1.0.3'
 
 # Supported PSEditions
-CompatiblePSEditions = @("Core", "Desktop")
+CompatiblePSEditions = @('Core', 'Desktop')
 
 # ID used to uniquely identify this module
 GUID = 'a3186ece-3435-4ab3-a075-25c645014036'
@@ -70,22 +70,22 @@ PowerShellVersion = '5.1'
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
 FunctionsToExport = @(
-	"Test-Office365DNSRecords",
-	"Test-AzureADRecords",
-	"Test-ExchangeOnlineRecords",
-	"Test-TeamsRecords",
-	"Test-AzureADClientConfigurationRecord",
-	"Test-AzureADEnterpriseEnrollmentRecord",
-	"Test-AzureADEnterpriseRegistrationRecord",
-	"Test-ExchangeOnlineAutodiscoverRecord",
-	"Test-ExchangeOnlineDkimRecords",
-	"Test-ExchangeOnlineMxRecord",
-	"Test-ExchangeOnlineSenderIdRecord",
-	"Test-ExchangeOnlineSpfRecord",
-	"Test-TeamsAutodiscoverRecord",
-	"Test-TeamsSipCnameRecord",
-	"Test-TeamsSipSrvRecord",
-	"Test-TeamsSipFederationSrvRecord"
+	'Test-Office365DNSRecords',
+	'Test-AzureADRecords',
+	'Test-ExchangeOnlineRecords',
+	'Test-TeamsRecords',
+	'Test-AzureADClientConfigurationRecord',
+	'Test-AzureADEnterpriseEnrollmentRecord',
+	'Test-AzureADEnterpriseRegistrationRecord',
+	'Test-ExchangeOnlineAutodiscoverRecord',
+	'Test-ExchangeOnlineDkimRecords',
+	'Test-ExchangeOnlineMxRecord',
+	'Test-ExchangeOnlineSenderIdRecord',
+	'Test-ExchangeOnlineSpfRecord',
+	'Test-TeamsAutodiscoverRecord',
+	'Test-TeamsSipCnameRecord',
+	'Test-TeamsSipSrvRecord',
+	'Test-TeamsSipFederationSrvRecord'
 )
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
@@ -96,22 +96,22 @@ VariablesToExport = ''
 
 # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
 AliasesToExport = @(
-	"Test-LyncRecords",
-	"Test-SkypeForBusinessRecords",
-	"Test-SkypeForBusinessOnlineRecords",
-	"Test-LyncSipCnameRecord",
-	"Test-SkypeForBusinessSipCnameRecord",
-	"Test-SkypeForBusinessOnlineSipCnameRecord",
-	"Test-LyncSipSrvRecord",
-	"Test-SkypeForBusinessSipSrvRecord",
-	"Test-SkypeForBusinessOnlineSipSrvRecord",
-	"Test-LyncDiscoverRecord",
-	"Test-LyncAutodiscoverRecord",
-	"Test-SkypeForBusinessAutodiscoverRecord",
-	"Test-SkypeForBusinessOnlineAutodiscoverRecord",
-	"Test-LyncSipFederationSrvRecord",
-	"Test-SkypeForBusinessSipFederationSrvRecord",
-	"Test-SkypeForBusinessOnlineSipFederationSrvRecord"
+	'Test-LyncRecords',
+	'Test-SkypeForBusinessRecords',
+	'Test-SkypeForBusinessOnlineRecords',
+	'Test-LyncSipCnameRecord',
+	'Test-SkypeForBusinessSipCnameRecord',
+	'Test-SkypeForBusinessOnlineSipCnameRecord',
+	'Test-LyncSipSrvRecord',
+	'Test-SkypeForBusinessSipSrvRecord',
+	'Test-SkypeForBusinessOnlineSipSrvRecord',
+	'Test-LyncDiscoverRecord',
+	'Test-LyncAutodiscoverRecord',
+	'Test-SkypeForBusinessAutodiscoverRecord',
+	'Test-SkypeForBusinessOnlineAutodiscoverRecord',
+	'Test-LyncSipFederationSrvRecord',
+	'Test-SkypeForBusinessSipFederationSrvRecord',
+	'Test-SkypeForBusinessOnlineSipFederationSrvRecord'
 )
 
 # DSC resources to export from this module
@@ -122,19 +122,19 @@ AliasesToExport = @(
 
 # List of all files packaged with this module
 FileList = @(
-	"CHANGELOG",
-	"CODE_OF_CONDUCT.md",
-	"CONTRIBUTING.md",
-	"Office365DnsChecker.code-workspace",
-	"Office365DnsChecker.psd1",
-	"src\Office365DnsChecker.psm1",
-	"LICENSE",
-	"README.md",
-	"en-US\about_Office365DnsChecker.Help.txt",
-	"en-US\Office365DnsChecker.psm1-Help.xml",
-	"Logo\Office365DnsChecker.svg",
-	"Logo\Office365DnsChecker.png",
-	"Logo\Office365DnsChecker.webp"
+	'CHANGELOG',
+	'CODE_OF_CONDUCT.md',
+	'CONTRIBUTING.md',
+	'Office365DnsChecker.code-workspace',
+	'Office365DnsChecker.psd1',
+	'src\Office365DnsChecker.psm1',
+	'LICENSE',
+	'README.md',
+	'en-US\about_Office365DnsChecker.Help.txt',
+	'en-US\Office365DnsChecker.psm1-Help.xml',
+	'Logo\Office365DnsChecker.svg',
+	'Logo\Office365DnsChecker.png',
+	'Logo\Office365DnsChecker.webp'
 )
 
 # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
@@ -143,7 +143,7 @@ PrivateData = @{
 	PSData = @{
 
 		# Tags applied to this module. These help with module discovery in online galleries.
-		Tags = @("Microsoft365", "Office365", "365", "ExchangeOnline", "SkypeForBusinessOnline", "MicrosoftTeams", "DNS", "AzureAD", "AAD", "SPF", "DKIM", "ExO", "Exchange")
+		Tags = @('Microsoft365', 'Office365', '365', 'ExchangeOnline', 'SkypeForBusinessOnline', 'MicrosoftTeams', 'DNS', 'AzureAD', 'AAD', 'SPF', 'DKIM', 'ExO', 'Exchange')
 
 		# A URL to the license for this module.
 		LicenseUri = 'https://github.com/rhymeswithmogul/Office365DNSChecker/blob/master/LICENSE'
