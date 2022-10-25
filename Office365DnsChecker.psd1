@@ -9,7 +9,7 @@
 @{
 
 # Script module or binary module file associated with this manifest.
-RootModule = 'Office365DnsChecker.psm1'
+RootModule = 'src/Office365DnsChecker.psm1'
 
 # Version number of this module.
 ModuleVersion = '1.0.3'
@@ -27,7 +27,7 @@ Author = 'Colin Cogle <colin@colincogle.name>'
 # CompanyName = $null
 
 # Copyright statement for this module
-Copyright = '(c) Colin Cogle. All rights reserved. Licensed under the GPL version 3.'
+Copyright = '(c) 2019-2022 Colin Cogle. All rights reserved. Licensed under the GPL version 3.'
 
 # Description of the functionality provided by this module
 Description = "Checks a domain's Office 365 DNS records for correctness."
@@ -127,7 +127,7 @@ FileList = @(
 	"CONTRIBUTING.md",
 	"Office365DnsChecker.code-workspace",
 	"Office365DnsChecker.psd1",
-	"Office365DnsChecker.psm1",
+	"src\Office365DnsChecker.psm1",
 	"LICENSE",
 	"README.md",
 	"en-US\about_Office365DnsChecker.Help.txt",
