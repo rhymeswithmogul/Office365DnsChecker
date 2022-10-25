@@ -7,6 +7,10 @@ Set-StrictMode -Version Latest
 Function Test-Office365DNSRecords {
 	#.ExternalHelp Office365DnsChecker.psm1-Help.xml
 	[CmdletBinding()]
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+		'PSUseSingularNouns', '',
+		Justification='We are testing multiple DNS records.'
+	)]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias("Name")]
@@ -160,6 +164,10 @@ Function Write-Success {
 #region Azure AD cmdlets
 Function Test-AzureADRecords {
 	#.ExternalHelp Office365DnsChecker.psm1-Help.xml
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+		'PSUseSingularNouns', '',
+		Justification='We are testing multiple DNS records.'
+	)]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias("Name")]
@@ -343,6 +351,10 @@ Function Test-AzureADEnterpriseRegistrationRecord {
 #region Exchange Online cmdlets
 Function Test-ExchangeOnlineRecords {
 	#.ExternalHelp Office365DnsChecker.psm1-Help.xml
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+		'PSUseSingularNouns', '',
+		Justification='We are testing multiple DNS records.'
+	)]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias("Name")]
@@ -439,6 +451,10 @@ Function Test-ExchangeOnlineAutodiscoverRecord {
 
 Function Test-ExchangeOnlineDkimRecords {
 	#.ExternalHelp Office365DnsChecker.psm1-Help.xml
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+		'PSUseSingularNouns', '',
+		Justification='We are testing multiple DNS records.'
+	)]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias("Name")]
@@ -747,6 +763,10 @@ Function Test-ExchangeOnlineSpfRecord {
 Function Test-TeamsRecords {
 	#.ExternalHelp Office365DnsChecker.psm1-Help.xml
 	[CmdletBinding()]
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+		'PSUseSingularNouns', '',
+		Justification='We are testing multiple DNS records.'
+	)]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias("Name")]

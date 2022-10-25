@@ -1,5 +1,9 @@
 Office365DnsChecker Change Log
 
+Recent changes
+- Ignore PSScriptAnalyzer warnings about plural nouns.  Our nouns are
+  intentionally plural when appropriate.
+
 Version 1.0.3 (July 26, 2021)
 - Fixed a regression bug where DKIM records were marked as incorrect on
   macOS and Linux systems.
