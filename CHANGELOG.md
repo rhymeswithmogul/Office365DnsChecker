@@ -1,5 +1,8 @@
 # Office365DnsChecker Change Log
 
+## Recent changes
+- FIXED: Fixed a bug where other implementations of `Resolve-DnsName`, if present, may cause an infinite loop on macOS and Linux platforms.
+
 ## Version 1.0.4 (June 1, 2023)
 - NEW: Added online help.
 - NEW: This module will be signed when deployed to PowerShell Gallery so that it can run on systems whose execution policies require code signing.
