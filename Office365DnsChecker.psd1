@@ -156,10 +156,13 @@ PrivateData = @{
 		IconUri = 'https://raw.githubusercontent.com/rhymeswithmogul/Office365DnsChecker/master/Logo/Office365DnsChecker.png'
 
 		# ReleaseNotes of this module
-		ReleaseNotes = "Add support for checking 21Vianet customers' DNS records."
+		ReleaseNotes = "- NEW: Add support for checking DNS records for Office 365 hosted by 21Vianet.
+- ENHANCEMENT: The Azure AD client configuration record check now passes if the msoid record is missing.  As of early 2023, this DNS record is only required to be set when Office 365 is managed by 21Vianet.
+- FIXED: On a small number of configurations, DNS resolution would enter an infinite loop.  This would happen if you were running macOS or Linux, and had an alternative implementation of Resolve-DnsName.  Now, the only cmdlet we'll use is DnsClient\Resolve-DnsName before falling back to the built-in DNS resolver.
+- Code cleanup."
 
 		# Prerelease string of this module
-		Prerelease = 'alpha'
+		# Prerelease = 'alpha'
 
 		# Flag to indicate whether the module requires explicit user acceptance for install/update/save
 		RequireLicenseAcceptance = $false
