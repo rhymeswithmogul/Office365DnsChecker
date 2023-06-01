@@ -20,11 +20,13 @@ LONG DESCRIPTION
 		
 	Finally, the above three cmdlets themselves call the following cmdlets.  To
 	test a single DNS record on its own, use one of these:
-		1. To test Azure Active Directory's client configuration record:
+		1. Azure Active Directory's client configuration record (optional for
+		   all users, but required by 21Vianet customers):
 			Cmdlet = Test-AzureADClientConfigurationRecord
 			Name   = msoid
 			Type   = CNAME
-			Target = clientconfig.microsoftonline-p.net.
+			Target = clientconfig.partner.microsoftonline-p.net.cn. (21Vianet)
+			         clientconfig.microsoftonline-p.net. (rest of world)
 			
 		2. Azure Active Directory's enterprise enrollment record:
 			Cmdlet = Test-AzureADEnterpriseEnrollmentRecord
@@ -220,7 +222,7 @@ KEYWORDS
 	
 		Office 365, DNS, CNAME, SRV, service, TXT, text, RR;
 		Azure AD, AAD, join, hybrid join, registered, client configuration,
-		msoid, enterprise enrollment, enterprise registration;
+		msoid, enterprise enrollment, enterprise registration, 21Vianet;
 		Exchange Online, SPF, Sender ID, DKIM, DomainKeys, Autodiscover,
 		Outlook, Anywhere, ActiveSync, EAS, EWS, MX record, mail exchanger;
 		Microsoft Teams, Teams, Skype for Business, Skype for Business Online,

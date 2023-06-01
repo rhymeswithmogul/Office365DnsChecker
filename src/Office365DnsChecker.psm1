@@ -32,14 +32,17 @@ Function Test-Office365DNSRecords
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias('Name')]
 		[ValidateNotNullOrEmpty()]
-		[String[]] $DomainName
+		[String[]] $DomainName,
+
+		[Alias('China')]
+		[Switch] $Use21Vianet
 	)
 
 	Process
 	{
 		$DomainName | ForEach-Object {
 			Write-Output "Checking Office 365 DNS records for $_."
-			Test-AzureADRecords -DomainName $_ | Out-Null
+			Test-AzureADRecords -DomainName $_ -Use21Vianet:$Use21Vianet | Out-Null
 			Test-ExchangeOnlineRecords -DomainName $_ | Out-Null
 			Test-TeamsRecords -DomainName $_ | Out-Null
 		}
@@ -208,13 +211,16 @@ Function Test-AzureADRecords
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias('Name')]
 		[ValidateNotNullOrEmpty()]
-		[String[]] $DomainName
+		[String[]] $DomainName,
+
+		[Alias('China')]
+		[Switch] $Use21Vianet
 	)
 
 	Process
 	{
 		$DomainName | ForEach-Object {
-			Test-AzureADClientConfigurationRecord -DomainName $_
+			Test-AzureADClientConfigurationRecord -DomainName $_ -Use21Vianet:$Use21Vianet
 			Test-AzureADEnterpriseEnrollmentRecord -DomainName $_
 			Test-AzureADEnterpriseRegistrationRecord -DomainName $_
 		}
@@ -228,12 +234,18 @@ Function Test-AzureADClientConfigurationRecord
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias('Name')]
 		[ValidateNotNullOrEmpty()]
-		[String[]] $DomainName
+		[String[]] $DomainName,
+
+		[Alias('China')]
+		[Switch] $Use21Vianet
 	)
 
 	Begin
 	{
 		$shouldBe = 'clientconfig.microsoftonline-p.net'
+		If ($Use21Vianet) {
+			$shouldBe = 'clientconfig.partner.microsoftonline-p.net.cn'
+		}
 	}
 
 	Process
@@ -243,21 +255,17 @@ Function Test-AzureADClientConfigurationRecord
 
 			$record = "msoid.$_"
 			$dnsLookup = Resolve-DnsNameCrossPlatform -Type CNAME -Name $record
-			If (-Not $dnsLookup)
+
+			# As of 2023, the msoid record is no longer required for Office 365
+			# services outside of China.  Thus, our code will no longer complain
+			# if this DNS record is missing.
+			If (-Not $dnsLookup -and -Not $Use21Vianet)
 			{
-				$errorReport = @{
-					Message = 'The client configuration DNS record is missing.'
-					Category = [System.Management.Automation.ErrorCategory]::ObjectNotFound
-					CategoryReason = "The CNAME record $record does not exist."
-					CategoryTargetName = $record
-					CategoryTargetType = 'CNAME'
-					ErrorID = 'MsoidCnameMissing'
-					RecommendedAction = "Create a CNAME record for $record, pointing to $shouldBe."
-					TargetObject = $dnsLookup
-				}
-				Write-Error @errorReport
-				Write-Information $errorReport.RecommendedAction
+				Write-Success -Product 'Azure AD' 'The client configuration CNAME record is not present.'
 			}
+
+			# However, if it exists and is not set to the default value of
+			# clientconfig.microsoftonline-p.net, we will still complain.
 			ElseIf ($dnsLookup.NameHost -ne $shouldBe)
 			{
 				$errorReport = @{
@@ -275,7 +283,12 @@ Function Test-AzureADClientConfigurationRecord
 			}
 			Else
 			{
-				Write-Success -Product 'Azure AD' 'The client configuration CNAME record is correct.'
+				If ($Use21Vianet) {
+					Write-Success -Product 'Azure AD' 'The client configuration CNAME record is present and correct for 21Vianet.'
+				}
+				Else {
+					Write-Success -Product 'Azure AD' 'The client configuration CNAME record is present, but correct.'
+				}
 			}
 		}
 	}
