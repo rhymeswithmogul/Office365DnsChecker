@@ -60,10 +60,12 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String[]
-One or more domain names to check. 
-This cmdlet accepts pipeline input as well.
+One or more domain names to check.  This cmdlet accepts pipeline input as well.
 
 ## OUTPUTS
+
+### Bool
+True if all DNS records are correct, false otherwise.  If you pass multiple domain names to this cmdlet, the result will consider all domains;  that is, if contoso.com is correct but fabrikam.com is not, the result will be false.
 
 ## NOTES
 Sender ID records are considered obsolete, in favor of SPF (TXT) records.  You do not need to publish one, and absence of one will not cause this cmdlet print an error. In fact, *not* publishing one is considered best practice.

@@ -79,7 +79,8 @@ One or more domain names to check.  This cmdlet accepts pipeline input as well.
 
 ## OUTPUTS
 
-### System.Object
+### Bool
+True if all DNS records are correct, false otherwise.  If you pass multiple domain names to this cmdlet, the result will consider all domains;  that is, if contoso.com is correct but fabrikam.com is not, the result will be false.
 
 ## NOTES
 Starting in early 2023, Microsoft's recommendations changed.  Now, the msoid record should not be defined for any tenants not operated by 21Vianet.  For more information, see:

@@ -24,6 +24,7 @@ Set-StrictMode -Version Latest
 Function Test-Office365DNSRecords
 {
 	[CmdletBinding()]
+	[OutputType([Bool])]
 	[Diagnostics.CodeAnalysis.SuppressMessageAttribute(
 		'PSUseSingularNouns', '',
 		Justification='We are testing multiple DNS records.'
@@ -38,14 +39,23 @@ Function Test-Office365DNSRecords
 		[Switch] $Use21Vianet
 	)
 
+	Begin
+	{
+		$result = $true
+	}
+
 	Process
 	{
 		$DomainName | ForEach-Object {
 			Write-Output "Checking Office 365 DNS records for $_."
-			Test-AzureADRecords -DomainName $_ -Use21Vianet:$Use21Vianet | Out-Null
-			Test-ExchangeOnlineRecords -DomainName $_ | Out-Null
-			Test-TeamsRecords -DomainName $_ | Out-Null
+			$result = Test-AzureADRecords -DomainName $_ -Use21Vianet:$Use21Vianet | Out-Null
+			$result = Test-ExchangeOnlineRecords -DomainName $_ | Out-Null
+			$result = Test-TeamsRecords -DomainName $_ | Out-Null
 		}
+	}
+
+	End {
+		Return $result
 	}
 }
 
@@ -230,6 +240,7 @@ Function Test-AzureADRecords
 Function Test-AzureADClientConfigurationRecord
 {
 	[CmdletBinding()]
+	[OutputType([Bool])]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias('Name')]
@@ -242,6 +253,8 @@ Function Test-AzureADClientConfigurationRecord
 
 	Begin
 	{
+		$result = $true
+
 		$shouldBe = 'clientconfig.microsoftonline-p.net'
 		If ($Use21Vianet) {
 			$shouldBe = 'clientconfig.partner.microsoftonline-p.net.cn'
@@ -280,6 +293,7 @@ Function Test-AzureADClientConfigurationRecord
 				}
 				Write-Error @errorReport
 				Write-Information $errorReport.RecommendedAction
+				$result = $false
 			}
 			Else
 			{
@@ -292,10 +306,15 @@ Function Test-AzureADClientConfigurationRecord
 			}
 		}
 	}
+
+	End {
+		Return $result
+	}
 }
 
 Function Test-AzureADEnterpriseEnrollmentRecord
 {
+	[OutputType([Bool])]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias('Name')]
@@ -305,6 +324,7 @@ Function Test-AzureADEnterpriseEnrollmentRecord
 
 	Begin
 	{
+		$result   = $true
 		$shouldBe = 'enterpriseenrollment.manage.microsoft.com'
 	}
 
@@ -328,6 +348,7 @@ Function Test-AzureADEnterpriseEnrollmentRecord
 				}
 				Write-Error @errorReport
 				Write-Information $errorReport.RecommendedAction
+				$result = $false
 			}
 			ElseIf ($dnsLookup.NameHost -ne $shouldBe)
 			{
@@ -343,6 +364,7 @@ Function Test-AzureADEnterpriseEnrollmentRecord
 				}
 				Write-Error @errorReport
 				Write-Information $errorReport.RecommendedAction
+				$result = $false
 			}
 			Else
 			{
@@ -350,10 +372,15 @@ Function Test-AzureADEnterpriseEnrollmentRecord
 			}
 		}
 	}
+	
+	End {
+		Return $result
+	}
 }
 
 Function Test-AzureADEnterpriseRegistrationRecord
 {
+	[OutputType([Bool])]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias('Name')]
@@ -363,6 +390,7 @@ Function Test-AzureADEnterpriseRegistrationRecord
 
 	Begin
 	{
+		$result   = $true
 		$shouldBe = 'enterpriseregistration.windows.net'
 	}
 
@@ -388,6 +416,7 @@ Function Test-AzureADEnterpriseRegistrationRecord
 				}
 				Write-Error @errorReport
 				Write-Information $errorReport.RecommendedAction
+				$result = $false
 			}
 			ElseIf ($dnsLookup.NameHost -ne $shouldBe)
 			{
@@ -403,6 +432,7 @@ Function Test-AzureADEnterpriseRegistrationRecord
 				}
 				Write-Error @errorReport
 				Write-Information $errorReport.RecommendedAction
+				$result = $false
 			}
 			Else
 			{
@@ -410,12 +440,17 @@ Function Test-AzureADEnterpriseRegistrationRecord
 			}
 		}
 	}
+
+	End {
+		Return $result
+	}
 }
 #endregion Azure AD cmdlets
 
 #region Exchange Online cmdlets
 Function Test-ExchangeOnlineRecords
 {
+	[OutputType([Bool])]
 	[Diagnostics.CodeAnalysis.SuppressMessageAttribute(
 		'PSUseSingularNouns', '',
 		Justification='We are testing multiple DNS records.'
@@ -429,20 +464,29 @@ Function Test-ExchangeOnlineRecords
 		[Switch] $GroupByRecord
 	)
 
+	Begin {
+		$result = $true
+	}
+
 	Process
 	{
 		$DomainName | ForEach-Object {
-			Test-ExchangeOnlineMxRecord -DomainName $_
-			Test-ExchangeOnlineAutodiscoverRecord -DomainName $_
-			Test-ExchangeOnlineSpfRecord -DomainName $_
-			Test-ExchangeOnlineSenderIdRecord -DomainName $_
-			Test-ExchangeOnlineDkimRecords -DomainName $_
+			$result = Test-ExchangeOnlineMxRecord -DomainName $_
+			$result = Test-ExchangeOnlineAutodiscoverRecord -DomainName $_
+			$result = Test-ExchangeOnlineSpfRecord -DomainName $_
+			$result = Test-ExchangeOnlineSenderIdRecord -DomainName $_
+			$result = Test-ExchangeOnlineDkimRecords -DomainName $_
 		}
+	}
+
+	End {
+		Return $result
 	}
 }
 
 Function Test-ExchangeOnlineAutodiscoverRecord
 {
+	[OutputType([Bool])]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias('Name')]
@@ -452,6 +496,7 @@ Function Test-ExchangeOnlineAutodiscoverRecord
 
 	Begin
 	{
+		$result    = $true
 		$shouldBe  = 'autodiscover.outlook.com'
 	}
 
@@ -476,6 +521,7 @@ Function Test-ExchangeOnlineAutodiscoverRecord
 				}
 				Write-Error @errorReport
 				Write-Information $errorReport.RecommendedAction
+				$result = $false
 			}
 			ElseIf ($dnsLookup.NameHost -ne $shouldBe)
 			{
@@ -491,6 +537,7 @@ Function Test-ExchangeOnlineAutodiscoverRecord
 				}
 				Write-Error @errorReport
 				Write-Information $errorReport.RecommendedAction
+				$result = $false
 			}
 			Else
 			{
@@ -513,6 +560,7 @@ Function Test-ExchangeOnlineAutodiscoverRecord
 				}
 				Write-Error @errorReport
 				Write-Information $errorReport.RecommendedAction
+				$result = $false
 			}
 			Else
 			{
@@ -520,10 +568,15 @@ Function Test-ExchangeOnlineAutodiscoverRecord
 			}
 		}
 	}
+
+	End {
+		Return $result
+	}
 }
 
 Function Test-ExchangeOnlineDkimRecords
 {
+	[OutputType([Bool])]
 	[Diagnostics.CodeAnalysis.SuppressMessageAttribute(
 		'PSUseSingularNouns', '',
 		Justification='We are testing multiple DNS records.'
@@ -538,6 +591,10 @@ Function Test-ExchangeOnlineDkimRecords
 		[ValidateSet(1,2)]
 		[Int[]] $Selectors = @(1,2)
 	)
+
+	Begin {
+		$result = $true
+	}
 
 	Process
 	{
@@ -563,6 +620,7 @@ Function Test-ExchangeOnlineDkimRecords
 					}
 					Write-Error @errorReport
 					Write-Information $errorReport.RecommendedAction
+					$result = $false
 				}
 				ElseIf ($dnsCnameLookup.NameHost -NotLike $shouldBeLike)
 				{
@@ -579,6 +637,7 @@ Function Test-ExchangeOnlineDkimRecords
 					}
 					Write-Error @errorReport
 					Write-Information $errorReport.RecommendedAction
+					$result = $false
 				}
 				Else
 				{
@@ -605,6 +664,7 @@ Function Test-ExchangeOnlineDkimRecords
 						}
 						Write-Error @errorReport
 						Write-Information $errorReport.RecommendedAction
+						$result = $false
 						Continue
 					}
 
@@ -628,6 +688,7 @@ Function Test-ExchangeOnlineDkimRecords
 							}
 							Write-Error @errorReport
 							Write-Information $errorReport.RecommendedAction
+							$result = $false
 							Continue
 						}
 					}
@@ -648,6 +709,7 @@ Function Test-ExchangeOnlineDkimRecords
 						}
 						Write-Error @errorReport
 						Write-Information $errorReport.RecommendedAction
+						$result = $false
 						Continue
 					}
 
@@ -656,16 +718,27 @@ Function Test-ExchangeOnlineDkimRecords
 			}
 		}
 	}
+
+	End {
+		Return $result
+	}
 }
 
 Function Test-ExchangeOnlineMxRecord
 {
+	[OutputType([Bool])]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias('Name')]
 		[ValidateNotNullOrEmpty()]
 		[String[]] $DomainName
 	)
+
+	Begin {
+		# Note that there are valid reasons why we might not be using
+		# Microsoft's MX record.  Warnings will not set $result to $false.
+		$result = $true
+	}
 
 	Process
 	{
@@ -688,6 +761,7 @@ Function Test-ExchangeOnlineMxRecord
 				}
 				Write-Error @errorReport
 				Write-Information $errorReport.RecommendedAction
+				$result = $false
 			}
 			ElseIf (($dnsLookup | Measure-Object | Select-Object -ExpandProperty Count) -eq 1)
 			{
@@ -703,7 +777,7 @@ Function Test-ExchangeOnlineMxRecord
 			{
 				If ($dnsLookup[0].NameExchange -Like '*.mail.protection.outlook.com')
 				{
-				Write-Success -Product 'Exchange Online' "The first MX record for the domain $_ appears correct."
+					Write-Success -Product 'Exchange Online' "The first MX record for the domain $_ appears correct."
 				}
 				Else
 				{
@@ -712,22 +786,29 @@ Function Test-ExchangeOnlineMxRecord
 			}
 		}
 	}
+
+	End {
+		Return $result
+	}
 }
 
 Function Test-ExchangeOnlineSenderIdRecord
 {
+	[OutputType([Bool])]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias('Name')]
 		[ValidateNotNullOrEmpty()]
 		[String[]] $DomainName
 	)
-	Test-ExchangeOnlineSpfRecord -DomainName $DomainName -SpfOrSenderID 'Sender ID'
+
+	Return (Test-ExchangeOnlineSpfRecord -DomainName $DomainName -SpfOrSenderID 'Sender ID')
 }
 
 Function Test-ExchangeOnlineSpfRecord
 {
 	[CmdletBinding()]
+	[OutputType([Bool])]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias('Name')]
@@ -740,6 +821,8 @@ Function Test-ExchangeOnlineSpfRecord
 
 	Begin
 	{
+		$result = $true
+
 		If ($SpfOrSenderID -eq 'SPF')
 		{
 			$ErrorCode = 'SPF'
@@ -782,6 +865,7 @@ Function Test-ExchangeOnlineSpfRecord
 					}
 					Write-Error @errorReport
 					Write-Information $errorReport.RecommendedAction
+					$result = $false
 				}
 			}
 			ElseIf (($dnsLookup | Measure-Object | Select-Object -ExpandProperty Count) -gt 1)
@@ -814,6 +898,7 @@ Function Test-ExchangeOnlineSpfRecord
 					}
 					Write-Error @errorReport
 					Write-Information $errorReport.RecommendedAction
+					$result = $false
 				}
 				ElseIf ("~$correctToken" -In $tokens)
 				{
@@ -829,6 +914,7 @@ Function Test-ExchangeOnlineSpfRecord
 					}
 					Write-Error @errorReport
 					Write-Information $errorReport.RecommendedAction
+					$result = $false
 				}
 				ElseIf ("-$correctToken" -In $tokens)
 				{
@@ -844,6 +930,7 @@ Function Test-ExchangeOnlineSpfRecord
 					}
 					Write-Error @errorReport
 					Write-Information $errorReport.RecommendedAction
+					$result = $false
 				}
 				Else
 				{
@@ -859,9 +946,14 @@ Function Test-ExchangeOnlineSpfRecord
 					}
 					Write-Error @errorReport
 					Write-Information $errorReport.RecommendedAction
+					$result = $false
 				}
 			}
 		}
+	}
+
+	End {
+		Return $result
 	}
 }
 #endregion Exchange Online cmdlets
@@ -870,6 +962,7 @@ Function Test-ExchangeOnlineSpfRecord
 Function Test-TeamsRecords
 {
 	[CmdletBinding()]
+	[OutputType([Bool])]
 	[Alias(
 		'Test-LyncRecords',
 		'Test-SkypeForBusinessRecords',
@@ -886,18 +979,27 @@ Function Test-TeamsRecords
 		[String[]] $DomainName
 	)
 
+	Begin {
+		$result = $true
+	}
+
 	Process {
 		$DomainName | ForEach-Object {
-			Test-TeamsAutodiscoverRecord -DomainName $_
-			Test-TeamsSipCnameRecord -DomainName $_
-			Test-TeamsSipSrvRecord -DomainName $_
-			Test-TeamsSipFederationSrvRecord -DomainName $_
+			$result = Test-TeamsAutodiscoverRecord -DomainName $_
+			$result = Test-TeamsSipCnameRecord -DomainName $_
+			$result = Test-TeamsSipSrvRecord -DomainName $_
+			$result = Test-TeamsSipFederationSrvRecord -DomainName $_
 		}
+	}
+
+	End {
+		Return $result
 	}
 }
 
 Function Test-TeamsAutodiscoverRecord
 {
+	[OutputType([Bool])]
 	[Alias(
 		'Test-LyncDiscoverRecord',
 		'Test-LyncAutodiscoverRecord',
@@ -913,6 +1015,7 @@ Function Test-TeamsAutodiscoverRecord
 	
 	Begin
 	{
+		$result   = $true
 		$shouldBe = 'webdir.online.lync.com'
 	}
 
@@ -936,6 +1039,7 @@ Function Test-TeamsAutodiscoverRecord
 				}
 				Write-Error @errorReport
 				Write-Information $errorReport.RecommendedAction
+				$result = $false
 			}
 			ElseIf ($dnsLookup.NameHost -ne $shouldBe)
 			{
@@ -947,10 +1051,15 @@ Function Test-TeamsAutodiscoverRecord
 			}
 		}
 	}
+
+	End {
+		Return $result
+	}
 }
 
 Function Test-TeamsSipCnameRecord
 {
+	[OutputType([Bool])]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias('Name')]
@@ -960,6 +1069,7 @@ Function Test-TeamsSipCnameRecord
 
 	Begin
 	{
+		$result   = $true
 		$shouldBe = 'sipdir.online.lync.com'
 	}
 
@@ -985,6 +1095,7 @@ Function Test-TeamsSipCnameRecord
 				}
 				Write-Error @errorReport
 				Write-Information $errorReport.RecommendedAction
+				$result = $false
 			}
 			ElseIf ($dnsLookup.NameHost -ne $shouldBe)
 			{
@@ -996,10 +1107,15 @@ Function Test-TeamsSipCnameRecord
 			}
 		}
 	}
+
+	End {
+		Return $result
+	}
 }
 
 Function Test-TeamsSipFederationSrvRecord
 {
+	[OutputType([Bool])]
 	[Alias(
 		'Test-LyncSipFederationRecord',
 		'Test-SkypeForBusinessSipFederationSrvRecord',
@@ -1014,6 +1130,7 @@ Function Test-TeamsSipFederationSrvRecord
 
 	Begin
 	{
+		$result         = $true
 		$targetShouldBe = 'sipfed.online.lync.com'
 		$portShouldBe   = 5061
 	}
@@ -1038,6 +1155,7 @@ Function Test-TeamsSipFederationSrvRecord
 				}
 				Write-Error @errorReport
 				Write-Information $errorReport.RecommendedAction
+				$result = $false
 			}
 			ElseIf (($dnsLookup | Measure-Object | Select-Object -ExpandProperty Count) -gt 1)
 			{
@@ -1053,6 +1171,7 @@ Function Test-TeamsSipFederationSrvRecord
 				}
 				Write-Error @errorReport
 				Write-Information $errorReport.RecommendedAction
+				$result = $false
 			}
 			ElseIf ($dnsLookup[0].NameTarget -ne $targetShouldBe -or $dnsLookup[0].Port -ne $portShouldBe)
 			{
@@ -1070,6 +1189,7 @@ Function Test-TeamsSipFederationSrvRecord
 					}
 					Write-Error @errorReport
 					Write-Information $errorReport.RecommendedAction
+					$result = $false
 				}
 
 				If ($dnsLookup[0].Port -ne $portShouldBe)
@@ -1086,6 +1206,7 @@ Function Test-TeamsSipFederationSrvRecord
 					}
 					Write-Error @errorReport
 					Write-Information $errorReport.RecommendedAction
+					$result = $false
 				}
 			}
 			Else
@@ -1094,10 +1215,15 @@ Function Test-TeamsSipFederationSrvRecord
 			}
 		}
 	}
+
+	End {
+		Return $result
+	}
 }
 
 Function Test-TeamsSipSrvRecord
 {
+	[OutputType([Bool])]
 	[Alias(
 		'Test-LyncSipSrvRecord',
 		'Test-SkypeForBusinessSipSrvRecord',
@@ -1112,6 +1238,7 @@ Function Test-TeamsSipSrvRecord
 
 	Begin
 	{
+		$result         = $true
 		$targetShouldBe = 'sipdir.online.lync.com'
 		$portShouldBe   = 443
 	}
@@ -1138,6 +1265,7 @@ Function Test-TeamsSipSrvRecord
 				}
 				Write-Error @errorReport
 				Write-Information $errorReport.RecommendedAction
+				$result = $false
 			}
 			ElseIf (($dnsLookup | Measure-Object | Select-Object -ExpandProperty Count) -gt 1)
 			{
@@ -1153,6 +1281,7 @@ Function Test-TeamsSipSrvRecord
 				}
 				Write-Error @errorReport
 				Write-Information $errorReport.RecommendedAction
+				$result = $false
 			}
 			ElseIf ($dnsLookup[0].NameTarget -ne $targetShouldBe -or $dnsLookup[0].Port -ne $portShouldBe)
 			{
@@ -1170,6 +1299,7 @@ Function Test-TeamsSipSrvRecord
 					}
 					Write-Error @errorReport
 					Write-Information $errorReport.RecommendedAction
+					$result = $false
 				}
 
 				If ($dnsLookup[0].Port -ne $portShouldBe)
@@ -1186,6 +1316,7 @@ Function Test-TeamsSipSrvRecord
 					}
 					Write-Error @errorReport
 					Write-Information $errorReport.RecommendedAction
+					$result = $false
 				}
 			}
 			Else
@@ -1194,4 +1325,9 @@ Function Test-TeamsSipSrvRecord
 			}
 		}
 	}
-}#endregion Teams/Skype for Business Online cmdlets
+
+	End {
+		Return $result
+	}
+}
+#endregion Teams/Skype for Business Online cmdlets

@@ -78,9 +78,12 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String[]
-One or more domain names to check. This cmdlet accepts pipeline input as well.
+One or more domain names to check.  This cmdlet accepts pipeline input as well.
 
 ## OUTPUTS
+
+### Bool
+True if all DNS records are correct, false otherwise.  If you pass multiple domain names to this cmdlet, the result will consider all domains;  that is, if contoso.com is correct but fabrikam.com is not, the result will be false.
 
 ## NOTES
 When SPF was first introduced, it was intended that you put your SPF record into a DNS resource record of type SPF (99).  This was deprecated in favor of the SPF TXT record.  It is no longer recommended to have an SPF record with RR type SPF.  Due to limitations, this cmdlet is only capable of evaluating the record type that matters, the TXT record.

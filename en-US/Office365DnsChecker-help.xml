@@ -29,9 +29,9 @@
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="China">
-          <maml:name>21Vianet</maml:name>
+          <maml:name>Use21Vianet</maml:name>
           <maml:description>
-            <maml:para>If your Office 365 tenant is hosted by the 21Vianet, include this switch.  Chinese customers must have the msoid attribute set to a special value.</maml:para>
+            <maml:para>If your Office 365 tenant is hosted by 21Vianet, include this switch.  Chinese customers must have the msoid attribute set to a special value.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -55,9 +55,9 @@
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="China">
-        <maml:name>21Vianet</maml:name>
+        <maml:name>Use21Vianet</maml:name>
         <maml:description>
-          <maml:para>If your Office 365 tenant is hosted by the 21Vianet, include this switch.  Chinese customers must have the msoid attribute set to a special value.</maml:para>
+          <maml:para>If your Office 365 tenant is hosted by 21Vianet, include this switch.  Chinese customers must have the msoid attribute set to a special value.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -80,10 +80,10 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>Bool</maml:name>
         </dev:type>
         <maml:description>
-          <maml:para></maml:para>
+          <maml:para>True if all DNS records are correct, false otherwise.  If you pass multiple domain names to this cmdlet, the result will consider all domains;  that is, if contoso.com is correct but fabrikam.com is not, the result will be false.</maml:para>
         </maml:description>
       </command:returnValue>
     </command:returnValues>
@@ -176,11 +176,20 @@
           <maml:name>System.String[]</maml:name>
         </dev:type>
         <maml:description>
-          <maml:para></maml:para>
+          <maml:para>One or more domain names to check.  This cmdlet accepts pipeline input as well.</maml:para>
         </maml:description>
       </command:inputType>
     </command:inputTypes>
-    <command:returnValues />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Bool</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>True if all DNS records are correct, false otherwise.  If you pass multiple domain names to this cmdlet, the result will consider all domains;  that is, if contoso.com is correct but fabrikam.com is not, the result will be false.</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
         <maml:para></maml:para>
@@ -274,7 +283,16 @@
         </maml:description>
       </command:inputType>
     </command:inputTypes>
-    <command:returnValues />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Bool</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>True if all DNS records are correct, false otherwise.  If you pass multiple domain names to this cmdlet, the result will consider all domains;  that is, if contoso.com is correct but fabrikam.com is not, the result will be false.</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
         <maml:para></maml:para>
@@ -339,9 +357,9 @@
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="China">
-          <maml:name>21Vianet</maml:name>
+          <maml:name>Use21Vianet</maml:name>
           <maml:description>
-            <maml:para>If your Office 365 tenant is hosted by the 21Vianet, include this switch.  Chinese customers must have the msoid attribute set to a special value.</maml:para>
+            <maml:para>If your Office 365 tenant is hosted by 21Vianet, include this switch.  Chinese customers must have the msoid attribute set to a special value.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -365,9 +383,9 @@
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="China">
-        <maml:name>21Vianet</maml:name>
+        <maml:name>Use21Vianet</maml:name>
         <maml:description>
-          <maml:para>If your Office 365 tenant is hosted by the 21Vianet, include this switch.  Chinese customers must have the msoid attribute set to a special value.</maml:para>
+          <maml:para>If your Office 365 tenant is hosted by 21Vianet, include this switch.  Chinese customers must have the msoid attribute set to a special value.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -383,17 +401,17 @@
           <maml:name>System.String[]</maml:name>
         </dev:type>
         <maml:description>
-          <maml:para>One or more domain names to check.</maml:para>
+          <maml:para>One or more domain names to check.  This cmdlet accepts pipeline input as well.</maml:para>
         </maml:description>
       </command:inputType>
     </command:inputTypes>
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>Bool</maml:name>
         </dev:type>
         <maml:description>
-          <maml:para></maml:para>
+          <maml:para>True if all DNS records are correct, false otherwise.  If you pass multiple domain names to this cmdlet, the result will consider all domains;  that is, if contoso.com is correct but fabrikam.com is not, the result will be false.</maml:para>
         </maml:description>
       </command:returnValue>
     </command:returnValues>
@@ -491,7 +509,16 @@
         </maml:description>
       </command:inputType>
     </command:inputTypes>
-    <command:returnValues />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Bool</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>True if all DNS records are correct, false otherwise.  If you pass multiple domain names to this cmdlet, the result will consider all domains;  that is, if contoso.com is correct but fabrikam.com is not, the result will be false.</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
         <maml:para>If you have a hybrid Exchange setup, your Autodiscover DNS records may not be pointing directly to Exchange Online.  Use your best judgement when reviewing the opinions of this cmdlet.</maml:para>
@@ -614,7 +641,16 @@
         </maml:description>
       </command:inputType>
     </command:inputTypes>
-    <command:returnValues />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Bool</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>True if all DNS records are correct, false otherwise.  If you pass multiple domain names to this cmdlet, the result will consider all domains;  that is, if contoso.com is correct but fabrikam.com is not, the result will be false.</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
         <maml:para>This cmdlet only checks for the presence of what should be a valid DKIM key (that is, a TXT record starting with "v=DKIM1;"). It does not check the record for validity or correctness beyond that.</maml:para>
@@ -945,7 +981,16 @@
         </maml:description>
       </command:inputType>
     </command:inputTypes>
-    <command:returnValues />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Bool</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>True if all DNS records are correct, false otherwise.  If you pass multiple domain names to this cmdlet, the result will consider all domains;  that is, if contoso.com is correct but fabrikam.com is not, the result will be false.</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
         <maml:para>Sender ID records are considered obsolete, in favor of SPF (TXT) records.  You do not need to publish one, and absence of one will not cause this cmdlet print an error. In fact, not publishing one is considered best practice.</maml:para>
@@ -1071,11 +1116,20 @@
           <maml:name>System.String[]</maml:name>
         </dev:type>
         <maml:description>
-          <maml:para>One or more domain names to check. This cmdlet accepts pipeline input as well.</maml:para>
+          <maml:para>One or more domain names to check.  This cmdlet accepts pipeline input as well.</maml:para>
         </maml:description>
       </command:inputType>
     </command:inputTypes>
-    <command:returnValues />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Bool</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>True if all DNS records are correct, false otherwise.  If you pass multiple domain names to this cmdlet, the result will consider all domains;  that is, if contoso.com is correct but fabrikam.com is not, the result will be false.</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
         <maml:para>When SPF was first introduced, it was intended that you put your SPF record into a DNS resource record of type SPF (99).  This was deprecated in favor of the SPF TXT record.  It is no longer recommended to have an SPF record with RR type SPF.  Due to limitations, this cmdlet is only capable of evaluating the record type that matters, the TXT record.</maml:para>
@@ -1148,9 +1202,9 @@
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="China">
-          <maml:name>21Vianet</maml:name>
+          <maml:name>Use21Vianet</maml:name>
           <maml:description>
-            <maml:para>If your Office 365 tenant is hosted by the 21Vianet, include this switch.  Chinese customers must have the msoid attribute set to a special value.</maml:para>
+            <maml:para>If your Office 365 tenant is hosted by 21Vianet, include this switch.  Chinese customers must have the msoid attribute set to a special value.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -1174,9 +1228,9 @@
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="China">
-        <maml:name>21Vianet</maml:name>
+        <maml:name>Use21Vianet</maml:name>
         <maml:description>
-          <maml:para>If your Office 365 tenant is hosted by the 21Vianet, include this switch.  Chinese customers must have the msoid attribute set to a special value.</maml:para>
+          <maml:para>If your Office 365 tenant is hosted by 21Vianet, include this switch.  Chinese customers must have the msoid attribute set to a special value.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -1196,7 +1250,16 @@
         </maml:description>
       </command:inputType>
     </command:inputTypes>
-    <command:returnValues />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Bool</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>True if all DNS records are correct, false otherwise.  If you pass multiple domain names to this cmdlet, the result will consider all domains;  that is, if contoso.com is correct but fabrikam.com is not, the result will be false.</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
         <maml:para></maml:para>
@@ -1320,7 +1383,16 @@ Create a SRV record for _sipfederationtls._tcp.woodgrovebank.com (port 5061) poi
         </maml:description>
       </command:inputType>
     </command:inputTypes>
-    <command:returnValues />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Bool</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>True if all DNS records are correct, false otherwise.  If you pass multiple domain names to this cmdlet, the result will consider all domains;  that is, if contoso.com is correct but fabrikam.com is not, the result will be false.</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
         <maml:para></maml:para>
@@ -1414,7 +1486,16 @@ Create a SRV record for _sipfederationtls._tcp.woodgrovebank.com (port 5061) poi
         </maml:description>
       </command:inputType>
     </command:inputTypes>
-    <command:returnValues />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Bool</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>True if all DNS records are correct, false otherwise.  If you pass multiple domain names to this cmdlet, the result will consider all domains;  that is, if contoso.com is correct but fabrikam.com is not, the result will be false.</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
         <maml:para>Some phone systems, as well as Skype for Business Server and Lync Server, may require these DNS records to be intentionally incorrect.  Thus, incorrect DNS records may not print an error message, only a warning.</maml:para>
@@ -1513,11 +1594,20 @@ Create a SRV record for _sipfederationtls._tcp.woodgrovebank.com (port 5061) poi
           <maml:name>System.String[]</maml:name>
         </dev:type>
         <maml:description>
-          <maml:para>One or more domain names to check. This cmdlet accepts pipeline input as well.</maml:para>
+          <maml:para>One or more domain names to check.  This cmdlet accepts pipeline input as well.</maml:para>
         </maml:description>
       </command:inputType>
     </command:inputTypes>
-    <command:returnValues />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Bool</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>True if all DNS records are correct, false otherwise.  If you pass multiple domain names to this cmdlet, the result will consider all domains;  that is, if contoso.com is correct but fabrikam.com is not, the result will be false.</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
         <maml:para></maml:para>
@@ -1611,7 +1701,16 @@ Create a SRV record for _sipfederationtls._tcp.woodgrovebank.com (port 5061) poi
         </maml:description>
       </command:inputType>
     </command:inputTypes>
-    <command:returnValues />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Bool</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>True if all DNS records are correct, false otherwise.  If you pass multiple domain names to this cmdlet, the result will consider all domains;  that is, if contoso.com is correct but fabrikam.com is not, the result will be false.</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
         <maml:para>If you are using another SIP service in addition to Microsoft Teams or Skype for Business Online (such as an on-premises Skype for Business Server), then you might have extra _sipfederationtls._tcp SRV records.  While not recommended, it is not incorrect, as long as the lowest-priority service is always the one for Microsoft Teams/Skype for Business Online.</maml:para>
@@ -1705,7 +1804,16 @@ Create a SRV record for _sipfederationtls._tcp.woodgrovebank.com (port 5061) poi
         </maml:description>
       </command:inputType>
     </command:inputTypes>
-    <command:returnValues />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Bool</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>True if all DNS records are correct, false otherwise.  If you pass multiple domain names to this cmdlet, the result will consider all domains;  that is, if contoso.com is correct but fabrikam.com is not, the result will be false.</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
         <maml:para>If you are using another SIP service in addition to Microsoft Teams or Skype for Business Online, then you might have extra _sip._tls SRV records.  While not recommended, it is not incorrect, as long as the lowest-priority service is always the one for Microsoft Teams/Skype for Business Online.</maml:para>

@@ -1,5 +1,8 @@
 # Office365DnsChecker Change Log
 
+## Recent changes
+- NEW: Cmdlets now return true or false, depending on the results.  Thanks to @o-l-a-v for suggesting this in issue #1.
+
 ## Version 1.1.0 (June 1, 2023)
 - NEW: Add support for checking DNS records for Office 365 hosted by 21Vianet.
 - ENHANCEMENT: The Azure AD client configuration record check now passes if the `msoid` record is missing.  As of <time datetime="2023-02-16">early 2023</time>, this DNS record is only required to be set when Office 365 is managed by 21Vianet.
