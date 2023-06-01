@@ -122,7 +122,7 @@ AliasesToExport = @(
 
 # List of all files packaged with this module
 FileList = @(
-	'CHANGELOG',
+	'CHANGELOG.md',
 	'CODE_OF_CONDUCT.md',
 	'CONTRIBUTING.md',
 	'Office365DnsChecker.code-workspace',
@@ -155,7 +155,7 @@ PrivateData = @{
 		IconUri = 'https://raw.githubusercontent.com/rhymeswithmogul/Office365DnsChecker/master/Logo/Office365DnsChecker.png'
 
 		# ReleaseNotes of this module
-		ReleaseNotes = 'https://github.com/rhymeswithmogul/Office365DNSChecker/blob/master/CHANGELOG'
+		# ReleaseNotes = 'https://github.com/rhymeswithmogul/Office365DNSChecker/blob/master/CHANGELOG'
 
 		# Prerelease string of this module
 		Prerelease = ''
