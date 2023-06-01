@@ -27,7 +27,7 @@ Author = 'Colin Cogle <colin@colincogle.name>'
 # CompanyName = $null
 
 # Copyright statement for this module
-Copyright = '(c) 2019-2022 Colin Cogle. All rights reserved. Licensed under the GPL version 3.'
+Copyright = '(c) 2019-2023 Colin Cogle. All rights reserved. Licensed under the GPL version 3.'
 
 # Description of the functionality provided by this module
 Description = "Checks a domain's Office 365 DNS records for correctness."
