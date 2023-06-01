@@ -66,9 +66,9 @@ Function Resolve-DNSNameCrossPlatform
 
 	# Check and see if the Resolve-DnsName cmdlet is available.
 	# On Windows (Desktop and Core), it is available, and we can use it.
-	If (Get-Command Resolve-DnsName -ErrorAction SilentlyContinue)
+	If (Get-Command 'DnsClient\Resolve-DnsName' -ErrorAction SilentlyContinue)
 	{
-		$dnsLookup = Resolve-DnsName -Name $Name -Type $Type -ErrorAction SilentlyContinue
+		$dnsLookup = DnsClient\Resolve-DnsName -Name $Name -Type $Type -ErrorAction SilentlyContinue
 		If (-Not $dnsLookup)
 		{
 			Write-Debug 'DNS record not found.'
