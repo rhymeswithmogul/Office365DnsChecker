@@ -23,7 +23,6 @@ Set-StrictMode -Version Latest
 
 Function Test-Office365DNSRecords
 {
-	#.ExternalHelp Office365DnsChecker.psm1-Help.xml
 	[CmdletBinding()]
 	[Diagnostics.CodeAnalysis.SuppressMessageAttribute(
 		'PSUseSingularNouns', '',
@@ -201,7 +200,6 @@ Function Write-Success
 #region Azure AD cmdlets
 Function Test-AzureADRecords
 {
-	#.ExternalHelp Office365DnsChecker.psm1-Help.xml
 	[Diagnostics.CodeAnalysis.SuppressMessageAttribute(
 		'PSUseSingularNouns', '',
 		Justification='We are testing multiple DNS records.'
@@ -285,7 +283,6 @@ Function Test-AzureADClientConfigurationRecord
 
 Function Test-AzureADEnterpriseEnrollmentRecord
 {
-	#.ExternalHelp Office365DnsChecker.psm1-Help.xml
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias('Name')]
@@ -344,7 +341,6 @@ Function Test-AzureADEnterpriseEnrollmentRecord
 
 Function Test-AzureADEnterpriseRegistrationRecord
 {
-	#.ExternalHelp Office365DnsChecker.psm1-Help.xml
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias('Name')]
@@ -407,7 +403,6 @@ Function Test-AzureADEnterpriseRegistrationRecord
 #region Exchange Online cmdlets
 Function Test-ExchangeOnlineRecords
 {
-	#.ExternalHelp Office365DnsChecker.psm1-Help.xml
 	[Diagnostics.CodeAnalysis.SuppressMessageAttribute(
 		'PSUseSingularNouns', '',
 		Justification='We are testing multiple DNS records.'
@@ -435,7 +430,6 @@ Function Test-ExchangeOnlineRecords
 
 Function Test-ExchangeOnlineAutodiscoverRecord
 {
-	#.ExternalHelp Office365DnsChecker.psm1-Help.xml
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias('Name')]
@@ -517,7 +511,6 @@ Function Test-ExchangeOnlineAutodiscoverRecord
 
 Function Test-ExchangeOnlineDkimRecords
 {
-	#.ExternalHelp Office365DnsChecker.psm1-Help.xml
 	[Diagnostics.CodeAnalysis.SuppressMessageAttribute(
 		'PSUseSingularNouns', '',
 		Justification='We are testing multiple DNS records.'
@@ -654,7 +647,6 @@ Function Test-ExchangeOnlineDkimRecords
 
 Function Test-ExchangeOnlineMxRecord
 {
-	#.ExternalHelp Office365DnsChecker.psm1-Help.xml
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias('Name')]
@@ -711,7 +703,6 @@ Function Test-ExchangeOnlineMxRecord
 
 Function Test-ExchangeOnlineSenderIdRecord
 {
-	#.ExternalHelp Office365DnsChecker.psm1-Help.xml
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias('Name')]
@@ -723,7 +714,6 @@ Function Test-ExchangeOnlineSenderIdRecord
 
 Function Test-ExchangeOnlineSpfRecord
 {
-	#.ExternalHelp Office365DnsChecker.psm1-Help.xml
 	[CmdletBinding()]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
@@ -866,7 +856,6 @@ Function Test-ExchangeOnlineSpfRecord
 #region Teams/Skype for Business Online cmdlets
 Function Test-TeamsRecords
 {
-	#.ExternalHelp Office365DnsChecker.psm1-Help.xml
 	[CmdletBinding()]
 	[Alias(
 		'Test-LyncRecords',
@@ -896,7 +885,6 @@ Function Test-TeamsRecords
 
 Function Test-TeamsAutodiscoverRecord
 {
-	#.ExternalHelp Office365DnsChecker.psm1-Help.xml
 	[Alias(
 		'Test-LyncDiscoverRecord',
 		'Test-LyncAutodiscoverRecord',
@@ -950,7 +938,6 @@ Function Test-TeamsAutodiscoverRecord
 
 Function Test-TeamsSipCnameRecord
 {
-	#.ExternalHelp Office365DnsChecker.psm1-Help.xml
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias('Name')]
@@ -1000,7 +987,6 @@ Function Test-TeamsSipCnameRecord
 
 Function Test-TeamsSipFederationSrvRecord
 {
-	#.ExternalHelp Office365DnsChecker.psm1-Help.xml
 	[Alias(
 		'Test-LyncSipFederationRecord',
 		'Test-SkypeForBusinessSipFederationSrvRecord',
@@ -1099,7 +1085,6 @@ Function Test-TeamsSipFederationSrvRecord
 
 Function Test-TeamsSipSrvRecord
 {
-	#.ExternalHelp Office365DnsChecker.psm1-Help.xml
 	[Alias(
 		'Test-LyncSipSrvRecord',
 		'Test-SkypeForBusinessSipSrvRecord',

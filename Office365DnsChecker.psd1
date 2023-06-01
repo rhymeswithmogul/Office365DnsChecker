@@ -122,19 +122,21 @@ AliasesToExport = @(
 
 # List of all files packaged with this module
 FileList = @(
+	'en-US/about_Office365DnsChecker.Help.txt',
+	'en-US/Office365DnsChecker-help.xml',
+	'Logo/Office365DnsChecker.svg',
+	'Logo/Office365DnsChecker.png',
+	'Logo/Office365DnsChecker.webp'
+	'src/Office365DnsChecker.psm1',
+	'AUTHORS',
 	'CHANGELOG.md',
 	'CODE_OF_CONDUCT.md',
 	'CONTRIBUTING.md',
+	'LICENSE',
 	'Office365DnsChecker.code-workspace',
 	'Office365DnsChecker.psd1',
-	'src\Office365DnsChecker.psm1',
-	'LICENSE',
 	'README.md',
-	'en-US\about_Office365DnsChecker.Help.txt',
-	'en-US\Office365DnsChecker.psm1-Help.xml',
-	'Logo\Office365DnsChecker.svg',
-	'Logo\Office365DnsChecker.png',
-	'Logo\Office365DnsChecker.webp'
+	'SECURITY.md'
 )
 
 # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
