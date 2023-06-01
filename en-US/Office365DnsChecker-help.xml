@@ -10,7 +10,8 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>This cmdlet checks one or more domains for the presence and correctness of the Azure Active Directory client configuration DNS record, named msoid.  It should be a CNAME pointing to clientconfig.microsoftonline-p.net.</maml:para>
+      <maml:para>This cmdlet checks one or more domains for the presence and correctness of the Azure Active Directory client configuration DNS record, named msoid.  It should not be present, or if so, be a CNAME pointing to clientconfig.microsoftonline-p.net.</maml:para>
+      <maml:para>For Office 365 tenants in China operated by 21Vianet, the msoid record must be present and set to clientconfig.partner.microsoftonline-p.net.cn.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -27,6 +28,17 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="China">
+          <maml:name>21Vianet</maml:name>
+          <maml:description>
+            <maml:para>If your Office 365 tenant is hosted by the 21Vianet, include this switch.  Chinese customers must have the msoid attribute set to a special value.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -41,6 +53,18 @@
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="China">
+        <maml:name>21Vianet</maml:name>
+        <maml:description>
+          <maml:para>If your Office 365 tenant is hosted by the 21Vianet, include this switch.  Chinese customers must have the msoid attribute set to a special value.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
     </command:parameters>
     <command:inputTypes>
@@ -65,7 +89,7 @@
     </command:returnValues>
     <maml:alertSet>
       <maml:alert>
-        <maml:para></maml:para>
+        <maml:para>Starting in early 2023, Microsoft's recommendations changed.  Now, the msoid record should not be defined for any tenants not operated by 21Vianet.  For more information, see: https://learn.microsoft.com/en-gb/microsoft-365/admin/services-in-china/purpose-of-cname?view=o365-21vianet</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -73,7 +97,7 @@
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
         <dev:code>PS C:\&gt; Test-AzureADClientConfigurationRecord contoso.com</dev:code>
         <dev:remarks>
-          <maml:para>Verifies that the DNS CNAME record msoid.contoso.com is correct.</maml:para>
+          <maml:para>Verifies that the DNS CNAME record msoid.contoso.com is correct or missing.</maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
@@ -314,6 +338,17 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="China">
+          <maml:name>21Vianet</maml:name>
+          <maml:description>
+            <maml:para>If your Office 365 tenant is hosted by the 21Vianet, include this switch.  Chinese customers must have the msoid attribute set to a special value.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -328,6 +363,18 @@
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="China">
+        <maml:name>21Vianet</maml:name>
+        <maml:description>
+          <maml:para>If your Office 365 tenant is hosted by the 21Vianet, include this switch.  Chinese customers must have the msoid attribute set to a special value.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
     </command:parameters>
     <command:inputTypes>
@@ -1100,6 +1147,17 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="China">
+          <maml:name>21Vianet</maml:name>
+          <maml:description>
+            <maml:para>If your Office 365 tenant is hosted by the 21Vianet, include this switch.  Chinese customers must have the msoid attribute set to a special value.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -1114,6 +1172,18 @@
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="China">
+        <maml:name>21Vianet</maml:name>
+        <maml:description>
+          <maml:para>If your Office 365 tenant is hosted by the 21Vianet, include this switch.  Chinese customers must have the msoid attribute set to a special value.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
     </command:parameters>
     <command:inputTypes>

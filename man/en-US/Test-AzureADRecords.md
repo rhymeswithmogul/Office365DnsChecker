@@ -13,7 +13,7 @@ Tests all Azure AD DNS records for correctness.
 ## SYNTAX
 
 ```
-Test-AzureADRecords [-DomainName] <String[]> [<CommonParameters>]
+Test-AzureADRecords [-DomainName] <String[]> [-21Vianet] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -52,20 +52,38 @@ Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
+### -21Vianet
+If your Office 365 tenant is hosted by the 21Vianet, include this switch.  Chinese customers must have the msoid attribute set to a special value.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: China
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
+
 ### System.String[]
 One or more domain names to check.
 
 ## OUTPUTS
+
 ### System.Object
 
 ## NOTES
 This cmdlet is the same as running Test-AzureADClientConfigurationRecord, Test-AzureADEnterpriseEnrollmentRecord, and Test-AzureADEnterpriseRegistrationRecord.
 
 ## RELATED LINKS
+
 [Test-AzureADClientConfigurationRecord]()
 [Test-AzureADEnterpriseEnrollmentRecord]()
 [Test-AzureADEnterpriseRegistrationRecord]()

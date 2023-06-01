@@ -13,11 +13,13 @@ Verifies that a domain's Azure AD client configuration DNS record is correct.
 ## SYNTAX
 
 ```
-Test-AzureADClientConfigurationRecord [-DomainName] <String[]> [<CommonParameters>]
+Test-AzureADClientConfigurationRecord [-DomainName] <String[]> [-21Vianet] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-This cmdlet checks one or more domains for the presence and correctness of the Azure Active Directory client configuration DNS record, named msoid.  It should be a CNAME pointing to clientconfig.microsoftonline-p.net.
+This cmdlet checks one or more domains for the presence and correctness of the Azure Active Directory client configuration DNS record, named msoid.  It should not be present, or if so, be a CNAME pointing to clientconfig.microsoftonline-p.net.
+
+For Office 365 tenants in China operated by 21Vianet, the msoid record must be present and set to clientconfig.partner.microsoftonline-p.net.cn.
 
 ## EXAMPLES
 
@@ -26,7 +28,7 @@ This cmdlet checks one or more domains for the presence and correctness of the A
 PS C:\> Test-AzureADClientConfigurationRecord contoso.com
 ```
 
-Verifies that the DNS CNAME record msoid.contoso.com is correct.
+Verifies that the DNS CNAME record msoid.contoso.com is correct or missing.
 
 ### Example 2
 ```powershell
@@ -52,6 +54,21 @@ Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
+### -21Vianet
+If your Office 365 tenant is hosted by the 21Vianet, include this switch.  Chinese customers must have the msoid attribute set to a special value.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: China
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
@@ -65,8 +82,11 @@ One or more domain names to check.  This cmdlet accepts pipeline input as well.
 ### System.Object
 
 ## NOTES
+Starting in early 2023, Microsoft's recommendations changed.  Now, the msoid record should not be defined for any tenants not operated by 21Vianet.  For more information, see:
+https://learn.microsoft.com/en-gb/microsoft-365/admin/services-in-china/purpose-of-cname?view=o365-21vianet
 
 ## RELATED LINKS
+
 [Test-AzureADJoinRecords]()
 [Test-Office365DnsRecords]()
 [about_Office365DnsChecker]()

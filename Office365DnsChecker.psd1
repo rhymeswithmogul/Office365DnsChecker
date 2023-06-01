@@ -12,7 +12,7 @@
 RootModule = 'src/Office365DnsChecker.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.0.4'
+ModuleVersion = '1.1.0'
 
 # Supported PSEditions
 CompatiblePSEditions = @('Core', 'Desktop')
@@ -144,7 +144,7 @@ PrivateData = @{
 	PSData = @{
 
 		# Tags applied to this module. These help with module discovery in online galleries.
-		Tags = @('Microsoft365', 'Office365', '365', 'ExchangeOnline', 'SkypeForBusinessOnline', 'MicrosoftTeams', 'DNS', 'AzureAD', 'AAD', 'SPF', 'DKIM', 'ExO', 'Exchange', 'Teams', 'ExchangeHybrid')
+		Tags = @('Microsoft365', 'Office365', '365', 'ExchangeOnline', 'SkypeForBusinessOnline', 'MicrosoftTeams', 'DNS', 'AzureAD', 'AAD', 'SPF', 'DKIM', 'ExO', 'Exchange', 'Teams', 'ExchangeHybrid', '21Vianet')
 
 		# A URL to the license for this module.
 		LicenseUri = 'https://github.com/rhymeswithmogul/Office365DNSChecker/blob/master/LICENSE'
@@ -156,10 +156,10 @@ PrivateData = @{
 		IconUri = 'https://raw.githubusercontent.com/rhymeswithmogul/Office365DnsChecker/master/Logo/Office365DnsChecker.png'
 
 		# ReleaseNotes of this module
-		# ReleaseNotes = 'https://github.com/rhymeswithmogul/Office365DNSChecker/blob/master/CHANGELOG'
+		ReleaseNotes = "Add support for checking 21Vianet customers' DNS records."
 
 		# Prerelease string of this module
-		Prerelease = ''
+		Prerelease = 'alpha'
 
 		# Flag to indicate whether the module requires explicit user acceptance for install/update/save
 		RequireLicenseAcceptance = $false
