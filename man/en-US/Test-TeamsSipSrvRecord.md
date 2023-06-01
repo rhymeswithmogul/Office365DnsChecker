@@ -1,7 +1,7 @@
 ---
 external help file: Office365DnsChecker-help.xml
 Module Name: Office365DnsChecker
-online version: https://github.com/rhymeswithmogul/Office365DNSChecker/blob/master/man/en-US/Test-TeamsSipSrvRecord.md
+online version: https://github.com/rhymeswithmogul/Office365DNSChecker/blob/main/man/en-US/Test-TeamsSipSrvRecord.md
 schema: 2.0.0
 ---
 

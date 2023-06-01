@@ -5,6 +5,7 @@
 - ENHANCEMENT: The Azure AD client configuration record check now passes if the `msoid` record is missing.  As of <time datetime="2023-02-16">early 2023</time>, this DNS record is only required to be set when Office 365 is managed by 21Vianet.
 - FIXED: On a small number of configurations, DNS resolution would enter an infinite loop.  This would happen if you were running macOS or Linux, and had an alternative implementation of `Resolve-DnsName`.  Now, the only cmdlet we'll use is `DnsClient` (if present) before falling back to the built-in DNS resolver.
 - Code cleanup.
+- Renamed the main Git branch from `master` to `main`.
 
 ## Version 1.0.4 (June 1, 2023)
 - NEW: Added online help.
