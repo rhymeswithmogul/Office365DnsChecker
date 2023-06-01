@@ -126,7 +126,6 @@ FileList = @(
 	'en-US/Office365DnsChecker-help.xml',
 	'Logo/Office365DnsChecker.svg',
 	'Logo/Office365DnsChecker.png',
-	'Logo/Office365DnsChecker.webp'
 	'src/Office365DnsChecker.psm1',
 	'AUTHORS',
 	'CHANGELOG.md',
@@ -145,7 +144,7 @@ PrivateData = @{
 	PSData = @{
 
 		# Tags applied to this module. These help with module discovery in online galleries.
-		Tags = @('Microsoft365', 'Office365', '365', 'ExchangeOnline', 'SkypeForBusinessOnline', 'MicrosoftTeams', 'DNS', 'AzureAD', 'AAD', 'SPF', 'DKIM', 'ExO', 'Exchange')
+		Tags = @('Microsoft365', 'Office365', '365', 'ExchangeOnline', 'SkypeForBusinessOnline', 'MicrosoftTeams', 'DNS', 'AzureAD', 'AAD', 'SPF', 'DKIM', 'ExO', 'Exchange', 'Teams', 'ExchangeHybrid')
 
 		# A URL to the license for this module.
 		LicenseUri = 'https://github.com/rhymeswithmogul/Office365DNSChecker/blob/master/LICENSE'

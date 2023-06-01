@@ -2,8 +2,9 @@
 
 ## Recent changes
 - NEW: Added online help.
-- ENHANCEMENT: Ignore PSScriptAnalyzer warnings about plural nouns.  Our nouns are intentionally plural when appropriate.
 - ENHANCEMENT: Converted all help files from SAPIEN to platyPS for ease of maintenance.
+- ENHANCEMENT: Ignore PSScriptAnalyzer warnings about plural nouns.  Our nouns are intentionally plural when appropriate.
+- Code cleanup.
 
 ## Version 1.0.3 (July 26, 2021)
 - FIXED: Fixed a regression bug where DKIM records were marked as incorrect on macOS and Linux systems.
