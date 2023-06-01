@@ -13,7 +13,7 @@ Tests all Azure AD DNS records for correctness.
 ## SYNTAX
 
 ```
-Test-AzureADRecords [-DomainName] <String[]> [-21Vianet] [<CommonParameters>]
+Test-AzureADRecords [-DomainName] <String[]> [-Use21Vianet] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -52,8 +52,8 @@ Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
-### -21Vianet
-If your Office 365 tenant is hosted by the 21Vianet, include this switch.  Chinese customers must have the msoid attribute set to a special value.
+### -Use21Vianet
+If your Office 365 tenant is hosted by 21Vianet, include this switch.  Chinese customers must have the msoid attribute set to a special value.
 
 ```yaml
 Type: SwitchParameter

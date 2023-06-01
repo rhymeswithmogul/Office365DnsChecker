@@ -35,14 +35,14 @@ Function Test-Office365DNSRecords
 		[String[]] $DomainName,
 
 		[Alias('China')]
-		[Switch] $21Vianet
+		[Switch] $Use21Vianet
 	)
 
 	Process
 	{
 		$DomainName | ForEach-Object {
 			Write-Output "Checking Office 365 DNS records for $_."
-			Test-AzureADRecords -DomainName $_ -21Vianet:$21Vianet | Out-Null
+			Test-AzureADRecords -DomainName $_ -Use21Vianet:$Use21Vianet | Out-Null
 			Test-ExchangeOnlineRecords -DomainName $_ | Out-Null
 			Test-TeamsRecords -DomainName $_ | Out-Null
 		}
@@ -214,13 +214,13 @@ Function Test-AzureADRecords
 		[String[]] $DomainName,
 
 		[Alias('China')]
-		[Switch] $21Vianet
+		[Switch] $Use21Vianet
 	)
 
 	Process
 	{
 		$DomainName | ForEach-Object {
-			Test-AzureADClientConfigurationRecord -DomainName $_ -21Vianet:$21Vianet
+			Test-AzureADClientConfigurationRecord -DomainName $_ -Use21Vianet:$Use21Vianet
 			Test-AzureADEnterpriseEnrollmentRecord -DomainName $_
 			Test-AzureADEnterpriseRegistrationRecord -DomainName $_
 		}
@@ -237,13 +237,13 @@ Function Test-AzureADClientConfigurationRecord
 		[String[]] $DomainName,
 
 		[Alias('China')]
-		[Switch] $21Vianet
+		[Switch] $Use21Vianet
 	)
 
 	Begin
 	{
 		$shouldBe = 'clientconfig.microsoftonline-p.net'
-		If ($21Vianet) {
+		If ($Use21Vianet) {
 			$shouldBe = 'clientconfig.partner.microsoftonline-p.net.cn'
 		}
 	}
@@ -259,7 +259,7 @@ Function Test-AzureADClientConfigurationRecord
 			# As of 2023, the msoid record is no longer required for Office 365
 			# services outside of China.  Thus, our code will no longer complain
 			# if this DNS record is missing.
-			If (-Not $dnsLookup -and -Not $21Vianet)
+			If (-Not $dnsLookup -and -Not $Use21Vianet)
 			{
 				Write-Success -Product 'Azure AD' 'The client configuration CNAME record is not present.'
 			}
@@ -283,7 +283,7 @@ Function Test-AzureADClientConfigurationRecord
 			}
 			Else
 			{
-				If ($21Vianet) {
+				If ($Use21Vianet) {
 					Write-Success -Product 'Azure AD' 'The client configuration CNAME record is present and correct for 21Vianet.'
 				}
 				Else {
