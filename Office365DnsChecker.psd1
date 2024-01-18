@@ -12,7 +12,7 @@
 RootModule = 'src/Office365DnsChecker.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.2.0'
+ModuleVersion = '2.0.0'
 
 # Supported PSEditions
 CompatiblePSEditions = @('Core', 'Desktop')
@@ -71,12 +71,12 @@ PowerShellVersion = '5.1'
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
 FunctionsToExport = @(
 	'Test-Office365DNSRecords',
-	'Test-AzureADRecords',
+	'Test-EntraIDRecords',
 	'Test-ExchangeOnlineRecords',
 	'Test-TeamsRecords',
-	'Test-AzureADClientConfigurationRecord',
-	'Test-AzureADEnterpriseEnrollmentRecord',
-	'Test-AzureADEnterpriseRegistrationRecord',
+	'Test-EntraIDClientConfigurationRecord',
+	'Test-EntraIDEnterpriseEnrollmentRecord',
+	'Test-EntraIDEnterpriseRegistrationRecord',
 	'Test-ExchangeOnlineAutodiscoverRecord',
 	'Test-ExchangeOnlineDkimRecords',
 	'Test-ExchangeOnlineMxRecord',
@@ -96,6 +96,10 @@ VariablesToExport = ''
 
 # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
 AliasesToExport = @(
+	'Test-AzureADRecords',
+	'Test-AzureADClientConfigurationRecord',
+	'Test-AzureADEnterpriseEnrollmentRecord',
+	'Test-AzureADEnterpriseRegistrationRecord',
 	'Test-LyncRecords',
 	'Test-SkypeForBusinessRecords',
 	'Test-SkypeForBusinessOnlineRecords',
@@ -144,7 +148,7 @@ PrivateData = @{
 	PSData = @{
 
 		# Tags applied to this module. These help with module discovery in online galleries.
-		Tags = @('Microsoft365', 'Office365', '365', 'ExchangeOnline', 'SkypeForBusinessOnline', 'MicrosoftTeams', 'DNS', 'AzureAD', 'AAD', 'SPF', 'DKIM', 'ExO', 'Exchange', 'Teams', 'ExchangeHybrid', '21Vianet', 'DNSSEC', 'DANE', 'MX')
+		Tags = @('Microsoft365', 'Office365', '365', 'ExchangeOnline', 'SkypeForBusinessOnline', 'MicrosoftTeams', 'DNS', 'AzureAD', 'EntraID', 'AAD', 'EID', 'Entra', 'SPF', 'DKIM', 'ExO', 'Exchange', 'Teams', 'ExchangeHybrid', '21Vianet', 'DNSSEC', 'DANE', 'MX')
 
 		# A URL to the license for this module.
 		LicenseUri = 'https://github.com/rhymeswithmogul/Office365DNSChecker/blob/main/LICENSE'
@@ -158,7 +162,9 @@ PrivateData = @{
 		# ReleaseNotes of this module
 		ReleaseNotes = "- NEW: Add support for Microsoft's new MX records that support DANE and DNSSEC.  Note that this does not go live until March 2024 (as a preview), so there may be bugs that we don't yet know about.
 - NEW: `Test-ExchangeOnlineMxRecords`, `Test-ExchangeOnlineRecords`, and `Test-Office365DnsRecords` now support a new `-DANERequired` parameter that prints a warning if the DANE-enabled MX endpoint is *not* in use.
-- NEW: Cmdlets now return `$true` or `$false` in addition to human-readable output."
+- NEW: Cmdlets now return true or false, depending on the results.  Thanks to @o-l-a-v for suggesting this in issue #1.
+- NEW: Rename all instances of Azure AD to Entra ID, including cmdlet names.  Aliases have been added for the old names.
+- FIXED: Some Entra cmdlets were failing to load online help."
 
 		# Prerelease string of this module
 		#Prerelease = 'alpha'

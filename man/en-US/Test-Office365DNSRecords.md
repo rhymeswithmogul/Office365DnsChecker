@@ -13,11 +13,11 @@ Verifies that all of a domain's Office 365 DNS records are correct.
 ## SYNTAX
 
 ```
-Test-Office365DNSRecords [-DomainName] <String[]> [-Use21Vianet] [-DANERequired] [<CommonParameters>]
+Test-Office365DNSRecords [-DomainName] <String[]> [-Use21Vianet] [-DaneRequired] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-This cmdlet will check for the presence and correctness of all of one or more domains' DNS records that support all of Office 365's services, including Azure AD, Exchange Online, Microsoft Teams, and Skype for Business.
+This cmdlet will check for the presence and correctness of all of one or more domains' DNS records that support all of Office 365's services, including Entra ID, Exchange Online, Microsoft Teams, and Skype for Business.
 
 ## EXAMPLES
 
@@ -77,7 +77,6 @@ Default value: None
 Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
-
 ### -Use21Vianet
 If your Office 365 tenant is hosted by 21Vianet, include this switch.  Chinese customers must have the msoid attribute set to a special value.
 
@@ -85,23 +84,6 @@ If your Office 365 tenant is hosted by 21Vianet, include this switch.  Chinese c
 Type: SwitchParameter
 Parameter Sets: (All)
 Aliases: China
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -DANERequired
-Specify this switch to print a warning if the DNSSEC/DANE-enabled MX endpoints are not in use.  Without this switch, either the non-secure or secure MX names will be considered good.
-
-The DNSSEC/DANE-enabled endpoints will not be available for use until March 2024, with general availability in July 2024.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
 
 Required: False
 Position: Named
@@ -124,12 +106,13 @@ One or more domain names to check.  This cmdlet accepts pipeline input as well.
 True if all DNS records are correct, false otherwise.  If you pass multiple domain names to this cmdlet, the result will consider all domains;  that is, if contoso.com is correct but fabrikam.com is not, the result will be false.
 
 ## NOTES
+Microsoft Entra ID used to be called Microsoft Azure Active Directory, and previous versions of this cmdlet reflected that.
 
 ## RELATED LINKS
 
 [about_Office365DnsChecker]()
 
-[Test-AzureADJoinRecords]()
+[Test-EntraIDJoinRecords]()
 
 [Test-ExchangeOnlineRecords]()
 

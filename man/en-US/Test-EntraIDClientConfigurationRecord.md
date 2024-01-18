@@ -1,19 +1,19 @@
 ---
 external help file: Office365DnsChecker-help.xml
 Module Name: Office365DnsChecker
-online version: https://github.com/rhymeswithmogul/Office365DNSChecker/blob/main/man/en-US/Test-AzureADClientConfigurationRecord.md
+online version: https://github.com/rhymeswithmogul/Office365DNSChecker/blob/main/man/en-US/Test-EntraIDClientConfigurationRecord.md
 schema: 2.0.0
 ---
 
-# Test-AzureADClientConfigurationRecord
+# Test-EntraIDClientConfigurationRecord
 
 ## SYNOPSIS
-Verifies that a domain's Azure AD client configuration DNS record is correct.
+Verifies that a domain's Entra ID client configuration DNS record is correct.
 
 ## SYNTAX
 
 ```
-Test-AzureADClientConfigurationRecord [-DomainName] <String[]> [-Use21Vianet] [<CommonParameters>]
+Test-EntraIDClientConfigurationRecord [-DomainName] <String[]> [-Use21Vianet] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -25,14 +25,14 @@ For Office 365 tenants in China operated by 21Vianet, the msoid record must be p
 
 ### Example 1
 ```powershell
-PS C:\> Test-AzureADClientConfigurationRecord contoso.com
+PS C:\> Test-EntraIDClientConfigurationRecord contoso.com
 ```
 
 Verifies that the DNS CNAME record msoid.contoso.com is correct or missing.
 
 ### Example 2
 ```powershell
-PS C:\> "contoso.com","fabrikam.com","tailspintoys.com" | Test-AzureADClientConfigurationRecord
+PS C:\> "contoso.com","fabrikam.com","tailspintoys.com" | Test-EntraIDClientConfigurationRecord
 ```
 
 Verifies that the DNS CNAME records msoid.contoso.com, msoid.fabrikam.com, and msoid.tailspintoys.com are correct.
@@ -86,8 +86,10 @@ True if all DNS records are correct, false otherwise.  If you pass multiple doma
 Starting in early 2023, Microsoft's recommendations changed.  Now, the msoid record should not be defined for any tenants not operated by 21Vianet.  For more information, see:
 https://learn.microsoft.com/en-gb/microsoft-365/admin/services-in-china/purpose-of-cname?view=o365-21vianet
 
+Microsoft Entra ID used to be called Microsoft Azure Active Directory, and previous versions of this cmdlet reflected that.
+
 ## RELATED LINKS
 
-[Test-AzureADJoinRecords]()
+[Test-EntraIDJoinRecords]()
 [Test-Office365DnsRecords]()
 [about_Office365DnsChecker]()

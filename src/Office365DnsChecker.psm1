@@ -50,7 +50,7 @@ Function Test-Office365DNSRecords
 	{
 		$DomainName | ForEach-Object {
 			Write-Output "Checking Office 365 DNS records for $_."
-			$result = Test-AzureADRecords -DomainName $_ -Use21Vianet:$Use21Vianet | Out-Null
+			$result = Test-EntraIDRecords -DomainName $_ -Use21Vianet:$Use21Vianet | Out-Null
 			$result = Test-ExchangeOnlineRecords -DomainName $_ -DANERequired:$DANERequired | Out-Null
 			$result = Test-TeamsRecords -DomainName $_ | Out-Null
 		}
@@ -212,9 +212,10 @@ Function Write-Success
 }
 #endregion Helper cmdlets
 
-#region Azure AD cmdlets
-Function Test-AzureADRecords
+#region Entra cmdlets
+Function Test-EntraIDRecords
 {
+	[Alias('Test-AzureADRecords')]
 	[Diagnostics.CodeAnalysis.SuppressMessageAttribute(
 		'PSUseSingularNouns', '',
 		Justification='We are testing multiple DNS records.'
@@ -232,15 +233,16 @@ Function Test-AzureADRecords
 	Process
 	{
 		$DomainName | ForEach-Object {
-			Test-AzureADClientConfigurationRecord -DomainName $_ -Use21Vianet:$Use21Vianet
-			Test-AzureADEnterpriseEnrollmentRecord -DomainName $_
-			Test-AzureADEnterpriseRegistrationRecord -DomainName $_
+			Test-EntraIDClientConfigurationRecord -DomainName $_ -Use21Vianet:$Use21Vianet
+			Test-EntraIDEnterpriseEnrollmentRecord -DomainName $_
+			Test-EntraIDEnterpriseRegistrationRecord -DomainName $_
 		}
 	}
 }
 
-Function Test-AzureADClientConfigurationRecord
+Function Test-EntraIDClientConfigurationRecord
 {
+	[Alias('Test-AzureADClientConfigurationRecord')]
 	[CmdletBinding()]
 	[OutputType([Bool])]
 	Param(
@@ -276,7 +278,7 @@ Function Test-AzureADClientConfigurationRecord
 			# if this DNS record is missing.
 			If (-Not $dnsLookup -and -Not $Use21Vianet)
 			{
-				Write-Success -Product 'Azure AD' 'The client configuration CNAME record is not present.'
+				Write-Success -Product 'Entra ID' 'The client configuration CNAME record is not present.'
 			}
 
 			# However, if it exists and is not set to the default value of
@@ -300,10 +302,10 @@ Function Test-AzureADClientConfigurationRecord
 			Else
 			{
 				If ($Use21Vianet) {
-					Write-Success -Product 'Azure AD' 'The client configuration CNAME record is present and correct for 21Vianet.'
+					Write-Success -Product 'Entra ID' 'The client configuration CNAME record is present and correct for 21Vianet.'
 				}
 				Else {
-					Write-Success -Product 'Azure AD' 'The client configuration CNAME record is present, but correct.'
+					Write-Success -Product 'Entra ID' 'The client configuration CNAME record is present, but correct.'
 				}
 			}
 		}
@@ -314,8 +316,9 @@ Function Test-AzureADClientConfigurationRecord
 	}
 }
 
-Function Test-AzureADEnterpriseEnrollmentRecord
+Function Test-EntraIDEnterpriseEnrollmentRecord
 {
+	[Alias('Test-AzureADEnterpriseEnrollmentRecord')]
 	[OutputType([Bool])]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
@@ -332,7 +335,7 @@ Function Test-AzureADEnterpriseEnrollmentRecord
 
 	Process {
 		$DomainName | ForEach-Object {
-			Write-Output "Checking AAD enterprise enrollment record for $_"
+			Write-Output "Checking Entra ID enterprise enrollment record for $_"
 			$record = "enterpriseenrollment.$_"
 			$dnsLookup = Resolve-DnsNameCrossPlatform -Type CNAME -Name $record
 
@@ -370,7 +373,7 @@ Function Test-AzureADEnterpriseEnrollmentRecord
 			}
 			Else
 			{
-				Write-Success -Product 'Azure AD' 'The enterprise enrollment DNS record is correct.'
+				Write-Success -Product 'Entra ID' 'The enterprise enrollment DNS record is correct.'
 			}
 		}
 	}
@@ -380,8 +383,9 @@ Function Test-AzureADEnterpriseEnrollmentRecord
 	}
 }
 
-Function Test-AzureADEnterpriseRegistrationRecord
+Function Test-EntraIDEnterpriseRegistrationRecord
 {
+	[Alias('Test-AzureADEnterpriseRegistrationRecord')]
 	[OutputType([Bool])]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
@@ -399,7 +403,7 @@ Function Test-AzureADEnterpriseRegistrationRecord
 	Process
 	{
 		$DomainName | ForEach-Object {
-			Write-Output "Checking AAD enterprise registration record for $_"
+			Write-Output "Checking Entra ID enterprise registration record for $_"
 
 			$record = "enterpriseregistration.$_"
 			$dnsLookup = Resolve-DnsNameCrossPlatform -Type CNAME -Name $record
@@ -438,7 +442,7 @@ Function Test-AzureADEnterpriseRegistrationRecord
 			}
 			Else
 			{
-				Write-Success -Product 'Azure AD' 'The enterprise registration DNS record is correct.'
+				Write-Success -Product 'Entra ID' 'The enterprise registration DNS record is correct.'
 			}
 		}
 	}
@@ -447,7 +451,7 @@ Function Test-AzureADEnterpriseRegistrationRecord
 		Return $result
 	}
 }
-#endregion Azure AD cmdlets
+#endregion Entra ID cmdlets
 
 #region Exchange Online cmdlets
 Function Test-ExchangeOnlineRecords
