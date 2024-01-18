@@ -13,7 +13,7 @@ Verifies a domain's Exchange Online DNS records are all correct.
 ## SYNTAX
 
 ```
-Test-ExchangeOnlineRecords [-DomainName] <String[]> [-GroupByRecord] [-DANERequired] [<CommonParameters>]
+Test-ExchangeOnlineRecords [-DomainName] <String[]> [-DANERequired] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -51,21 +51,6 @@ Required: True
 Position: 0
 Default value: None
 Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
-```
-
-### -GroupByRecord
-{{ Fill GroupByRecord Description }}
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
 Accept wildcard characters: False
 ```
 

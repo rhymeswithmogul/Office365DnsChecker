@@ -463,8 +463,6 @@ Function Test-ExchangeOnlineRecords
 		[ValidateNotNullOrEmpty()]
 		[String[]] $DomainName,
 
-		[Switch] $GroupByRecord,
-
 		[Switch] $DANERequired
 	)
 
