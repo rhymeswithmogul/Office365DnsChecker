@@ -6,6 +6,7 @@
 ## Version 1.2.0 (January 18, 2024)
 - NEW: Add support for Microsoft's [new MX records that support DANE and DNSSEC](https://techcommunity.microsoft.com/t5/exchange-team-blog/implementing-inbound-smtp-dane-with-dnssec-for-exchange-online/ba-p/3939694).  Note that this does not go live until March 2024 (as a preview), so there may be bugs that we don't yet know about.
 - NEW: `Test-ExchangeOnlineMxRecords`, `Test-ExchangeOnlineRecords`, and `Test-Office365DnsRecords` now support a new `-DANERequired` parameter that prints a warning if the DANE-enabled MX endpoint is *not* in use.
+- NEW: Cmdlets now return `$true` or `$false` in addition to human-readable output.
 
 ## Version 1.1.0 (June 1, 2023)
 - NEW: Add support for checking DNS records for Office 365 hosted by 21Vianet.

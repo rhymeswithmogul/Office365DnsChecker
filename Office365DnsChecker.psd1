@@ -157,7 +157,8 @@ PrivateData = @{
 
 		# ReleaseNotes of this module
 		ReleaseNotes = "- NEW: Add support for Microsoft's new MX records that support DANE and DNSSEC.  Note that this does not go live until March 2024 (as a preview), so there may be bugs that we don't yet know about.
-- NEW: `Test-ExchangeOnlineMxRecords`, `Test-ExchangeOnlineRecords`, and `Test-Office365DnsRecords` now support a new `-DANERequired` parameter that prints a warning if the DANE-enabled MX endpoint is *not* in use."
+- NEW: `Test-ExchangeOnlineMxRecords`, `Test-ExchangeOnlineRecords`, and `Test-Office365DnsRecords` now support a new `-DANERequired` parameter that prints a warning if the DANE-enabled MX endpoint is *not* in use.
+- NEW: Cmdlets now return `$true` or `$false` in addition to human-readable output."
 
 		# Prerelease string of this module
 		#Prerelease = 'alpha'
