@@ -13,11 +13,11 @@ Verifies that a domain's MX record is correct.
 ## SYNTAX
 
 ```
-Test-ExchangeOnlineMxRecord [-DomainName] <String[]> [<CommonParameters>]
+Test-ExchangeOnlineMxRecord [-DomainName] <String[]> [-DANERequired] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-This cmdlet checks one or more domains' DNS records for the presence and correctness of the Exchange Online MX record.  The first and only MX record should look something like tenantdomain-com.mail.protection.outlook.com.
+This cmdlet checks one or more domains' DNS records for the presence and correctness of the Exchange Online MX record.  The first and only MX record should look something like tenantdomain-com.mail.protection.outlook.com or tenantdomain-com.1a2b3c.mx.microsoft.
 
 ## EXAMPLES
 
@@ -49,6 +49,23 @@ Required: True
 Position: 0
 Default value: None
 Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -DANERequired
+Specify this switch to print a warning if the DNSSEC/DANE-enabled MX endpoints are not in use.  Without this switch, either the non-secure or secure MX names will be considered good.
+
+The DNSSEC/DANE-enabled endpoints will not be available for use until March 2024, with general availability in July 2024.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 

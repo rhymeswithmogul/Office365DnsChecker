@@ -13,7 +13,7 @@ Verifies that all of a domain's Office 365 DNS records are correct.
 ## SYNTAX
 
 ```
-Test-Office365DNSRecords [-DomainName] <String[]> [-Use21Vianet] [<CommonParameters>]
+Test-Office365DNSRecords [-DomainName] <String[]> [-Use21Vianet] [-DANERequired] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -85,6 +85,23 @@ If your Office 365 tenant is hosted by 21Vianet, include this switch.  Chinese c
 Type: SwitchParameter
 Parameter Sets: (All)
 Aliases: China
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -DANERequired
+Specify this switch to print a warning if the DNSSEC/DANE-enabled MX endpoints are not in use.  Without this switch, either the non-secure or secure MX names will be considered good.
+
+The DNSSEC/DANE-enabled endpoints will not be available for use until March 2024, with general availability in July 2024.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
 
 Required: False
 Position: Named

@@ -1,6 +1,6 @@
 <#
 Office365DnsChecker 
-Copyright (C) 2019-2023 Colin Cogle. All Rights Reserved.
+Copyright (C) 2019-2024 Colin Cogle. All Rights Reserved.
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU Affero General Public License as published by the Free
@@ -36,7 +36,9 @@ Function Test-Office365DNSRecords
 		[String[]] $DomainName,
 
 		[Alias('China')]
-		[Switch] $Use21Vianet
+		[Switch] $Use21Vianet,
+
+		[Switch] $DANERequired
 	)
 
 	Begin
@@ -49,7 +51,7 @@ Function Test-Office365DNSRecords
 		$DomainName | ForEach-Object {
 			Write-Output "Checking Office 365 DNS records for $_."
 			$result = Test-AzureADRecords -DomainName $_ -Use21Vianet:$Use21Vianet | Out-Null
-			$result = Test-ExchangeOnlineRecords -DomainName $_ | Out-Null
+			$result = Test-ExchangeOnlineRecords -DomainName $_ -DANERequired:$DANERequired | Out-Null
 			$result = Test-TeamsRecords -DomainName $_ | Out-Null
 		}
 	}
@@ -461,7 +463,9 @@ Function Test-ExchangeOnlineRecords
 		[ValidateNotNullOrEmpty()]
 		[String[]] $DomainName,
 
-		[Switch] $GroupByRecord
+		[Switch] $GroupByRecord,
+
+		[Switch] $DANERequired
 	)
 
 	Begin {
@@ -471,7 +475,7 @@ Function Test-ExchangeOnlineRecords
 	Process
 	{
 		$DomainName | ForEach-Object {
-			$result = Test-ExchangeOnlineMxRecord -DomainName $_
+			$result = Test-ExchangeOnlineMxRecord -DomainName $_ -DANERequired:$DANERequired
 			$result = Test-ExchangeOnlineAutodiscoverRecord -DomainName $_
 			$result = Test-ExchangeOnlineSpfRecord -DomainName $_
 			$result = Test-ExchangeOnlineSenderIdRecord -DomainName $_
@@ -731,7 +735,9 @@ Function Test-ExchangeOnlineMxRecord
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias('Name')]
 		[ValidateNotNullOrEmpty()]
-		[String[]] $DomainName
+		[String[]] $DomainName,
+
+		[Switch] $DANERequired
 	)
 
 	Begin {
@@ -777,7 +783,18 @@ Function Test-ExchangeOnlineMxRecord
 			{
 				If ($dnsLookup[0].NameExchange -Like '*.mail.protection.outlook.com')
 				{
-					Write-Success -Product 'Exchange Online' "The first MX record for the domain $_ appears correct."
+					$msg = "The first MX record for the domain $_ appears correct, but DANE/DNSSEC are NOT supported."
+
+					If ($DANERequired) {
+						Write-Warning -Product 'Exchange Online' $msg
+					}
+					Else {
+						Write-Success -Product 'Exchange Online' $msg
+					}
+				}
+				ElseIf ($dnsLookup[0].NameExchange -Like '*.mx.microsoft')
+				{
+					Write-Success -Product 'Exchange Online' "The first MX record for the domain $_ appears correct, and DANE/DNSSEC are supported."
 				}
 				Else
 				{

@@ -144,7 +144,7 @@ PrivateData = @{
 	PSData = @{
 
 		# Tags applied to this module. These help with module discovery in online galleries.
-		Tags = @('Microsoft365', 'Office365', '365', 'ExchangeOnline', 'SkypeForBusinessOnline', 'MicrosoftTeams', 'DNS', 'AzureAD', 'AAD', 'SPF', 'DKIM', 'ExO', 'Exchange', 'Teams', 'ExchangeHybrid', '21Vianet')
+		Tags = @('Microsoft365', 'Office365', '365', 'ExchangeOnline', 'SkypeForBusinessOnline', 'MicrosoftTeams', 'DNS', 'AzureAD', 'AAD', 'SPF', 'DKIM', 'ExO', 'Exchange', 'Teams', 'ExchangeHybrid', '21Vianet', 'DNSSEC', 'DANE', 'MX')
 
 		# A URL to the license for this module.
 		LicenseUri = 'https://github.com/rhymeswithmogul/Office365DNSChecker/blob/main/LICENSE'
@@ -156,10 +156,11 @@ PrivateData = @{
 		IconUri = 'https://raw.githubusercontent.com/rhymeswithmogul/Office365DnsChecker/main/Logo/Office365DnsChecker.png'
 
 		# ReleaseNotes of this module
-		ReleaseNotes = "Cmdlets now return true/false based on the result."
+		ReleaseNotes = "- NEW: Add support for Microsoft's new MX records that support DANE and DNSSEC.  Note that this does not go live until March 2024 (as a preview), so there may be bugs that we don't yet know about.
+- NEW: `Test-ExchangeOnlineMxRecords`, `Test-ExchangeOnlineRecords`, and `Test-Office365DnsRecords` now support a new `-DANERequired` parameter that prints a warning if the DANE-enabled MX endpoint is *not* in use."
 
 		# Prerelease string of this module
-		Prerelease = 'alpha'
+		#Prerelease = 'alpha'
 
 		# Flag to indicate whether the module requires explicit user acceptance for install/update/save
 		RequireLicenseAcceptance = $false

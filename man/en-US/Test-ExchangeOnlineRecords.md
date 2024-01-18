@@ -13,7 +13,7 @@ Verifies a domain's Exchange Online DNS records are all correct.
 ## SYNTAX
 
 ```
-Test-ExchangeOnlineRecords [-DomainName] <String[]> [-GroupByRecord] [<CommonParameters>]
+Test-ExchangeOnlineRecords [-DomainName] <String[]> [-GroupByRecord] [-DANERequired] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -61,6 +61,38 @@ Accept wildcard characters: False
 Type: SwitchParameter
 Parameter Sets: (All)
 Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -DANERequired
+Specify this switch to print a warning if the DNSSEC/DANE-enabled MX endpoints are not in use.  Without this switch, either the non-secure or secure MX names will be considered good.
+
+The DNSSEC/DANE-enabled endpoints will not be available for use until March 2024, with general availability in July 2024.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
 
 Required: False
 Position: Named
