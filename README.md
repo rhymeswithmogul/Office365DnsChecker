@@ -29,23 +29,23 @@ PS C:\> Get-AcceptedDomain | Test-Office365DnsRecords
 
 ### Advanced Usage
 You can also check individual services:
-- `Test-AzureADRecords`
+- `Test-EntraIDRecords`
 - `Test-ExchangeOnlineRecords`
 - `Test-TeamsRecords` (or `Test-SkypeForBusinessOnlineRecords`)
 
 Or, you can even check individual DNS records:
-- `Test-AzureADClientConfigurationRecord` to check the <tt>msoid</tt> CNAME.
-- `Test-AzureADEnterpriseEnrollmentRecord` to check the <tt>enterpriseenrollment</tt> CNAME.
-- `Test-AzureADEnterpriseRegistrationRecord` to check the <tt>enterpriseregistration</tt> CNAME.
-- `Test-ExchangeOnlineAutodiscoverRecord` to check both the existence of the <tt>autodiscover</tt> CNAME, and the non-existence of <tt>_autodiscover._tcp</tt> <abbr title="service">SRV</abbr> records.
-- `Test-ExchangeOnlineDkimRecords` to check the <tt>selector1</tt> and <tt>selector2</tt> DKIM records.
-- `Test-ExchangeOnlineMxRecord` to check the domain's MX record(s).
+- `Test-EntraIDClientConfigurationRecord` to check the `msoid` CNAME.
+- `Test-EntraIDEnterpriseEnrollmentRecord` to check the `enterpriseenrollment` CNAME.
+- `Test-EntraIDEnterpriseRegistrationRecord` to check the `enterpriseregistration` CNAME.
+- `Test-ExchangeOnlineAutodiscoverRecord` to check both the existence of the `autodiscover` CNAME, and the non-existence of `_autodiscover._tcp` <abbr title="service">SRV</abbr> records.
+- `Test-ExchangeOnlineDkimRecords` to check the `selector1` and `selector2` DKIM records.
+- `Test-ExchangeOnlineMxRecord` to check the domain's MX record(s) and whether or not they support DANE.
 - `Test-ExchangeOnlineSenderIdRecord` to check the domain's [Sender ID](https://tools.ietf.org/html/rfc4406) record, if present.
 - `Test-ExchangeOnlineSpfRecord` to check the domain's [<abbr title="Sender Policy Framework">SPF</abbr>](https://tools.ietf.org/html/rfc7208) <abbr title="text">TXT</abbr> record.
-- `Test-TeamsAutodiscoverRecord` to check the <tt>lyncdiscover</tt> CNAME.
-- `Test-TeamsSipCnameRecord` to check the <tt>sip</tt> CNAME.
-- `Test-TeamsSipSrvRecord` to check the <tt>_sip._tls</tt> <abbr title="service">SRV</abbr> record(s).
-- `Test-TeamsSipFederationSrvRecord` to check the <tt>_sipfederationtls._tcp</tt> <abbr title="service">SRV</abbr> record(s).
+- `Test-TeamsAutodiscoverRecord` to check the `lyncdiscover` CNAME.
+- `Test-TeamsSipCnameRecord` to check the `sip` CNAME.
+- `Test-TeamsSipSrvRecord` to check the `_sip._tls` <abbr title="service">SRV</abbr> record(s).
+- `Test-TeamsSipFederationSrvRecord` to check the `_sipfederationtls._tcp` <abbr title="service">SRV</abbr> record(s).
 
 ### Identifying problems
 When you run one of this module's commands, the corresponding DNS records are retrieved and evaluated.  In case of an incorrect record, a warning or an error may be printed to the screen, telling you which records are wrong or missing.
