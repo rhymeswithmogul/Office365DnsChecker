@@ -1,5 +1,8 @@
 # Office365DnsChecker Change Log
 
+## Next version
+- FIXED: All `PSScriptAnalyzer` warnings and informational guidelines have been either fixed or suppressed.
+
 ## Version 2.0.0 (January 18, 2024)
 - NEW: Rename all instances of Azure AD to Entra ID, including cmdlet names.  Aliases have been added for the old names."
 - NEW: Add support for Microsoft's [new MX records that support DANE and DNSSEC](https://techcommunity.microsoft.com/t5/exchange-team-blog/implementing-inbound-smtp-dane-with-dnssec-for-exchange-online/ba-p/3939694).  Note that this does not go live until March 2024 (as a preview), so there may be bugs that we don't yet know about.

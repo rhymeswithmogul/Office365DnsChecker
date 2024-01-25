@@ -1,5 +1,5 @@
 <#
-Office365DnsChecker 
+Office365DnsChecker
 Copyright (C) 2019-2024 Colin Cogle. All Rights Reserved.
 
 This program is free software: you can redistribute it and/or modify it under
@@ -23,12 +23,12 @@ Set-StrictMode -Version Latest
 
 Function Test-Office365DNSRecords
 {
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', 'DANERequired', Justification='This parameter is used in the Process block.')]
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', 'Use21Vianet',  Justification='This parameter is used in the Process block.')]
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'result', Justification='$result is assigned and used across the Begin/Process/End blocks.')]
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '', Justification='We are testing multiple DNS records.')]
 	[CmdletBinding()]
 	[OutputType([Bool])]
-	[Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-		'PSUseSingularNouns', '',
-		Justification='We are testing multiple DNS records.'
-	)]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias('Name')]
@@ -65,7 +65,7 @@ Function Test-Office365DNSRecords
 Function Resolve-DNSNameCrossPlatform
 {
 	Param(
-		[Parameter(Mandatory, Position=0, ValueFromPipeline)]
+		[Parameter(Mandatory, Position=0)]
 		[ValidateNotNullOrEmpty()]
 		[String] $Name,
 
@@ -106,7 +106,7 @@ Function Resolve-DNSNameCrossPlatform
 				Return $dnsLookup | Where-Object {$_ -Is [Microsoft.DnsClient.Commands.DnsRecord_TXT]}
 			}
 		}
-		Return 
+		Return
 	}
 	# If Resolve-DnsName is not available, we need to use the system's copy of dig,
 	# and try to emulate the style of output that Resolve-DnsName creates.
@@ -155,10 +155,10 @@ Function Resolve-DNSNameCrossPlatform
 				$SRVs = @()
 				$dnsLookup | ForEach-Object {
 					$splits = -Split $_
-					
+
 					# dig always returns fully-qualified hostnames.
 					# Strip that trailing dot to return results like Resolve-DnsName does.
-					$NameTarget = $splits[3] -Replace [RegEx]"\.$" 
+					$NameTarget = $splits[3] -Replace [RegEx]"\.$"
 					$Priority   = $splits[0] -As [Int]
 					$Weight     = $splits[1] -As [Int]
 					$Port       = $splits[2] -As [Int]
@@ -192,6 +192,8 @@ Function Resolve-DNSNameCrossPlatform
 
 Function Write-Success
 {
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '', Justification='I need a PS 5.1-compatible way to show colored output.')]
+	[OutputType([Void])]
 	Param(
 		[Parameter(Position=0)]
 		[Alias('Object')]
@@ -208,18 +210,15 @@ Function Write-Success
 	{
 		Write-Host -ForegroundColor Green -Object "SUCCESS: $Message"
 	}
-	
 }
 #endregion Helper cmdlets
 
 #region Entra cmdlets
 Function Test-EntraIDRecords
 {
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', 'Use21Vianet', Justification='This parameter is used in the Process block.')]
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '', Justification='We are testing multiple DNS records.')]
 	[Alias('Test-AzureADRecords')]
-	[Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-		'PSUseSingularNouns', '',
-		Justification='We are testing multiple DNS records.'
-	)]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias('Name')]
@@ -242,6 +241,7 @@ Function Test-EntraIDRecords
 
 Function Test-EntraIDClientConfigurationRecord
 {
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'result', Justification='$result is assigned and used across the Begin/Process/End blocks.')]
 	[Alias('Test-AzureADClientConfigurationRecord')]
 	[CmdletBinding()]
 	[OutputType([Bool])]
@@ -318,6 +318,7 @@ Function Test-EntraIDClientConfigurationRecord
 
 Function Test-EntraIDEnterpriseEnrollmentRecord
 {
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'result', Justification='$result is assigned and used across the Begin/Process/End blocks.')]
 	[Alias('Test-AzureADEnterpriseEnrollmentRecord')]
 	[OutputType([Bool])]
 	Param(
@@ -377,7 +378,7 @@ Function Test-EntraIDEnterpriseEnrollmentRecord
 			}
 		}
 	}
-	
+
 	End {
 		Return $result
 	}
@@ -385,6 +386,7 @@ Function Test-EntraIDEnterpriseEnrollmentRecord
 
 Function Test-EntraIDEnterpriseRegistrationRecord
 {
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'result', Justification='$result is assigned and used across the Begin/Process/End blocks.')]
 	[Alias('Test-AzureADEnterpriseRegistrationRecord')]
 	[OutputType([Bool])]
 	Param(
@@ -456,11 +458,10 @@ Function Test-EntraIDEnterpriseRegistrationRecord
 #region Exchange Online cmdlets
 Function Test-ExchangeOnlineRecords
 {
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', 'DANERequired', Justification='This parameter is used in the Process block.')]
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'result', Justification='$result is assigned and used across the Begin/Process/End blocks.')]
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '', Justification='We are testing multiple DNS records.')]
 	[OutputType([Bool])]
-	[Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-		'PSUseSingularNouns', '',
-		Justification='We are testing multiple DNS records.'
-	)]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias('Name')]
@@ -492,6 +493,7 @@ Function Test-ExchangeOnlineRecords
 
 Function Test-ExchangeOnlineAutodiscoverRecord
 {
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'result', Justification='$result is assigned and used across the Begin/Process/End blocks.')]
 	[OutputType([Bool])]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
@@ -582,11 +584,10 @@ Function Test-ExchangeOnlineAutodiscoverRecord
 
 Function Test-ExchangeOnlineDkimRecords
 {
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', 'Selectors', Justification='This parameter is used in the Process block.')]
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'result', Justification='$result is assigned and used across the Begin/Process/End blocks.')]
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '', Justification='We are testing multiple DNS records.')]
 	[OutputType([Bool])]
-	[Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-		'PSUseSingularNouns', '',
-		Justification='We are testing multiple DNS records.'
-	)]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias('Name')]
@@ -732,6 +733,8 @@ Function Test-ExchangeOnlineDkimRecords
 
 Function Test-ExchangeOnlineMxRecord
 {
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', 'DANERequired', Justification='This parameter is used in the Process block.')]
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'result', Justification='$result is assigned and used across the Begin/Process/End blocks.')]
 	[OutputType([Bool])]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
@@ -821,11 +824,22 @@ Function Test-ExchangeOnlineSenderIdRecord
 		[String[]] $DomainName
 	)
 
-	Return (Test-ExchangeOnlineSpfRecord -DomainName $DomainName -SpfOrSenderID 'Sender ID')
+	Begin {
+		$result = $true
+	}
+
+	Process {
+		$result = $result -and (Test-ExchangeOnlineSpfRecord -DomainName $DomainName -SpfOrSenderID 'Sender ID')
+	}
+
+	End {
+		Return $result
+	}
 }
 
 Function Test-ExchangeOnlineSpfRecord
 {
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'result', Justification='$result is assigned and used across the Begin/Process/End blocks.')]
 	[CmdletBinding()]
 	[OutputType([Bool])]
 	Param(
@@ -980,16 +994,14 @@ Function Test-ExchangeOnlineSpfRecord
 #region Teams/Skype for Business Online cmdlets
 Function Test-TeamsRecords
 {
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'result', Justification='$result is assigned and used across the Begin/Process/End blocks.')]
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '', Justification='We are testing multiple DNS records.')]
 	[CmdletBinding()]
 	[OutputType([Bool])]
 	[Alias(
 		'Test-LyncRecords',
 		'Test-SkypeForBusinessRecords',
 		'Test-SkypeForBusinessOnlineRecords'
-	)]
-	[Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-		'PSUseSingularNouns', '',
-		Justification='We are testing multiple DNS records.'
 	)]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
@@ -1018,6 +1030,7 @@ Function Test-TeamsRecords
 
 Function Test-TeamsAutodiscoverRecord
 {
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'result', Justification='$result is assigned and used across the Begin/Process/End blocks.')]
 	[OutputType([Bool])]
 	[Alias(
 		'Test-LyncDiscoverRecord',
@@ -1031,7 +1044,7 @@ Function Test-TeamsAutodiscoverRecord
 		[ValidateNotNullOrEmpty()]
 		[String[]] $DomainName
 	)
-	
+
 	Begin
 	{
 		$result   = $true
@@ -1078,6 +1091,7 @@ Function Test-TeamsAutodiscoverRecord
 
 Function Test-TeamsSipCnameRecord
 {
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'result', Justification='$result is assigned and used across the Begin/Process/End blocks.')]
 	[OutputType([Bool])]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
@@ -1134,6 +1148,7 @@ Function Test-TeamsSipCnameRecord
 
 Function Test-TeamsSipFederationSrvRecord
 {
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'result', Justification='$result is assigned and used across the Begin/Process/End blocks.')]
 	[OutputType([Bool])]
 	[Alias(
 		'Test-LyncSipFederationRecord',
@@ -1242,6 +1257,7 @@ Function Test-TeamsSipFederationSrvRecord
 
 Function Test-TeamsSipSrvRecord
 {
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'result', Justification='$result is assigned and used across the Begin/Process/End blocks.')]
 	[OutputType([Bool])]
 	[Alias(
 		'Test-LyncSipSrvRecord',

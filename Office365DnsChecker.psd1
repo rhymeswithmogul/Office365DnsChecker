@@ -160,11 +160,7 @@ PrivateData = @{
 		IconUri = 'https://raw.githubusercontent.com/rhymeswithmogul/Office365DnsChecker/main/Logo/Office365DnsChecker.png'
 
 		# ReleaseNotes of this module
-		ReleaseNotes = "- NEW: Add support for Microsoft's new MX records that support DANE and DNSSEC.  Note that this does not go live until March 2024 (as a preview), so there may be bugs that we don't yet know about.
-- NEW: `Test-ExchangeOnlineMxRecords`, `Test-ExchangeOnlineRecords`, and `Test-Office365DnsRecords` now support a new `-DANERequired` parameter that prints a warning if the DANE-enabled MX endpoint is *not* in use.
-- NEW: Cmdlets now return true or false, depending on the results.  Thanks to @o-l-a-v for suggesting this in issue #1.
-- NEW: Rename all instances of Azure AD to Entra ID, including cmdlet names.  Aliases have been added for the old names.
-- FIXED: Some Entra cmdlets were failing to load online help."
+		ReleaseNotes = "All `PSScriptAnalyzer` warnings and informational guidelines have been either fixed or suppressed."
 
 		# Prerelease string of this module
 		#Prerelease = 'alpha'
