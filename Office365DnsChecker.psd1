@@ -12,7 +12,7 @@
 RootModule = 'src/Office365DnsChecker.psm1'
 
 # Version number of this module.
-ModuleVersion = '2.0.0'
+ModuleVersion = '2.0.1'
 
 # Supported PSEditions
 CompatiblePSEditions = @('Core', 'Desktop')
@@ -160,10 +160,11 @@ PrivateData = @{
 		IconUri = 'https://raw.githubusercontent.com/rhymeswithmogul/Office365DnsChecker/main/Logo/Office365DnsChecker.png'
 
 		# ReleaseNotes of this module
-		ReleaseNotes = "All `PSScriptAnalyzer` warnings and informational guidelines have been either fixed or suppressed."
+		ReleaseNotes = "- FIXED: `Test-EntraIDRecords`, `Test-ExchangeOnlineRecords`, and `Test-TeamsRecords` did not return the correct `$true`/`$false` value.
+- FIXED: All `PSScriptAnalyzer` warnings and informational guidelines have been either fixed or suppressed."
 
 		# Prerelease string of this module
-		#Prerelease = 'alpha'
+		Prerelease = 'git'
 
 		# Flag to indicate whether the module requires explicit user acceptance for install/update/save
 		RequireLicenseAcceptance = $false

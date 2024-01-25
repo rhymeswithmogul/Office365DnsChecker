@@ -13,7 +13,7 @@ Verifies that all of a domain's Office 365 DNS records are correct.
 ## SYNTAX
 
 ```
-Test-Office365DNSRecords [-DomainName] <String[]> [-Use21Vianet] [-DaneRequired] [<CommonParameters>]
+Test-Office365DNSRecords [-DomainName] <String[]> [-Use21Vianet] [-DANERequired] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -77,6 +77,7 @@ Default value: None
 Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
+
 ### -Use21Vianet
 If your Office 365 tenant is hosted by 21Vianet, include this switch.  Chinese customers must have the msoid attribute set to a special value.
 
@@ -84,6 +85,21 @@ If your Office 365 tenant is hosted by 21Vianet, include this switch.  Chinese c
 Type: SwitchParameter
 Parameter Sets: (All)
 Aliases: China
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -DANERequired
+To make the use of the legacy MX endpoint (i.e., contoso-com.mail.protection.outlook.com) a warning instead of a passing message, include this parameter.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
 
 Required: False
 Position: Named

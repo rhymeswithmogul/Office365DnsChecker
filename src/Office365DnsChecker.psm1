@@ -219,6 +219,7 @@ Function Test-EntraIDRecords
 	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', 'Use21Vianet', Justification='This parameter is used in the Process block.')]
 	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '', Justification='We are testing multiple DNS records.')]
 	[Alias('Test-AzureADRecords')]
+	[OutputType([Bool])]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias('Name')]
@@ -229,13 +230,21 @@ Function Test-EntraIDRecords
 		[Switch] $Use21Vianet
 	)
 
+	Begin {
+		$result = $true
+	}
+
 	Process
 	{
 		$DomainName | ForEach-Object {
-			Test-EntraIDClientConfigurationRecord -DomainName $_ -Use21Vianet:$Use21Vianet
-			Test-EntraIDEnterpriseEnrollmentRecord -DomainName $_
-			Test-EntraIDEnterpriseRegistrationRecord -DomainName $_
+			$result = $result -and (Test-EntraIDClientConfigurationRecord -DomainName $_ -Use21Vianet:$Use21Vianet)
+			$result = $result -and (Test-EntraIDEnterpriseEnrollmentRecord -DomainName $_)
+			$result = $result -and (Test-EntraIDEnterpriseRegistrationRecord -DomainName $_)
 		}
+	}
+
+	End {
+		Return $result
 	}
 }
 
@@ -478,11 +487,11 @@ Function Test-ExchangeOnlineRecords
 	Process
 	{
 		$DomainName | ForEach-Object {
-			$result = Test-ExchangeOnlineMxRecord -DomainName $_ -DANERequired:$DANERequired
-			$result = Test-ExchangeOnlineAutodiscoverRecord -DomainName $_
-			$result = Test-ExchangeOnlineSpfRecord -DomainName $_
-			$result = Test-ExchangeOnlineSenderIdRecord -DomainName $_
-			$result = Test-ExchangeOnlineDkimRecords -DomainName $_
+			$result = $result -and (Test-ExchangeOnlineMxRecord -DomainName $_ -DANERequired:$DANERequired)
+			$result = $result -and (Test-ExchangeOnlineAutodiscoverRecord -DomainName $_)
+			$result = $result -and (Test-ExchangeOnlineSpfRecord -DomainName $_)
+			$result = $result -and (Test-ExchangeOnlineSenderIdRecord -DomainName $_)
+			$result = $result -and (Test-ExchangeOnlineDkimRecords -DomainName $_)
 		}
 	}
 
@@ -1016,10 +1025,10 @@ Function Test-TeamsRecords
 
 	Process {
 		$DomainName | ForEach-Object {
-			$result = Test-TeamsAutodiscoverRecord -DomainName $_
-			$result = Test-TeamsSipCnameRecord -DomainName $_
-			$result = Test-TeamsSipSrvRecord -DomainName $_
-			$result = Test-TeamsSipFederationSrvRecord -DomainName $_
+			$result = $result -and (Test-TeamsAutodiscoverRecord -DomainName $_)
+			$result = $result -and (Test-TeamsSipCnameRecord -DomainName $_)
+			$result = $result -and (Test-TeamsSipSrvRecord -DomainName $_)
+			$result = $result -and (Test-TeamsSipFederationSrvRecord -DomainName $_)
 		}
 	}
 

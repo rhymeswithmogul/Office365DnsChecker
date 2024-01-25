@@ -1,6 +1,7 @@
 # Office365DnsChecker Change Log
 
 ## Next version
+- FIXED: `Test-EntraIDRecords`, `Test-ExchangeOnlineRecords`, and `Test-TeamsRecords` did not return the correct `$true`/`$false` value.
 - FIXED: All `PSScriptAnalyzer` warnings and informational guidelines have been either fixed or suppressed.
 
 ## Version 2.0.0 (January 18, 2024)
