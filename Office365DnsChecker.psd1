@@ -131,11 +131,11 @@ FileList = @(
 	'Logo/Office365DnsChecker.svg',
 	'Logo/Office365DnsChecker.png',
 	'src/Office365DnsChecker.psm1',
-	'AUTHORS',
+	'AUTHORS.txt',
 	'CHANGELOG.md',
 	'CODE_OF_CONDUCT.md',
 	'CONTRIBUTING.md',
-	'LICENSE',
+	'LICENSE.txt',
 	'Office365DnsChecker.code-workspace',
 	'Office365DnsChecker.psd1',
 	'README.md',
@@ -161,7 +161,8 @@ PrivateData = @{
 
 		# ReleaseNotes of this module
 		ReleaseNotes = "- FIXED: `Test-EntraIDRecords`, `Test-ExchangeOnlineRecords`, and `Test-TeamsRecords` did not return the correct `$true`/`$false` value.
-- FIXED: All `PSScriptAnalyzer` warnings and informational guidelines have been either fixed or suppressed."
+- FIXED: All `PSScriptAnalyzer` warnings and informational guidelines have been either fixed or suppressed.
+- FIXED: Packaging improvements."
 
 		# Prerelease string of this module
 		Prerelease = 'git'

@@ -3,6 +3,7 @@
 ## Next version
 - FIXED: `Test-EntraIDRecords`, `Test-ExchangeOnlineRecords`, and `Test-TeamsRecords` did not return the correct `$true`/`$false` value.
 - FIXED: All `PSScriptAnalyzer` warnings and informational guidelines have been either fixed or suppressed.
+- FIXED: Packaging improvements; added `.txt` file extensions to `AUTHORS` and `LICENSE` so they're easier to open.
 
 ## Version 2.0.0 (January 18, 2024)
 - NEW: Rename all instances of Azure AD to Entra ID, including cmdlet names.  Aliases have been added for the old names."
