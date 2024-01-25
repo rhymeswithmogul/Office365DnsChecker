@@ -1,7 +1,7 @@
 ---
 external help file: Office365DnsChecker-help.xml
 Module Name: Office365DnsChecker
-online version: https://github.com/rhymeswithmogul/Office365DNSChecker/blob/master/man/en-US/Test-ExchangeOnlineDkimRecords.md
+online version: https://github.com/rhymeswithmogul/Office365DNSChecker/blob/main/man/en-US/Test-ExchangeOnlineDkimRecords.md
 schema: 2.0.0
 ---
 
@@ -77,10 +77,12 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String[]
-One or more domain names to check. 
-This cmdlet accepts pipeline input as well.
+One or more domain names to check.  This cmdlet accepts pipeline input as well.
 
 ## OUTPUTS
+
+### Bool
+True if all DNS records are correct, false otherwise.  If you pass multiple domain names to this cmdlet, the result will consider all domains;  that is, if contoso.com is correct but fabrikam.com is not, the result will be false.
 
 ## NOTES
 This cmdlet only checks for the presence of what should be a valid DKIM key (that is, a TXT record starting with "v=DKIM1;"). It does not check the record for validity or correctness beyond that.

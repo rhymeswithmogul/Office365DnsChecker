@@ -2,11 +2,11 @@
 <helpItems schema="maml" xmlns="http://msh">
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
-      <command:name>Test-AzureADClientConfigurationRecord</command:name>
+      <command:name>Test-EntraIDClientConfigurationRecord</command:name>
       <command:verb>Test</command:verb>
-      <command:noun>AzureADClientConfigurationRecord</command:noun>
+      <command:noun>EntraIDClientConfigurationRecord</command:noun>
       <maml:description>
-        <maml:para>Verifies that a domain's Azure AD client configuration DNS record is correct.</maml:para>
+        <maml:para>Verifies that a domain's Entra ID client configuration DNS record is correct.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
@@ -15,7 +15,7 @@
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
-        <maml:name>Test-AzureADClientConfigurationRecord</maml:name>
+        <maml:name>Test-EntraIDClientConfigurationRecord</maml:name>
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="Name">
           <maml:name>DomainName</maml:name>
           <maml:description>
@@ -29,9 +29,9 @@
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="China">
-          <maml:name>21Vianet</maml:name>
+          <maml:name>Use21Vianet</maml:name>
           <maml:description>
-            <maml:para>If your Office 365 tenant is hosted by the 21Vianet, include this switch.  Chinese customers must have the msoid attribute set to a special value.</maml:para>
+            <maml:para>If your Office 365 tenant is hosted by 21Vianet, include this switch.  Chinese customers must have the msoid attribute set to a special value.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -55,9 +55,9 @@
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="China">
-        <maml:name>21Vianet</maml:name>
+        <maml:name>Use21Vianet</maml:name>
         <maml:description>
-          <maml:para>If your Office 365 tenant is hosted by the 21Vianet, include this switch.  Chinese customers must have the msoid attribute set to a special value.</maml:para>
+          <maml:para>If your Office 365 tenant is hosted by 21Vianet, include this switch.  Chinese customers must have the msoid attribute set to a special value.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -80,29 +80,30 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>Bool</maml:name>
         </dev:type>
         <maml:description>
-          <maml:para></maml:para>
+          <maml:para>True if all DNS records are correct, false otherwise.  If you pass multiple domain names to this cmdlet, the result will consider all domains;  that is, if contoso.com is correct but fabrikam.com is not, the result will be false.</maml:para>
         </maml:description>
       </command:returnValue>
     </command:returnValues>
     <maml:alertSet>
       <maml:alert>
         <maml:para>Starting in early 2023, Microsoft's recommendations changed.  Now, the msoid record should not be defined for any tenants not operated by 21Vianet.  For more information, see: https://learn.microsoft.com/en-gb/microsoft-365/admin/services-in-china/purpose-of-cname?view=o365-21vianet</maml:para>
+        <maml:para>Microsoft Entra ID used to be called Microsoft Azure Active Directory, and previous versions of this cmdlet reflected that.</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Test-AzureADClientConfigurationRecord contoso.com</dev:code>
+        <dev:code>PS C:\&gt; Test-EntraIDClientConfigurationRecord contoso.com</dev:code>
         <dev:remarks>
           <maml:para>Verifies that the DNS CNAME record msoid.contoso.com is correct or missing.</maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
         <maml:title>-------------------------- Example 2 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; "contoso.com","fabrikam.com","tailspintoys.com" | Test-AzureADClientConfigurationRecord</dev:code>
+        <dev:code>PS C:\&gt; "contoso.com","fabrikam.com","tailspintoys.com" | Test-EntraIDClientConfigurationRecord</dev:code>
         <dev:remarks>
           <maml:para>Verifies that the DNS CNAME records msoid.contoso.com, msoid.fabrikam.com, and msoid.tailspintoys.com are correct.</maml:para>
         </dev:remarks>
@@ -111,10 +112,10 @@
     <command:relatedLinks>
       <maml:navigationLink>
         <maml:linkText>Online Version:</maml:linkText>
-        <maml:uri>https://github.com/rhymeswithmogul/Office365DNSChecker/blob/master/man/en-US/Test-AzureADClientConfigurationRecord.md</maml:uri>
+        <maml:uri>https://github.com/rhymeswithmogul/Office365DNSChecker/blob/main/man/en-US/Test-EntraIDClientConfigurationRecord.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Test-AzureADJoinRecords</maml:linkText>
+        <maml:linkText>Test-EntraIDJoinRecords</maml:linkText>
         <maml:uri></maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
@@ -129,113 +130,19 @@
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
-      <command:name>Test-AzureADEnterpriseEnrollmentRecord</command:name>
+      <command:name>Test-EntraIDEnterpriseEnrollmentRecord</command:name>
       <command:verb>Test</command:verb>
-      <command:noun>AzureADEnterpriseEnrollmentRecord</command:noun>
+      <command:noun>EntraIDEnterpriseEnrollmentRecord</command:noun>
       <maml:description>
-        <maml:para>Verifies that a domain's Azure AD enterprise enrollment DNS record is correct.</maml:para>
+        <maml:para>Verifies that a domain's Entra ID enterprise enrollment DNS record is correct.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>This cmdlet checks one or more domains for the presence and correctness of the Azure Active Directory enterprise enrollment DNS record, named enterpriseenrollment.  It should be a CNAME pointing to enterpriseenrollment.manage.microsoft.com.</maml:para>
+      <maml:para>This cmdlet checks one or more domains for the presence and correctness of the Entra ID enterprise enrollment DNS record, named enterpriseenrollment.  It should be a CNAME pointing to enterpriseenrollment.manage.microsoft.com.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
-        <maml:name>Test-AzureADEnterpriseEnrollmentRecord</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="Name">
-          <maml:name>DomainName</maml:name>
-          <maml:description>
-            <maml:para>One or more domain names to check.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
-          <dev:type>
-            <maml:name>String[]</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-      </command:syntaxItem>
-    </command:syntax>
-    <command:parameters>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="Name">
-        <maml:name>DomainName</maml:name>
-        <maml:description>
-          <maml:para>One or more domain names to check.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
-        <dev:type>
-          <maml:name>String[]</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-    </command:parameters>
-    <command:inputTypes>
-      <command:inputType>
-        <dev:type>
-          <maml:name>System.String[]</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:inputType>
-    </command:inputTypes>
-    <command:returnValues />
-    <maml:alertSet>
-      <maml:alert>
-        <maml:para></maml:para>
-      </maml:alert>
-    </maml:alertSet>
-    <command:examples>
-      <command:example>
-        <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
-        <dev:code>C:\PS&gt; Test-AzureADEnterpriseEnrollmentRecord contoso.com</dev:code>
-        <dev:remarks>
-          <maml:para>Verifies that the DNS CNAME record enterpriseenrollment.contoso.com is correct.</maml:para>
-        </dev:remarks>
-      </command:example>
-      <command:example>
-        <maml:title>-------------------------- EXAMPLE 2 --------------------------</maml:title>
-        <dev:code>C:\PS&gt; "contoso.com","fabrikam.com","tailspintoys.com" | Test-AzureADEnterpriseEnrollmentRecord</dev:code>
-        <dev:remarks>
-          <maml:para>Verifies that the DNS CNAME records enterpriseenrollment.contoso.com, enterpriseenrollment.fabrikam.com, and enterpriseenrollment.tailspintoys.com are correct.</maml:para>
-        </dev:remarks>
-      </command:example>
-    </command:examples>
-    <command:relatedLinks>
-      <maml:navigationLink>
-        <maml:linkText>Online Version:</maml:linkText>
-        <maml:uri>https://github.com/rhymeswithmogul/Office365DNSChecker/blob/master/man/en-US/Test-AzureADEnteprriseEnrollmentRecord.md</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Test-AzureADJoinRecords</maml:linkText>
-        <maml:uri></maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Test-Office365DnsRecords</maml:linkText>
-        <maml:uri></maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>about_Office365DnsChecker</maml:linkText>
-        <maml:uri></maml:uri>
-      </maml:navigationLink>
-    </command:relatedLinks>
-  </command:command>
-  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
-    <command:details>
-      <command:name>Test-AzureADEnterpriseRegistrationRecord</command:name>
-      <command:verb>Test</command:verb>
-      <command:noun>AzureADEnterpriseRegistrationRecord</command:noun>
-      <maml:description>
-        <maml:para>Verifies that a domain's Azure AD enterprise registration DNS record is correct.</maml:para>
-      </maml:description>
-    </command:details>
-    <maml:description>
-      <maml:para>This cmdlet checks one or more domains for the presence and correctness of the Azure Active Directory enterprise registration DNS record, named enterpriseregistration.  It should be a CNAME pointing to enterpriseregistration.windows.net.</maml:para>
-    </maml:description>
-    <command:syntax>
-      <command:syntaxItem>
-        <maml:name>Test-AzureADEnterpriseRegistrationRecord</maml:name>
+        <maml:name>Test-EntraIDEnterpriseEnrollmentRecord</maml:name>
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="Name">
           <maml:name>DomainName</maml:name>
           <maml:description>
@@ -274,31 +181,44 @@
         </maml:description>
       </command:inputType>
     </command:inputTypes>
-    <command:returnValues />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Bool</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>True if all DNS records are correct, false otherwise.  If you pass multiple domain names to this cmdlet, the result will consider all domains;  that is, if contoso.com is correct but fabrikam.com is not, the result will be false.</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
-        <maml:para></maml:para>
+        <maml:para>Microsoft Entra ID used to be called Microsoft Azure Active Directory, and previous versions of this cmdlet reflected that.</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
       <command:example>
         <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
-        <dev:code>C:\PS&gt; Test-AzureADEnterpriseRegistrationRecord contoso.com</dev:code>
+        <dev:code>C:\PS&gt; Test-EntraIDEnterpriseEnrollmentRecord contoso.com</dev:code>
         <dev:remarks>
-          <maml:para>Verifies that the DNS CNAME record enterpriseregistration.contoso.com is correct.</maml:para>
+          <maml:para>Verifies that the DNS CNAME record enterpriseenrollment.contoso.com is correct.</maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
         <maml:title>-------------------------- EXAMPLE 2 --------------------------</maml:title>
-        <dev:code>C:\PS&gt; "contoso.com","fabrikam.com","tailspintoys.com" | Test-AzureADEnterpriseRegistrationRecord</dev:code>
+        <dev:code>C:\PS&gt; "contoso.com","fabrikam.com","tailspintoys.com" | Test-EntraIDEnterpriseEnrollmentRecord</dev:code>
         <dev:remarks>
-          <maml:para>Verifies that the DNS CNAME records enterpriseregistration.contoso.com, enterpriseregistration.fabrikam.com, and enterpriseregistration.tailspintoys.com are correct.</maml:para>
+          <maml:para>Verifies that the DNS CNAME records enterpriseenrollment.contoso.com, enterpriseenrollment.fabrikam.com, and enterpriseenrollment.tailspintoys.com are correct.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>Test-AzureADJoinRecords</maml:linkText>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/rhymeswithmogul/Office365DNSChecker/blob/main/man/en-US/Test-EntraIDEnterpriseEnrollmentRecord.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Test-EntraIDJoinRecords</maml:linkText>
         <maml:uri></maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
@@ -313,19 +233,122 @@
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
-      <command:name>Test-AzureADRecords</command:name>
+      <command:name>Test-EntraIDEnterpriseRegistrationRecord</command:name>
       <command:verb>Test</command:verb>
-      <command:noun>AzureADRecords</command:noun>
+      <command:noun>EntraIDEnterpriseRegistrationRecord</command:noun>
       <maml:description>
-        <maml:para>Tests all Azure AD DNS records for correctness.</maml:para>
+        <maml:para>Verifies that a domain's Entra ID enterprise registration DNS record is correct.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>This cmdlet will test the Azure Active Directory client configuration, enterprise enrollment, and enterprise registration DNS records for correctness.</maml:para>
+      <maml:para>This cmdlet checks one or more domains for the presence and correctness of the Entra ID enterprise registration DNS record, named enterpriseregistration. It should be a CNAME pointing to enterpriseregistration.windows.net.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
-        <maml:name>Test-AzureADRecords</maml:name>
+        <maml:name>Test-EntraIDEnterpriseRegistrationRecord</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="Name">
+          <maml:name>DomainName</maml:name>
+          <maml:description>
+            <maml:para>One or more domain names to check.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="Name">
+        <maml:name>DomainName</maml:name>
+        <maml:description>
+          <maml:para>One or more domain names to check.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String[]</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>One or more domain names to check.  This cmdlet accepts pipeline input as well.</maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Bool</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>True if all DNS records are correct, false otherwise.  If you pass multiple domain names to this cmdlet, the result will consider all domains;  that is, if contoso.com is correct but fabrikam.com is not, the result will be false.</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para>Microsoft Entra ID used to be called Microsoft Azure Active Directory, and previous versions of this cmdlet reflected that.</maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
+        <dev:code>C:\PS&gt; Test-EntraIDEnterpriseRegistrationRecord contoso.com</dev:code>
+        <dev:remarks>
+          <maml:para>Verifies that the DNS CNAME record enterpriseregistration.contoso.com is correct.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 2 --------------------------</maml:title>
+        <dev:code>C:\PS&gt; "contoso.com","fabrikam.com","tailspintoys.com" | Test-EntraIDEnterpriseRegistrationRecord</dev:code>
+        <dev:remarks>
+          <maml:para>Verifies that the DNS CNAME records enterpriseregistration.contoso.com, enterpriseregistration.fabrikam.com, and enterpriseregistration.tailspintoys.com are correct.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/rhymeswithmogul/Office365DNSChecker/blob/main/man/en-US/Test-EntraIDEnterpriseRegistrationRecord.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Test-EntraIDJoinRecords</maml:linkText>
+        <maml:uri></maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Test-Office365DnsRecords</maml:linkText>
+        <maml:uri></maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>about_Office365DnsChecker</maml:linkText>
+        <maml:uri></maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Test-EntraIDRecords</command:name>
+      <command:verb>Test</command:verb>
+      <command:noun>EntraIDRecords</command:noun>
+      <maml:description>
+        <maml:para>Tests all Entra ID DNS records for correctness.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>This cmdlet will test the Entra ID client configuration, enterprise enrollment, and enterprise registration DNS records for correctness.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Test-EntraIDRecords</maml:name>
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="Name">
           <maml:name>DomainName</maml:name>
           <maml:description>
@@ -339,9 +362,9 @@
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="China">
-          <maml:name>21Vianet</maml:name>
+          <maml:name>Use21Vianet</maml:name>
           <maml:description>
-            <maml:para>If your Office 365 tenant is hosted by the 21Vianet, include this switch.  Chinese customers must have the msoid attribute set to a special value.</maml:para>
+            <maml:para>If your Office 365 tenant is hosted by 21Vianet, include this switch.  Chinese customers must have the msoid attribute set to a special value.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -365,9 +388,9 @@
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="China">
-        <maml:name>21Vianet</maml:name>
+        <maml:name>Use21Vianet</maml:name>
         <maml:description>
-          <maml:para>If your Office 365 tenant is hosted by the 21Vianet, include this switch.  Chinese customers must have the msoid attribute set to a special value.</maml:para>
+          <maml:para>If your Office 365 tenant is hosted by 21Vianet, include this switch.  Chinese customers must have the msoid attribute set to a special value.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -383,56 +406,57 @@
           <maml:name>System.String[]</maml:name>
         </dev:type>
         <maml:description>
-          <maml:para>One or more domain names to check.</maml:para>
+          <maml:para>One or more domain names to check.  This cmdlet accepts pipeline input as well.</maml:para>
         </maml:description>
       </command:inputType>
     </command:inputTypes>
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>Bool</maml:name>
         </dev:type>
         <maml:description>
-          <maml:para></maml:para>
+          <maml:para>True if all DNS records are correct, false otherwise.  If you pass multiple domain names to this cmdlet, the result will consider all domains;  that is, if contoso.com is correct but fabrikam.com is not, the result will be false.</maml:para>
         </maml:description>
       </command:returnValue>
     </command:returnValues>
     <maml:alertSet>
       <maml:alert>
-        <maml:para>This cmdlet is the same as running Test-AzureADClientConfigurationRecord, Test-AzureADEnterpriseEnrollmentRecord, and Test-AzureADEnterpriseRegistrationRecord.</maml:para>
+        <maml:para>This cmdlet is the same as running Test-EntraIDClientConfigurationRecord, Test-EntraIDEnterpriseEnrollmentRecord, and Test-EntraIDEnterpriseRegistrationRecord.</maml:para>
+        <maml:para>Microsoft Entra ID used to be called Microsoft Azure Active Directory, and previous versions of this cmdlet reflected that.</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Test-AzureADRecords contoso.com</dev:code>
+        <dev:code>PS C:\&gt; Test-EntraIDRecords contoso.com</dev:code>
         <dev:remarks>
           <maml:para>Verifies that the DNS CNAME records enterprisenrollment.contoso.com, enterpriseregistration.contoso.com, and msoid.contoso.com are correct.</maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
         <maml:title>-------------------------- Example 2 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; "contoso.com","fabrikam.com","tailspintoys.com" | Test-AzureADRecords</dev:code>
+        <dev:code>PS C:\&gt; "contoso.com","fabrikam.com","tailspintoys.com" | Test-EntraIDRecords</dev:code>
         <dev:remarks>
-          <maml:para>Verifies that the three Azure AD records for all three domains are correct.</maml:para>
+          <maml:para>Verifies that the three Entra ID records for all three domains are correct.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
         <maml:linkText>Online Version:</maml:linkText>
-        <maml:uri>https://github.com/rhymeswithmogul/Office365DNSChecker/blob/master/man/en-US/Test-AzureADRecords.md</maml:uri>
+        <maml:uri>https://github.com/rhymeswithmogul/Office365DNSChecker/blob/main/man/en-US/Test-EntraIDRecords.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Test-AzureADClientConfigurationRecord</maml:linkText>
+        <maml:linkText>Test-EntraIDClientConfigurationRecord</maml:linkText>
         <maml:uri></maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Test-AzureADEnterpriseEnrollmentRecord</maml:linkText>
+        <maml:linkText>Test-EntraIDEnterpriseEnrollmentRecord</maml:linkText>
         <maml:uri></maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Test-AzureADEnterpriseRegistrationRecord</maml:linkText>
+        <maml:linkText>Test-EntraIDEnterpriseRegistrationRecord</maml:linkText>
         <maml:uri></maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
@@ -491,7 +515,16 @@
         </maml:description>
       </command:inputType>
     </command:inputTypes>
-    <command:returnValues />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Bool</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>True if all DNS records are correct, false otherwise.  If you pass multiple domain names to this cmdlet, the result will consider all domains;  that is, if contoso.com is correct but fabrikam.com is not, the result will be false.</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
         <maml:para>If you have a hybrid Exchange setup, your Autodiscover DNS records may not be pointing directly to Exchange Online.  Use your best judgement when reviewing the opinions of this cmdlet.</maml:para>
@@ -516,7 +549,7 @@
     <command:relatedLinks>
       <maml:navigationLink>
         <maml:linkText>Online Version:</maml:linkText>
-        <maml:uri>https://github.com/rhymeswithmogul/Office365DNSChecker/blob/master/man/en-US/Test-ExchangeOnlineAutodiscoverRecord.md</maml:uri>
+        <maml:uri>https://github.com/rhymeswithmogul/Office365DNSChecker/blob/main/man/en-US/Test-ExchangeOnlineAutodiscoverRecord.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>Test-ExchangeOnlineRecords</maml:linkText>
@@ -614,7 +647,16 @@
         </maml:description>
       </command:inputType>
     </command:inputTypes>
-    <command:returnValues />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Bool</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>True if all DNS records are correct, false otherwise.  If you pass multiple domain names to this cmdlet, the result will consider all domains;  that is, if contoso.com is correct but fabrikam.com is not, the result will be false.</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
         <maml:para>This cmdlet only checks for the presence of what should be a valid DKIM key (that is, a TXT record starting with "v=DKIM1;"). It does not check the record for validity or correctness beyond that.</maml:para>
@@ -639,7 +681,7 @@
     <command:relatedLinks>
       <maml:navigationLink>
         <maml:linkText>Online Version:</maml:linkText>
-        <maml:uri>https://github.com/rhymeswithmogul/Office365DNSChecker/blob/master/man/en-US/Test-ExchangeOnlineDkimRecords.md</maml:uri>
+        <maml:uri>https://github.com/rhymeswithmogul/Office365DNSChecker/blob/main/man/en-US/Test-ExchangeOnlineDkimRecords.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>Get-DkimSigningConfig</maml:linkText>
@@ -673,7 +715,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>This cmdlet checks one or more domains' DNS records for the presence and correctness of the Exchange Online MX record.  The first and only MX record should look something like tenantdomain-com.mail.protection.outlook.com.</maml:para>
+      <maml:para>This cmdlet checks one or more domains' DNS records for the presence and correctness of the Exchange Online MX record.  The first and only MX record should look something like tenantdomain-com.mail.protection.outlook.com or tenantdomain-com.1a2b3c.mx.microsoft.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -690,6 +732,18 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>DANERequired</maml:name>
+          <maml:description>
+            <maml:para>Specify this switch to print a warning if the DNSSEC/DANE-enabled MX endpoints are not in use.  Without this switch, either the non-secure or secure MX names will be considered good.</maml:para>
+            <maml:para>The DNSSEC/DANE-enabled endpoints will not be available for use until March 2024, with general availability in July 2024.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -704,6 +758,19 @@
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>DANERequired</maml:name>
+        <maml:description>
+          <maml:para>Specify this switch to print a warning if the DNSSEC/DANE-enabled MX endpoints are not in use.  Without this switch, either the non-secure or secure MX names will be considered good.</maml:para>
+          <maml:para>The DNSSEC/DANE-enabled endpoints will not be available for use until March 2024, with general availability in July 2024.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
     </command:parameters>
     <command:inputTypes>
@@ -741,7 +808,7 @@
     <command:relatedLinks>
       <maml:navigationLink>
         <maml:linkText>Online Version:</maml:linkText>
-        <maml:uri>https://github.com/rhymeswithmogul/Office365DNSChecker/blob/master/man/en-US/Test-ExchangeOnlineMxRecord.md</maml:uri>
+        <maml:uri>https://github.com/rhymeswithmogul/Office365DNSChecker/blob/main/man/en-US/Test-ExchangeOnlineMxRecord.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>Test-Office365DnsRecords</maml:linkText>
@@ -786,15 +853,28 @@
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>GroupByRecord</maml:name>
+          <maml:name>DANERequired</maml:name>
           <maml:description>
-            <maml:para>{{ Fill GroupByRecord Description }}</maml:para>
+            <maml:para>Specify this switch to print a warning if the DNSSEC/DANE-enabled MX endpoints are not in use.  Without this switch, either the non-secure or secure MX names will be considered good.</maml:para>
+            <maml:para>The DNSSEC/DANE-enabled endpoints will not be available for use until March 2024, with general availability in July 2024.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
+          <maml:name>ProgressAction</maml:name>
+          <maml:description>
+            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
+          <dev:type>
+            <maml:name>ActionPreference</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
       </command:syntaxItem>
     </command:syntax>
@@ -812,9 +892,10 @@
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>GroupByRecord</maml:name>
+        <maml:name>DANERequired</maml:name>
         <maml:description>
-          <maml:para>{{ Fill GroupByRecord Description }}</maml:para>
+          <maml:para>Specify this switch to print a warning if the DNSSEC/DANE-enabled MX endpoints are not in use.  Without this switch, either the non-secure or secure MX names will be considered good.</maml:para>
+          <maml:para>The DNSSEC/DANE-enabled endpoints will not be available for use until March 2024, with general availability in July 2024.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -822,6 +903,18 @@
           <maml:uri />
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
+        <maml:name>ProgressAction</maml:name>
+        <maml:description>
+          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
+        <dev:type>
+          <maml:name>ActionPreference</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
     </command:parameters>
     <command:inputTypes>
@@ -859,7 +952,7 @@
     <command:relatedLinks>
       <maml:navigationLink>
         <maml:linkText>Online Version:</maml:linkText>
-        <maml:uri>https://github.com/rhymeswithmogul/Office365DNSChecker/blob/master/man/en-US/Test-ExchangeOnlineRecords.md</maml:uri>
+        <maml:uri>https://github.com/rhymeswithmogul/Office365DNSChecker/blob/main/man/en-US/Test-ExchangeOnlineRecords.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>Test-ExchangeOnlineAutodiscoverRecord</maml:linkText>
@@ -945,7 +1038,16 @@
         </maml:description>
       </command:inputType>
     </command:inputTypes>
-    <command:returnValues />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Bool</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>True if all DNS records are correct, false otherwise.  If you pass multiple domain names to this cmdlet, the result will consider all domains;  that is, if contoso.com is correct but fabrikam.com is not, the result will be false.</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
         <maml:para>Sender ID records are considered obsolete, in favor of SPF (TXT) records.  You do not need to publish one, and absence of one will not cause this cmdlet print an error. In fact, not publishing one is considered best practice.</maml:para>
@@ -971,7 +1073,7 @@
     <command:relatedLinks>
       <maml:navigationLink>
         <maml:linkText>Online Version:</maml:linkText>
-        <maml:uri>https://github.com/rhymeswithmogul/Office365DNSChecker/blob/master/man/en-US/Test-ExchangeOnlineSenderIdRecord.md</maml:uri>
+        <maml:uri>https://github.com/rhymeswithmogul/Office365DNSChecker/blob/main/man/en-US/Test-ExchangeOnlineSenderIdRecord.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>about_Office365DnsChecker</maml:linkText>
@@ -1071,11 +1173,20 @@
           <maml:name>System.String[]</maml:name>
         </dev:type>
         <maml:description>
-          <maml:para>One or more domain names to check. This cmdlet accepts pipeline input as well.</maml:para>
+          <maml:para>One or more domain names to check.  This cmdlet accepts pipeline input as well.</maml:para>
         </maml:description>
       </command:inputType>
     </command:inputTypes>
-    <command:returnValues />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Bool</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>True if all DNS records are correct, false otherwise.  If you pass multiple domain names to this cmdlet, the result will consider all domains;  that is, if contoso.com is correct but fabrikam.com is not, the result will be false.</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
         <maml:para>When SPF was first introduced, it was intended that you put your SPF record into a DNS resource record of type SPF (99).  This was deprecated in favor of the SPF TXT record.  It is no longer recommended to have an SPF record with RR type SPF.  Due to limitations, this cmdlet is only capable of evaluating the record type that matters, the TXT record.</maml:para>
@@ -1100,7 +1211,7 @@
     <command:relatedLinks>
       <maml:navigationLink>
         <maml:linkText>Online Version:</maml:linkText>
-        <maml:uri>https://github.com/rhymeswithmogul/Office365DNSChecker/blob/master/man/en-US/Test-ExchangeOnlineSpfRecord.md</maml:uri>
+        <maml:uri>https://github.com/rhymeswithmogul/Office365DNSChecker/blob/main/man/en-US/Test-ExchangeOnlineSpfRecord.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>Test-ExchangeOnlineRecords</maml:linkText>
@@ -1130,7 +1241,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>This cmdlet will check for the presence and correctness of all of one or more domains' DNS records that support all of Office 365's services, including Azure AD, Exchange Online, Microsoft Teams, and Skype for Business.</maml:para>
+      <maml:para>This cmdlet will check for the presence and correctness of all of one or more domains' DNS records that support all of Office 365's services, including Entra ID, Exchange Online, Microsoft Teams, and Skype for Business.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1148,9 +1259,20 @@
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="China">
-          <maml:name>21Vianet</maml:name>
+          <maml:name>Use21Vianet</maml:name>
           <maml:description>
-            <maml:para>If your Office 365 tenant is hosted by the 21Vianet, include this switch.  Chinese customers must have the msoid attribute set to a special value.</maml:para>
+            <maml:para>If your Office 365 tenant is hosted by 21Vianet, include this switch.  Chinese customers must have the msoid attribute set to a special value.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>DANERequired</maml:name>
+          <maml:description>
+            <maml:para>To make the use of the legacy MX endpoint (i.e., contoso-com.mail.protection.outlook.com) a warning instead of a passing message, include this parameter.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -1174,9 +1296,21 @@
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="China">
-        <maml:name>21Vianet</maml:name>
+        <maml:name>Use21Vianet</maml:name>
         <maml:description>
-          <maml:para>If your Office 365 tenant is hosted by the 21Vianet, include this switch.  Chinese customers must have the msoid attribute set to a special value.</maml:para>
+          <maml:para>If your Office 365 tenant is hosted by 21Vianet, include this switch.  Chinese customers must have the msoid attribute set to a special value.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>DANERequired</maml:name>
+        <maml:description>
+          <maml:para>To make the use of the legacy MX endpoint (i.e., contoso-com.mail.protection.outlook.com) a warning instead of a passing message, include this parameter.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -1196,10 +1330,19 @@
         </maml:description>
       </command:inputType>
     </command:inputTypes>
-    <command:returnValues />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Bool</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>True if all DNS records are correct, false otherwise.  If you pass multiple domain names to this cmdlet, the result will consider all domains;  that is, if contoso.com is correct but fabrikam.com is not, the result will be false.</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
-        <maml:para></maml:para>
+        <maml:para>Microsoft Entra ID used to be called Microsoft Azure Active Directory, and previous versions of this cmdlet reflected that.</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -1247,14 +1390,14 @@ Create a SRV record for _sipfederationtls._tcp.woodgrovebank.com (port 5061) poi
     <command:relatedLinks>
       <maml:navigationLink>
         <maml:linkText>Online Version:</maml:linkText>
-        <maml:uri>https://github.com/rhymeswithmogul/Office365DNSChecker/blob/master/man/en-US/Test-Office365DNSRecords.md</maml:uri>
+        <maml:uri>https://github.com/rhymeswithmogul/Office365DNSChecker/blob/main/man/en-US/Test-Office365DNSRecords.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>about_Office365DnsChecker</maml:linkText>
         <maml:uri></maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Test-AzureADJoinRecords</maml:linkText>
+        <maml:linkText>Test-EntraIDJoinRecords</maml:linkText>
         <maml:uri></maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
@@ -1320,7 +1463,16 @@ Create a SRV record for _sipfederationtls._tcp.woodgrovebank.com (port 5061) poi
         </maml:description>
       </command:inputType>
     </command:inputTypes>
-    <command:returnValues />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Bool</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>True if all DNS records are correct, false otherwise.  If you pass multiple domain names to this cmdlet, the result will consider all domains;  that is, if contoso.com is correct but fabrikam.com is not, the result will be false.</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
         <maml:para></maml:para>
@@ -1345,7 +1497,7 @@ Create a SRV record for _sipfederationtls._tcp.woodgrovebank.com (port 5061) poi
     <command:relatedLinks>
       <maml:navigationLink>
         <maml:linkText>Online Version:</maml:linkText>
-        <maml:uri>https://github.com/rhymeswithmogul/Office365DNSChecker/blob/master/man/en-US/Test-TeamsAutodiscoverRecords.md</maml:uri>
+        <maml:uri>https://github.com/rhymeswithmogul/Office365DNSChecker/blob/main/man/en-US/Test-TeamsAutodiscoverRecords.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>Test-TeamsRecords</maml:linkText>
@@ -1414,7 +1566,16 @@ Create a SRV record for _sipfederationtls._tcp.woodgrovebank.com (port 5061) poi
         </maml:description>
       </command:inputType>
     </command:inputTypes>
-    <command:returnValues />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Bool</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>True if all DNS records are correct, false otherwise.  If you pass multiple domain names to this cmdlet, the result will consider all domains;  that is, if contoso.com is correct but fabrikam.com is not, the result will be false.</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
         <maml:para>Some phone systems, as well as Skype for Business Server and Lync Server, may require these DNS records to be intentionally incorrect.  Thus, incorrect DNS records may not print an error message, only a warning.</maml:para>
@@ -1440,7 +1601,7 @@ Create a SRV record for _sipfederationtls._tcp.woodgrovebank.com (port 5061) poi
     <command:relatedLinks>
       <maml:navigationLink>
         <maml:linkText>Online Version:</maml:linkText>
-        <maml:uri>https://github.com/rhymeswithmogul/Office365DNSChecker/blob/master/man/en-US/Test-TeamsRecords.md</maml:uri>
+        <maml:uri>https://github.com/rhymeswithmogul/Office365DNSChecker/blob/main/man/en-US/Test-TeamsRecords.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>about_Office365DnsChecker</maml:linkText>
@@ -1513,11 +1674,20 @@ Create a SRV record for _sipfederationtls._tcp.woodgrovebank.com (port 5061) poi
           <maml:name>System.String[]</maml:name>
         </dev:type>
         <maml:description>
-          <maml:para>One or more domain names to check. This cmdlet accepts pipeline input as well.</maml:para>
+          <maml:para>One or more domain names to check.  This cmdlet accepts pipeline input as well.</maml:para>
         </maml:description>
       </command:inputType>
     </command:inputTypes>
-    <command:returnValues />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Bool</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>True if all DNS records are correct, false otherwise.  If you pass multiple domain names to this cmdlet, the result will consider all domains;  that is, if contoso.com is correct but fabrikam.com is not, the result will be false.</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
         <maml:para></maml:para>
@@ -1542,7 +1712,7 @@ Create a SRV record for _sipfederationtls._tcp.woodgrovebank.com (port 5061) poi
     <command:relatedLinks>
       <maml:navigationLink>
         <maml:linkText>Online Version:</maml:linkText>
-        <maml:uri>https://github.com/rhymeswithmogul/Office365DNSChecker/blob/master/man/en-US/Test-TeamsSipCnameRecord.md</maml:uri>
+        <maml:uri>https://github.com/rhymeswithmogul/Office365DNSChecker/blob/main/man/en-US/Test-TeamsSipCnameRecord.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>Test-TeamsRecords</maml:linkText>
@@ -1611,7 +1781,16 @@ Create a SRV record for _sipfederationtls._tcp.woodgrovebank.com (port 5061) poi
         </maml:description>
       </command:inputType>
     </command:inputTypes>
-    <command:returnValues />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Bool</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>True if all DNS records are correct, false otherwise.  If you pass multiple domain names to this cmdlet, the result will consider all domains;  that is, if contoso.com is correct but fabrikam.com is not, the result will be false.</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
         <maml:para>If you are using another SIP service in addition to Microsoft Teams or Skype for Business Online (such as an on-premises Skype for Business Server), then you might have extra _sipfederationtls._tcp SRV records.  While not recommended, it is not incorrect, as long as the lowest-priority service is always the one for Microsoft Teams/Skype for Business Online.</maml:para>
@@ -1636,7 +1815,7 @@ Create a SRV record for _sipfederationtls._tcp.woodgrovebank.com (port 5061) poi
     <command:relatedLinks>
       <maml:navigationLink>
         <maml:linkText>Online Version:</maml:linkText>
-        <maml:uri>https://github.com/rhymeswithmogul/Office365DNSChecker/blob/master/man/en-US/Test-TeamsSipFederationSrvRecord.md</maml:uri>
+        <maml:uri>https://github.com/rhymeswithmogul/Office365DNSChecker/blob/main/man/en-US/Test-TeamsSipFederationSrvRecord.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>Test-TeamsRecords</maml:linkText>
@@ -1705,7 +1884,16 @@ Create a SRV record for _sipfederationtls._tcp.woodgrovebank.com (port 5061) poi
         </maml:description>
       </command:inputType>
     </command:inputTypes>
-    <command:returnValues />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Bool</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>True if all DNS records are correct, false otherwise.  If you pass multiple domain names to this cmdlet, the result will consider all domains;  that is, if contoso.com is correct but fabrikam.com is not, the result will be false.</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
         <maml:para>If you are using another SIP service in addition to Microsoft Teams or Skype for Business Online, then you might have extra _sip._tls SRV records.  While not recommended, it is not incorrect, as long as the lowest-priority service is always the one for Microsoft Teams/Skype for Business Online.</maml:para>
@@ -1730,7 +1918,7 @@ Create a SRV record for _sipfederationtls._tcp.woodgrovebank.com (port 5061) poi
     <command:relatedLinks>
       <maml:navigationLink>
         <maml:linkText>Online Version:</maml:linkText>
-        <maml:uri>https://github.com/rhymeswithmogul/Office365DNSChecker/blob/master/man/en-US/Test-TeamsSipSrvRecord.md</maml:uri>
+        <maml:uri>https://github.com/rhymeswithmogul/Office365DNSChecker/blob/main/man/en-US/Test-TeamsSipSrvRecord.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>Test-TeamsRecords</maml:linkText>

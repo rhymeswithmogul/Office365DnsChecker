@@ -14,28 +14,28 @@ LONG DESCRIPTION
 
 	The above cmdlet works by calling these three cmdlets, which can be used to
 	test Office 365's three major services independently:
-		1. Test-AzureADRecords
+		1. Test-EntraIDRecords
 		2. Test-ExchangeOnlineRecords
 		3. Test-TeamsRecords
 		
 	Finally, the above three cmdlets themselves call the following cmdlets.  To
 	test a single DNS record on its own, use one of these:
-		1. Azure Active Directory's client configuration record (optional for
-		   all users, but required by 21Vianet customers):
-			Cmdlet = Test-AzureADClientConfigurationRecord
+		1. Entra ID's client configuration record (optional for all users, but
+		   required by 21Vianet customers):
+			Cmdlet = Test-EntraIDClientConfigurationRecord
 			Name   = msoid
 			Type   = CNAME
 			Target = clientconfig.partner.microsoftonline-p.net.cn. (21Vianet)
 			         clientconfig.microsoftonline-p.net. (rest of world)
 			
-		2. Azure Active Directory's enterprise enrollment record:
-			Cmdlet = Test-AzureADEnterpriseEnrollmentRecord
+		2. Entra ID's enterprise enrollment record:
+			Cmdlet = Test-EntraIDEnterpriseEnrollmentRecord
 			Name   = enterpriseenrollment
 			Type   = CNAME
 			Target = enterpriseenrollment.manage.microsoft.com.
 			
-		3. Azure Active Directory's enterprise registration record:
-			Cmdlet = Test-AzureADEnterpriseRegistrationRecord
+		3. Entra ID's enterprise registration record:
+			Cmdlet = Test-EntraIDEnterpriseRegistrationRecord
 			Name   = enterpriseregistration
 			Type   = CNAME
 			Target = enterpriseregistration.windows.net.
@@ -83,11 +83,16 @@ LONG DESCRIPTION
 			exact value, consult the Microsoft 365 Admin Center's Domains page.
 			
 			For illustrative purposes, the MX record for the domain contoso.com
-			would probably be "contoso-com.mail.protection.outlook.com."
+			would probably be "contoso-com.1a2b3c.mx.microsoft", or it'd be the
+			older unsigned "contoso-com.mail.protection.outlook.com."
 			
 			As this value can be somewhat unpredictable, this check will only
-			verify that there is exactly one MX record, and that is ends with
-			".mail.protection.outlook.com."
+			verify that there is exactly one MX record, and that it ends with
+			".mail.protection.outlook.com" or ".mx.microsoft".
+
+			DANE-enabled records (the ones in the mx.microsoft zone) are not the
+			default options at this time.  However, use the -DaneRequired switch
+			to print warnings when the DANE-enabled MX records are not in use.
 			
 			If there are no MX records present, or if there are additional ones
 			in addition to the correct MX record, then that will cause an error
@@ -221,10 +226,12 @@ KEYWORDS
 	Some keywords that you might use to search for this module include:
 	
 		Office 365, DNS, CNAME, SRV, service, TXT, text, RR;
-		Azure AD, AAD, join, hybrid join, registered, client configuration,
-		msoid, enterprise enrollment, enterprise registration, 21Vianet;
+		Azure AD, AAD, Entra, Entra ID, join, hybrid join, registered, msoid,
+		client configuration, enterprise enrollment, enterprise registration,
+		21Vianet;
 		Exchange Online, SPF, Sender ID, DKIM, DomainKeys, Autodiscover,
-		Outlook, Anywhere, ActiveSync, EAS, EWS, MX record, mail exchanger;
+		Outlook, Anywhere, ActiveSync, EAS, EWS, MX record, mail exchanger,
+		DANE, DNSSEC;
 		Microsoft Teams, Teams, Skype for Business, Skype for Business Online,
 		Lync, Lync Online, SIP, federation, SIPFederationTLS, TCP, TLS,
 		LyncDiscover.

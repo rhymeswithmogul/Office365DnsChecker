@@ -1,9 +1,23 @@
 # Office365DnsChecker Change Log
 
-## Recent changes
+## Next version
+- FIXED: `Test-EntraIDRecords`, `Test-ExchangeOnlineRecords`, and `Test-TeamsRecords` did not return the correct `$true`/`$false` value.
+- FIXED: All `PSScriptAnalyzer` warnings and informational guidelines have been either fixed or suppressed.
+
+## Version 2.0.0 (January 18, 2024)
+- NEW: Rename all instances of Azure AD to Entra ID, including cmdlet names.  Aliases have been added for the old names."
+- NEW: Add support for Microsoft's [new MX records that support DANE and DNSSEC](https://techcommunity.microsoft.com/t5/exchange-team-blog/implementing-inbound-smtp-dane-with-dnssec-for-exchange-online/ba-p/3939694).  Note that this does not go live until March 2024 (as a preview), so there may be bugs that we don't yet know about.
+- NEW: `Test-ExchangeOnlineMxRecords`, `Test-ExchangeOnlineRecords`, and `Test-Office365DnsRecords` now support a new `-DANERequired` parameter that prints a warning if the DANE-enabled MX endpoint is *not* in use.
+- NEW: Cmdlets now return true or false, depending on the results.  Thanks to @o-l-a-v for suggesting this in issue #1.
+- FIXED: Some Entra cmdlets were failing to load online help.
+- Update copyright year.
+
+## Version 1.1.0 (June 1, 2023)
 - NEW: Add support for checking DNS records for Office 365 hosted by 21Vianet.
 - ENHANCEMENT: The Azure AD client configuration record check now passes if the `msoid` record is missing.  As of <time datetime="2023-02-16">early 2023</time>, this DNS record is only required to be set when Office 365 is managed by 21Vianet.
-- FIXED: Fixed a bug where other implementations of `Resolve-DnsName`, if present, may cause an infinite loop on macOS and Linux platforms.
+- FIXED: On a small number of configurations, DNS resolution would enter an infinite loop.  This would happen if you were running macOS or Linux, and had an alternative implementation of `Resolve-DnsName`.  Now, the only cmdlet we'll use is `DnsClient` (if present) before falling back to the built-in DNS resolver.
+- Code cleanup.
+- Renamed the main Git branch from `master` to `main`.
 
 ## Version 1.0.4 (June 1, 2023)
 - NEW: Added online help.

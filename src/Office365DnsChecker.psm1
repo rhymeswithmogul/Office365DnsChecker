@@ -1,6 +1,6 @@
 <#
-Office365DnsChecker 
-Copyright (C) 2019-2023 Colin Cogle. All Rights Reserved.
+Office365DnsChecker
+Copyright (C) 2019-2024 Colin Cogle. All Rights Reserved.
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU Affero General Public License as published by the Free
@@ -23,11 +23,12 @@ Set-StrictMode -Version Latest
 
 Function Test-Office365DNSRecords
 {
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', 'DANERequired', Justification='This parameter is used in the Process block.')]
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', 'Use21Vianet',  Justification='This parameter is used in the Process block.')]
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'result', Justification='$result is assigned and used across the Begin/Process/End blocks.')]
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '', Justification='We are testing multiple DNS records.')]
 	[CmdletBinding()]
-	[Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-		'PSUseSingularNouns', '',
-		Justification='We are testing multiple DNS records.'
-	)]
+	[OutputType([Bool])]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias('Name')]
@@ -35,17 +36,28 @@ Function Test-Office365DNSRecords
 		[String[]] $DomainName,
 
 		[Alias('China')]
-		[Switch] $Use21Vianet
+		[Switch] $Use21Vianet,
+
+		[Switch] $DANERequired
 	)
+
+	Begin
+	{
+		$result = $true
+	}
 
 	Process
 	{
 		$DomainName | ForEach-Object {
 			Write-Output "Checking Office 365 DNS records for $_."
-			Test-AzureADRecords -DomainName $_ -Use21Vianet:$Use21Vianet | Out-Null
-			Test-ExchangeOnlineRecords -DomainName $_ | Out-Null
-			Test-TeamsRecords -DomainName $_ | Out-Null
+			$result = Test-EntraIDRecords -DomainName $_ -Use21Vianet:$Use21Vianet | Out-Null
+			$result = Test-ExchangeOnlineRecords -DomainName $_ -DANERequired:$DANERequired | Out-Null
+			$result = Test-TeamsRecords -DomainName $_ | Out-Null
 		}
+	}
+
+	End {
+		Return $result
 	}
 }
 
@@ -53,7 +65,7 @@ Function Test-Office365DNSRecords
 Function Resolve-DNSNameCrossPlatform
 {
 	Param(
-		[Parameter(Mandatory, Position=0, ValueFromPipeline)]
+		[Parameter(Mandatory, Position=0)]
 		[ValidateNotNullOrEmpty()]
 		[String] $Name,
 
@@ -94,7 +106,7 @@ Function Resolve-DNSNameCrossPlatform
 				Return $dnsLookup | Where-Object {$_ -Is [Microsoft.DnsClient.Commands.DnsRecord_TXT]}
 			}
 		}
-		Return 
+		Return
 	}
 	# If Resolve-DnsName is not available, we need to use the system's copy of dig,
 	# and try to emulate the style of output that Resolve-DnsName creates.
@@ -143,10 +155,10 @@ Function Resolve-DNSNameCrossPlatform
 				$SRVs = @()
 				$dnsLookup | ForEach-Object {
 					$splits = -Split $_
-					
+
 					# dig always returns fully-qualified hostnames.
 					# Strip that trailing dot to return results like Resolve-DnsName does.
-					$NameTarget = $splits[3] -Replace [RegEx]"\.$" 
+					$NameTarget = $splits[3] -Replace [RegEx]"\.$"
 					$Priority   = $splits[0] -As [Int]
 					$Weight     = $splits[1] -As [Int]
 					$Port       = $splits[2] -As [Int]
@@ -180,6 +192,8 @@ Function Resolve-DNSNameCrossPlatform
 
 Function Write-Success
 {
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '', Justification='I need a PS 5.1-compatible way to show colored output.')]
+	[OutputType([Void])]
 	Param(
 		[Parameter(Position=0)]
 		[Alias('Object')]
@@ -196,17 +210,16 @@ Function Write-Success
 	{
 		Write-Host -ForegroundColor Green -Object "SUCCESS: $Message"
 	}
-	
 }
 #endregion Helper cmdlets
 
-#region Azure AD cmdlets
-Function Test-AzureADRecords
+#region Entra cmdlets
+Function Test-EntraIDRecords
 {
-	[Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-		'PSUseSingularNouns', '',
-		Justification='We are testing multiple DNS records.'
-	)]
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', 'Use21Vianet', Justification='This parameter is used in the Process block.')]
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '', Justification='We are testing multiple DNS records.')]
+	[Alias('Test-AzureADRecords')]
+	[OutputType([Bool])]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias('Name')]
@@ -217,19 +230,30 @@ Function Test-AzureADRecords
 		[Switch] $Use21Vianet
 	)
 
+	Begin {
+		$result = $true
+	}
+
 	Process
 	{
 		$DomainName | ForEach-Object {
-			Test-AzureADClientConfigurationRecord -DomainName $_ -Use21Vianet:$Use21Vianet
-			Test-AzureADEnterpriseEnrollmentRecord -DomainName $_
-			Test-AzureADEnterpriseRegistrationRecord -DomainName $_
+			$result = $result -and (Test-EntraIDClientConfigurationRecord -DomainName $_ -Use21Vianet:$Use21Vianet)
+			$result = $result -and (Test-EntraIDEnterpriseEnrollmentRecord -DomainName $_)
+			$result = $result -and (Test-EntraIDEnterpriseRegistrationRecord -DomainName $_)
 		}
+	}
+
+	End {
+		Return $result
 	}
 }
 
-Function Test-AzureADClientConfigurationRecord
+Function Test-EntraIDClientConfigurationRecord
 {
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'result', Justification='$result is assigned and used across the Begin/Process/End blocks.')]
+	[Alias('Test-AzureADClientConfigurationRecord')]
 	[CmdletBinding()]
+	[OutputType([Bool])]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias('Name')]
@@ -242,6 +266,8 @@ Function Test-AzureADClientConfigurationRecord
 
 	Begin
 	{
+		$result = $true
+
 		$shouldBe = 'clientconfig.microsoftonline-p.net'
 		If ($Use21Vianet) {
 			$shouldBe = 'clientconfig.partner.microsoftonline-p.net.cn'
@@ -261,7 +287,7 @@ Function Test-AzureADClientConfigurationRecord
 			# if this DNS record is missing.
 			If (-Not $dnsLookup -and -Not $Use21Vianet)
 			{
-				Write-Success -Product 'Azure AD' 'The client configuration CNAME record is not present.'
+				Write-Success -Product 'Entra ID' 'The client configuration CNAME record is not present.'
 			}
 
 			# However, if it exists and is not set to the default value of
@@ -280,22 +306,30 @@ Function Test-AzureADClientConfigurationRecord
 				}
 				Write-Error @errorReport
 				Write-Information $errorReport.RecommendedAction
+				$result = $false
 			}
 			Else
 			{
 				If ($Use21Vianet) {
-					Write-Success -Product 'Azure AD' 'The client configuration CNAME record is present and correct for 21Vianet.'
+					Write-Success -Product 'Entra ID' 'The client configuration CNAME record is present and correct for 21Vianet.'
 				}
 				Else {
-					Write-Success -Product 'Azure AD' 'The client configuration CNAME record is present, but correct.'
+					Write-Success -Product 'Entra ID' 'The client configuration CNAME record is present, but correct.'
 				}
 			}
 		}
 	}
+
+	End {
+		Return $result
+	}
 }
 
-Function Test-AzureADEnterpriseEnrollmentRecord
+Function Test-EntraIDEnterpriseEnrollmentRecord
 {
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'result', Justification='$result is assigned and used across the Begin/Process/End blocks.')]
+	[Alias('Test-AzureADEnterpriseEnrollmentRecord')]
+	[OutputType([Bool])]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias('Name')]
@@ -305,12 +339,13 @@ Function Test-AzureADEnterpriseEnrollmentRecord
 
 	Begin
 	{
+		$result   = $true
 		$shouldBe = 'enterpriseenrollment.manage.microsoft.com'
 	}
 
 	Process {
 		$DomainName | ForEach-Object {
-			Write-Output "Checking AAD enterprise enrollment record for $_"
+			Write-Output "Checking Entra ID enterprise enrollment record for $_"
 			$record = "enterpriseenrollment.$_"
 			$dnsLookup = Resolve-DnsNameCrossPlatform -Type CNAME -Name $record
 
@@ -328,6 +363,7 @@ Function Test-AzureADEnterpriseEnrollmentRecord
 				}
 				Write-Error @errorReport
 				Write-Information $errorReport.RecommendedAction
+				$result = $false
 			}
 			ElseIf ($dnsLookup.NameHost -ne $shouldBe)
 			{
@@ -343,17 +379,25 @@ Function Test-AzureADEnterpriseEnrollmentRecord
 				}
 				Write-Error @errorReport
 				Write-Information $errorReport.RecommendedAction
+				$result = $false
 			}
 			Else
 			{
-				Write-Success -Product 'Azure AD' 'The enterprise enrollment DNS record is correct.'
+				Write-Success -Product 'Entra ID' 'The enterprise enrollment DNS record is correct.'
 			}
 		}
 	}
+
+	End {
+		Return $result
+	}
 }
 
-Function Test-AzureADEnterpriseRegistrationRecord
+Function Test-EntraIDEnterpriseRegistrationRecord
 {
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'result', Justification='$result is assigned and used across the Begin/Process/End blocks.')]
+	[Alias('Test-AzureADEnterpriseRegistrationRecord')]
+	[OutputType([Bool])]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias('Name')]
@@ -363,13 +407,14 @@ Function Test-AzureADEnterpriseRegistrationRecord
 
 	Begin
 	{
+		$result   = $true
 		$shouldBe = 'enterpriseregistration.windows.net'
 	}
 
 	Process
 	{
 		$DomainName | ForEach-Object {
-			Write-Output "Checking AAD enterprise registration record for $_"
+			Write-Output "Checking Entra ID enterprise registration record for $_"
 
 			$record = "enterpriseregistration.$_"
 			$dnsLookup = Resolve-DnsNameCrossPlatform -Type CNAME -Name $record
@@ -388,6 +433,7 @@ Function Test-AzureADEnterpriseRegistrationRecord
 				}
 				Write-Error @errorReport
 				Write-Information $errorReport.RecommendedAction
+				$result = $false
 			}
 			ElseIf ($dnsLookup.NameHost -ne $shouldBe)
 			{
@@ -403,46 +449,61 @@ Function Test-AzureADEnterpriseRegistrationRecord
 				}
 				Write-Error @errorReport
 				Write-Information $errorReport.RecommendedAction
+				$result = $false
 			}
 			Else
 			{
-				Write-Success -Product 'Azure AD' 'The enterprise registration DNS record is correct.'
+				Write-Success -Product 'Entra ID' 'The enterprise registration DNS record is correct.'
 			}
 		}
 	}
+
+	End {
+		Return $result
+	}
 }
-#endregion Azure AD cmdlets
+#endregion Entra ID cmdlets
 
 #region Exchange Online cmdlets
 Function Test-ExchangeOnlineRecords
 {
-	[Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-		'PSUseSingularNouns', '',
-		Justification='We are testing multiple DNS records.'
-	)]
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', 'DANERequired', Justification='This parameter is used in the Process block.')]
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'result', Justification='$result is assigned and used across the Begin/Process/End blocks.')]
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '', Justification='We are testing multiple DNS records.')]
+	[OutputType([Bool])]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias('Name')]
 		[ValidateNotNullOrEmpty()]
 		[String[]] $DomainName,
 
-		[Switch] $GroupByRecord
+		[Switch] $DANERequired
 	)
+
+	Begin {
+		$result = $true
+	}
 
 	Process
 	{
 		$DomainName | ForEach-Object {
-			Test-ExchangeOnlineMxRecord -DomainName $_
-			Test-ExchangeOnlineAutodiscoverRecord -DomainName $_
-			Test-ExchangeOnlineSpfRecord -DomainName $_
-			Test-ExchangeOnlineSenderIdRecord -DomainName $_
-			Test-ExchangeOnlineDkimRecords -DomainName $_
+			$result = $result -and (Test-ExchangeOnlineMxRecord -DomainName $_ -DANERequired:$DANERequired)
+			$result = $result -and (Test-ExchangeOnlineAutodiscoverRecord -DomainName $_)
+			$result = $result -and (Test-ExchangeOnlineSpfRecord -DomainName $_)
+			$result = $result -and (Test-ExchangeOnlineSenderIdRecord -DomainName $_)
+			$result = $result -and (Test-ExchangeOnlineDkimRecords -DomainName $_)
 		}
+	}
+
+	End {
+		Return $result
 	}
 }
 
 Function Test-ExchangeOnlineAutodiscoverRecord
 {
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'result', Justification='$result is assigned and used across the Begin/Process/End blocks.')]
+	[OutputType([Bool])]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias('Name')]
@@ -452,6 +513,7 @@ Function Test-ExchangeOnlineAutodiscoverRecord
 
 	Begin
 	{
+		$result    = $true
 		$shouldBe  = 'autodiscover.outlook.com'
 	}
 
@@ -476,6 +538,7 @@ Function Test-ExchangeOnlineAutodiscoverRecord
 				}
 				Write-Error @errorReport
 				Write-Information $errorReport.RecommendedAction
+				$result = $false
 			}
 			ElseIf ($dnsLookup.NameHost -ne $shouldBe)
 			{
@@ -491,6 +554,7 @@ Function Test-ExchangeOnlineAutodiscoverRecord
 				}
 				Write-Error @errorReport
 				Write-Information $errorReport.RecommendedAction
+				$result = $false
 			}
 			Else
 			{
@@ -513,6 +577,7 @@ Function Test-ExchangeOnlineAutodiscoverRecord
 				}
 				Write-Error @errorReport
 				Write-Information $errorReport.RecommendedAction
+				$result = $false
 			}
 			Else
 			{
@@ -520,14 +585,18 @@ Function Test-ExchangeOnlineAutodiscoverRecord
 			}
 		}
 	}
+
+	End {
+		Return $result
+	}
 }
 
 Function Test-ExchangeOnlineDkimRecords
 {
-	[Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-		'PSUseSingularNouns', '',
-		Justification='We are testing multiple DNS records.'
-	)]
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', 'Selectors', Justification='This parameter is used in the Process block.')]
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'result', Justification='$result is assigned and used across the Begin/Process/End blocks.')]
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '', Justification='We are testing multiple DNS records.')]
+	[OutputType([Bool])]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias('Name')]
@@ -538,6 +607,10 @@ Function Test-ExchangeOnlineDkimRecords
 		[ValidateSet(1,2)]
 		[Int[]] $Selectors = @(1,2)
 	)
+
+	Begin {
+		$result = $true
+	}
 
 	Process
 	{
@@ -563,6 +636,7 @@ Function Test-ExchangeOnlineDkimRecords
 					}
 					Write-Error @errorReport
 					Write-Information $errorReport.RecommendedAction
+					$result = $false
 				}
 				ElseIf ($dnsCnameLookup.NameHost -NotLike $shouldBeLike)
 				{
@@ -579,6 +653,7 @@ Function Test-ExchangeOnlineDkimRecords
 					}
 					Write-Error @errorReport
 					Write-Information $errorReport.RecommendedAction
+					$result = $false
 				}
 				Else
 				{
@@ -605,6 +680,7 @@ Function Test-ExchangeOnlineDkimRecords
 						}
 						Write-Error @errorReport
 						Write-Information $errorReport.RecommendedAction
+						$result = $false
 						Continue
 					}
 
@@ -628,6 +704,7 @@ Function Test-ExchangeOnlineDkimRecords
 							}
 							Write-Error @errorReport
 							Write-Information $errorReport.RecommendedAction
+							$result = $false
 							Continue
 						}
 					}
@@ -648,6 +725,7 @@ Function Test-ExchangeOnlineDkimRecords
 						}
 						Write-Error @errorReport
 						Write-Information $errorReport.RecommendedAction
+						$result = $false
 						Continue
 					}
 
@@ -656,16 +734,31 @@ Function Test-ExchangeOnlineDkimRecords
 			}
 		}
 	}
+
+	End {
+		Return $result
+	}
 }
 
 Function Test-ExchangeOnlineMxRecord
 {
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', 'DANERequired', Justification='This parameter is used in the Process block.')]
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'result', Justification='$result is assigned and used across the Begin/Process/End blocks.')]
+	[OutputType([Bool])]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias('Name')]
 		[ValidateNotNullOrEmpty()]
-		[String[]] $DomainName
+		[String[]] $DomainName,
+
+		[Switch] $DANERequired
 	)
+
+	Begin {
+		# Note that there are valid reasons why we might not be using
+		# Microsoft's MX record.  Warnings will not set $result to $false.
+		$result = $true
+	}
 
 	Process
 	{
@@ -688,6 +781,7 @@ Function Test-ExchangeOnlineMxRecord
 				}
 				Write-Error @errorReport
 				Write-Information $errorReport.RecommendedAction
+				$result = $false
 			}
 			ElseIf (($dnsLookup | Measure-Object | Select-Object -ExpandProperty Count) -eq 1)
 			{
@@ -703,7 +797,18 @@ Function Test-ExchangeOnlineMxRecord
 			{
 				If ($dnsLookup[0].NameExchange -Like '*.mail.protection.outlook.com')
 				{
-				Write-Success -Product 'Exchange Online' "The first MX record for the domain $_ appears correct."
+					$msg = "The first MX record for the domain $_ appears correct, but DANE/DNSSEC are NOT supported."
+
+					If ($DANERequired) {
+						Write-Warning -Product 'Exchange Online' $msg
+					}
+					Else {
+						Write-Success -Product 'Exchange Online' $msg
+					}
+				}
+				ElseIf ($dnsLookup[0].NameExchange -Like '*.mx.microsoft')
+				{
+					Write-Success -Product 'Exchange Online' "The first MX record for the domain $_ appears correct, and DANE/DNSSEC are supported."
 				}
 				Else
 				{
@@ -712,22 +817,40 @@ Function Test-ExchangeOnlineMxRecord
 			}
 		}
 	}
+
+	End {
+		Return $result
+	}
 }
 
 Function Test-ExchangeOnlineSenderIdRecord
 {
+	[OutputType([Bool])]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias('Name')]
 		[ValidateNotNullOrEmpty()]
 		[String[]] $DomainName
 	)
-	Test-ExchangeOnlineSpfRecord -DomainName $DomainName -SpfOrSenderID 'Sender ID'
+
+	Begin {
+		$result = $true
+	}
+
+	Process {
+		$result = $result -and (Test-ExchangeOnlineSpfRecord -DomainName $DomainName -SpfOrSenderID 'Sender ID')
+	}
+
+	End {
+		Return $result
+	}
 }
 
 Function Test-ExchangeOnlineSpfRecord
 {
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'result', Justification='$result is assigned and used across the Begin/Process/End blocks.')]
 	[CmdletBinding()]
+	[OutputType([Bool])]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias('Name')]
@@ -740,6 +863,8 @@ Function Test-ExchangeOnlineSpfRecord
 
 	Begin
 	{
+		$result = $true
+
 		If ($SpfOrSenderID -eq 'SPF')
 		{
 			$ErrorCode = 'SPF'
@@ -782,6 +907,7 @@ Function Test-ExchangeOnlineSpfRecord
 					}
 					Write-Error @errorReport
 					Write-Information $errorReport.RecommendedAction
+					$result = $false
 				}
 			}
 			ElseIf (($dnsLookup | Measure-Object | Select-Object -ExpandProperty Count) -gt 1)
@@ -814,6 +940,7 @@ Function Test-ExchangeOnlineSpfRecord
 					}
 					Write-Error @errorReport
 					Write-Information $errorReport.RecommendedAction
+					$result = $false
 				}
 				ElseIf ("~$correctToken" -In $tokens)
 				{
@@ -829,6 +956,7 @@ Function Test-ExchangeOnlineSpfRecord
 					}
 					Write-Error @errorReport
 					Write-Information $errorReport.RecommendedAction
+					$result = $false
 				}
 				ElseIf ("-$correctToken" -In $tokens)
 				{
@@ -844,6 +972,7 @@ Function Test-ExchangeOnlineSpfRecord
 					}
 					Write-Error @errorReport
 					Write-Information $errorReport.RecommendedAction
+					$result = $false
 				}
 				Else
 				{
@@ -859,9 +988,14 @@ Function Test-ExchangeOnlineSpfRecord
 					}
 					Write-Error @errorReport
 					Write-Information $errorReport.RecommendedAction
+					$result = $false
 				}
 			}
 		}
+	}
+
+	End {
+		Return $result
 	}
 }
 #endregion Exchange Online cmdlets
@@ -869,15 +1003,14 @@ Function Test-ExchangeOnlineSpfRecord
 #region Teams/Skype for Business Online cmdlets
 Function Test-TeamsRecords
 {
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'result', Justification='$result is assigned and used across the Begin/Process/End blocks.')]
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '', Justification='We are testing multiple DNS records.')]
 	[CmdletBinding()]
+	[OutputType([Bool])]
 	[Alias(
 		'Test-LyncRecords',
 		'Test-SkypeForBusinessRecords',
 		'Test-SkypeForBusinessOnlineRecords'
-	)]
-	[Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-		'PSUseSingularNouns', '',
-		Justification='We are testing multiple DNS records.'
 	)]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
@@ -886,18 +1019,28 @@ Function Test-TeamsRecords
 		[String[]] $DomainName
 	)
 
+	Begin {
+		$result = $true
+	}
+
 	Process {
 		$DomainName | ForEach-Object {
-			Test-TeamsAutodiscoverRecord -DomainName $_
-			Test-TeamsSipCnameRecord -DomainName $_
-			Test-TeamsSipSrvRecord -DomainName $_
-			Test-TeamsSipFederationSrvRecord -DomainName $_
+			$result = $result -and (Test-TeamsAutodiscoverRecord -DomainName $_)
+			$result = $result -and (Test-TeamsSipCnameRecord -DomainName $_)
+			$result = $result -and (Test-TeamsSipSrvRecord -DomainName $_)
+			$result = $result -and (Test-TeamsSipFederationSrvRecord -DomainName $_)
 		}
+	}
+
+	End {
+		Return $result
 	}
 }
 
 Function Test-TeamsAutodiscoverRecord
 {
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'result', Justification='$result is assigned and used across the Begin/Process/End blocks.')]
+	[OutputType([Bool])]
 	[Alias(
 		'Test-LyncDiscoverRecord',
 		'Test-LyncAutodiscoverRecord',
@@ -910,9 +1053,10 @@ Function Test-TeamsAutodiscoverRecord
 		[ValidateNotNullOrEmpty()]
 		[String[]] $DomainName
 	)
-	
+
 	Begin
 	{
+		$result   = $true
 		$shouldBe = 'webdir.online.lync.com'
 	}
 
@@ -936,6 +1080,7 @@ Function Test-TeamsAutodiscoverRecord
 				}
 				Write-Error @errorReport
 				Write-Information $errorReport.RecommendedAction
+				$result = $false
 			}
 			ElseIf ($dnsLookup.NameHost -ne $shouldBe)
 			{
@@ -947,10 +1092,16 @@ Function Test-TeamsAutodiscoverRecord
 			}
 		}
 	}
+
+	End {
+		Return $result
+	}
 }
 
 Function Test-TeamsSipCnameRecord
 {
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'result', Justification='$result is assigned and used across the Begin/Process/End blocks.')]
+	[OutputType([Bool])]
 	Param(
 		[Parameter(Mandatory, ValueFromPipeline)]
 		[Alias('Name')]
@@ -960,6 +1111,7 @@ Function Test-TeamsSipCnameRecord
 
 	Begin
 	{
+		$result   = $true
 		$shouldBe = 'sipdir.online.lync.com'
 	}
 
@@ -985,6 +1137,7 @@ Function Test-TeamsSipCnameRecord
 				}
 				Write-Error @errorReport
 				Write-Information $errorReport.RecommendedAction
+				$result = $false
 			}
 			ElseIf ($dnsLookup.NameHost -ne $shouldBe)
 			{
@@ -996,10 +1149,16 @@ Function Test-TeamsSipCnameRecord
 			}
 		}
 	}
+
+	End {
+		Return $result
+	}
 }
 
 Function Test-TeamsSipFederationSrvRecord
 {
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'result', Justification='$result is assigned and used across the Begin/Process/End blocks.')]
+	[OutputType([Bool])]
 	[Alias(
 		'Test-LyncSipFederationRecord',
 		'Test-SkypeForBusinessSipFederationSrvRecord',
@@ -1014,6 +1173,7 @@ Function Test-TeamsSipFederationSrvRecord
 
 	Begin
 	{
+		$result         = $true
 		$targetShouldBe = 'sipfed.online.lync.com'
 		$portShouldBe   = 5061
 	}
@@ -1038,6 +1198,7 @@ Function Test-TeamsSipFederationSrvRecord
 				}
 				Write-Error @errorReport
 				Write-Information $errorReport.RecommendedAction
+				$result = $false
 			}
 			ElseIf (($dnsLookup | Measure-Object | Select-Object -ExpandProperty Count) -gt 1)
 			{
@@ -1053,6 +1214,7 @@ Function Test-TeamsSipFederationSrvRecord
 				}
 				Write-Error @errorReport
 				Write-Information $errorReport.RecommendedAction
+				$result = $false
 			}
 			ElseIf ($dnsLookup[0].NameTarget -ne $targetShouldBe -or $dnsLookup[0].Port -ne $portShouldBe)
 			{
@@ -1070,6 +1232,7 @@ Function Test-TeamsSipFederationSrvRecord
 					}
 					Write-Error @errorReport
 					Write-Information $errorReport.RecommendedAction
+					$result = $false
 				}
 
 				If ($dnsLookup[0].Port -ne $portShouldBe)
@@ -1086,6 +1249,7 @@ Function Test-TeamsSipFederationSrvRecord
 					}
 					Write-Error @errorReport
 					Write-Information $errorReport.RecommendedAction
+					$result = $false
 				}
 			}
 			Else
@@ -1094,10 +1258,16 @@ Function Test-TeamsSipFederationSrvRecord
 			}
 		}
 	}
+
+	End {
+		Return $result
+	}
 }
 
 Function Test-TeamsSipSrvRecord
 {
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'result', Justification='$result is assigned and used across the Begin/Process/End blocks.')]
+	[OutputType([Bool])]
 	[Alias(
 		'Test-LyncSipSrvRecord',
 		'Test-SkypeForBusinessSipSrvRecord',
@@ -1112,6 +1282,7 @@ Function Test-TeamsSipSrvRecord
 
 	Begin
 	{
+		$result         = $true
 		$targetShouldBe = 'sipdir.online.lync.com'
 		$portShouldBe   = 443
 	}
@@ -1138,6 +1309,7 @@ Function Test-TeamsSipSrvRecord
 				}
 				Write-Error @errorReport
 				Write-Information $errorReport.RecommendedAction
+				$result = $false
 			}
 			ElseIf (($dnsLookup | Measure-Object | Select-Object -ExpandProperty Count) -gt 1)
 			{
@@ -1153,6 +1325,7 @@ Function Test-TeamsSipSrvRecord
 				}
 				Write-Error @errorReport
 				Write-Information $errorReport.RecommendedAction
+				$result = $false
 			}
 			ElseIf ($dnsLookup[0].NameTarget -ne $targetShouldBe -or $dnsLookup[0].Port -ne $portShouldBe)
 			{
@@ -1170,6 +1343,7 @@ Function Test-TeamsSipSrvRecord
 					}
 					Write-Error @errorReport
 					Write-Information $errorReport.RecommendedAction
+					$result = $false
 				}
 
 				If ($dnsLookup[0].Port -ne $portShouldBe)
@@ -1186,6 +1360,7 @@ Function Test-TeamsSipSrvRecord
 					}
 					Write-Error @errorReport
 					Write-Information $errorReport.RecommendedAction
+					$result = $false
 				}
 			}
 			Else
@@ -1194,4 +1369,9 @@ Function Test-TeamsSipSrvRecord
 			}
 		}
 	}
-}#endregion Teams/Skype for Business Online cmdlets
+
+	End {
+		Return $result
+	}
+}
+#endregion Teams/Skype for Business Online cmdlets

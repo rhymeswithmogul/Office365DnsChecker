@@ -12,7 +12,7 @@
 RootModule = 'src/Office365DnsChecker.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.1.0'
+ModuleVersion = '2.0.1'
 
 # Supported PSEditions
 CompatiblePSEditions = @('Core', 'Desktop')
@@ -27,7 +27,7 @@ Author = 'Colin Cogle <colin@colincogle.name>'
 # CompanyName = $null
 
 # Copyright statement for this module
-Copyright = '(c) 2019-2023 Colin Cogle. All rights reserved. Licensed under the GPL version 3.'
+Copyright = '(c) 2019-2024 Colin Cogle. All rights reserved. Licensed under the GPL version 3.'
 
 # Description of the functionality provided by this module
 Description = "Checks a domain's Office 365 DNS records for correctness."
@@ -71,12 +71,12 @@ PowerShellVersion = '5.1'
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
 FunctionsToExport = @(
 	'Test-Office365DNSRecords',
-	'Test-AzureADRecords',
+	'Test-EntraIDRecords',
 	'Test-ExchangeOnlineRecords',
 	'Test-TeamsRecords',
-	'Test-AzureADClientConfigurationRecord',
-	'Test-AzureADEnterpriseEnrollmentRecord',
-	'Test-AzureADEnterpriseRegistrationRecord',
+	'Test-EntraIDClientConfigurationRecord',
+	'Test-EntraIDEnterpriseEnrollmentRecord',
+	'Test-EntraIDEnterpriseRegistrationRecord',
 	'Test-ExchangeOnlineAutodiscoverRecord',
 	'Test-ExchangeOnlineDkimRecords',
 	'Test-ExchangeOnlineMxRecord',
@@ -96,6 +96,10 @@ VariablesToExport = ''
 
 # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
 AliasesToExport = @(
+	'Test-AzureADRecords',
+	'Test-AzureADClientConfigurationRecord',
+	'Test-AzureADEnterpriseEnrollmentRecord',
+	'Test-AzureADEnterpriseRegistrationRecord',
 	'Test-LyncRecords',
 	'Test-SkypeForBusinessRecords',
 	'Test-SkypeForBusinessOnlineRecords',
@@ -144,22 +148,23 @@ PrivateData = @{
 	PSData = @{
 
 		# Tags applied to this module. These help with module discovery in online galleries.
-		Tags = @('Microsoft365', 'Office365', '365', 'ExchangeOnline', 'SkypeForBusinessOnline', 'MicrosoftTeams', 'DNS', 'AzureAD', 'AAD', 'SPF', 'DKIM', 'ExO', 'Exchange', 'Teams', 'ExchangeHybrid', '21Vianet')
+		Tags = @('Microsoft365', 'Office365', '365', 'ExchangeOnline', 'SkypeForBusinessOnline', 'MicrosoftTeams', 'DNS', 'AzureAD', 'EntraID', 'AAD', 'EID', 'Entra', 'SPF', 'DKIM', 'ExO', 'Exchange', 'Teams', 'ExchangeHybrid', '21Vianet', 'DNSSEC', 'DANE', 'MX')
 
 		# A URL to the license for this module.
-		LicenseUri = 'https://github.com/rhymeswithmogul/Office365DNSChecker/blob/master/LICENSE'
+		LicenseUri = 'https://github.com/rhymeswithmogul/Office365DNSChecker/blob/main/LICENSE'
 
 		# A URL to the main website for this project.
 		ProjectUri = 'https://github.com/rhymeswithmogul/Office365DNSChecker/'
 
 		# A URL to an icon representing this module.
-		IconUri = 'https://raw.githubusercontent.com/rhymeswithmogul/Office365DnsChecker/master/Logo/Office365DnsChecker.png'
+		IconUri = 'https://raw.githubusercontent.com/rhymeswithmogul/Office365DnsChecker/main/Logo/Office365DnsChecker.png'
 
 		# ReleaseNotes of this module
-		ReleaseNotes = "Add support for checking 21Vianet customers' DNS records."
+		ReleaseNotes = "- FIXED: `Test-EntraIDRecords`, `Test-ExchangeOnlineRecords`, and `Test-TeamsRecords` did not return the correct `$true`/`$false` value.
+- FIXED: All `PSScriptAnalyzer` warnings and informational guidelines have been either fixed or suppressed."
 
 		# Prerelease string of this module
-		Prerelease = 'alpha'
+		Prerelease = 'git'
 
 		# Flag to indicate whether the module requires explicit user acceptance for install/update/save
 		RequireLicenseAcceptance = $false

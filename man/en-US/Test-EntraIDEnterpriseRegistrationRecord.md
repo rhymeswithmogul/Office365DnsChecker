@@ -1,37 +1,36 @@
 ---
 external help file: Office365DnsChecker-help.xml
 Module Name: Office365DnsChecker
-online version:
+online version: https://github.com/rhymeswithmogul/Office365DNSChecker/blob/main/man/en-US/Test-EntraIDEnterpriseRegistrationRecord.md
 schema: 2.0.0
 ---
 
-# Test-AzureADEnterpriseRegistrationRecord
+# Test-EntraIDEnterpriseRegistrationRecord
 
 ## SYNOPSIS
-Verifies that a domain's Azure AD enterprise registration DNS record is correct.
+Verifies that a domain's Entra ID enterprise registration DNS record is correct.
 
 ## SYNTAX
 
 ```
-Test-AzureADEnterpriseRegistrationRecord [-DomainName] <String[]> [<CommonParameters>]
+Test-EntraIDEnterpriseRegistrationRecord [-DomainName] <String[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-This cmdlet checks one or more domains for the presence and correctness of the Azure Active Directory enterprise registration DNS record, named enterpriseregistration. 
-It should be a CNAME pointing to enterpriseregistration.windows.net.
+This cmdlet checks one or more domains for the presence and correctness of the Entra ID enterprise registration DNS record, named enterpriseregistration. It should be a CNAME pointing to enterpriseregistration.windows.net.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-C:\PS> Test-AzureADEnterpriseRegistrationRecord contoso.com
+C:\PS> Test-EntraIDEnterpriseRegistrationRecord contoso.com
 ```
 
 Verifies that the DNS CNAME record enterpriseregistration.contoso.com is correct.
 
 ### EXAMPLE 2
 ```
-C:\PS> "contoso.com","fabrikam.com","tailspintoys.com" | Test-AzureADEnterpriseRegistrationRecord
+C:\PS> "contoso.com","fabrikam.com","tailspintoys.com" | Test-EntraIDEnterpriseRegistrationRecord
 ```
 
 Verifies that the DNS CNAME records enterpriseregistration.contoso.com, enterpriseregistration.fabrikam.com, and enterpriseregistration.tailspintoys.com are correct.
@@ -59,16 +58,19 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String[]
-One or more domain names to check. 
-This cmdlet accepts pipeline input as well.
+One or more domain names to check.  This cmdlet accepts pipeline input as well.
 
 ## OUTPUTS
 
+### Bool
+True if all DNS records are correct, false otherwise.  If you pass multiple domain names to this cmdlet, the result will consider all domains;  that is, if contoso.com is correct but fabrikam.com is not, the result will be false.
+
 ## NOTES
+Microsoft Entra ID used to be called Microsoft Azure Active Directory, and previous versions of this cmdlet reflected that.
 
 ## RELATED LINKS
 
-[Test-AzureADJoinRecords]()
+[Test-EntraIDJoinRecords]()
 
 [Test-Office365DnsRecords]()
 

@@ -1,7 +1,7 @@
 ---
 external help file: Office365DnsChecker-help.xml
 Module Name: Office365DnsChecker
-online version: https://github.com/rhymeswithmogul/Office365DNSChecker/blob/master/man/en-US/Test-TeamsSipFederationSrvRecord.md
+online version: https://github.com/rhymeswithmogul/Office365DNSChecker/blob/main/man/en-US/Test-TeamsSipFederationSrvRecord.md
 schema: 2.0.0
 ---
 
@@ -58,10 +58,12 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String[]
-One or more domain names to check. 
-This cmdlet accepts pipeline input as well.
+One or more domain names to check.  This cmdlet accepts pipeline input as well.
 
 ## OUTPUTS
+
+### Bool
+True if all DNS records are correct, false otherwise.  If you pass multiple domain names to this cmdlet, the result will consider all domains;  that is, if contoso.com is correct but fabrikam.com is not, the result will be false.
 
 ## NOTES
 If you are using another SIP service in addition to Microsoft Teams or Skype for Business Online (such as an on-premises Skype for Business Server), then you might have extra _sipfederationtls._tcp SRV records.  While not recommended, it is not incorrect, as long as the lowest-priority service is always the one for Microsoft Teams/Skype for Business Online.
