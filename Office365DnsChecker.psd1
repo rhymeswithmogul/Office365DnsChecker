@@ -128,8 +128,6 @@ AliasesToExport = @(
 FileList = @(
 	'en-US/about_Office365DnsChecker.Help.txt',
 	'en-US/Office365DnsChecker-help.xml',
-	'Logo/Office365DnsChecker.svg',
-	'Logo/Office365DnsChecker.png',
 	'src/Office365DnsChecker.psm1',
 	'AUTHORS.txt',
 	'CHANGELOG.md',
@@ -157,7 +155,7 @@ PrivateData = @{
 		ProjectUri = 'https://github.com/rhymeswithmogul/Office365DNSChecker/'
 
 		# A URL to an icon representing this module.
-		IconUri = 'https://raw.githubusercontent.com/rhymeswithmogul/Office365DnsChecker/main/Logo/Office365DnsChecker.png'
+		IconUri = 'https://raw.githubusercontent.com/rhymeswithmogul/Office365DnsChecker/main/Logo/PSGallery.png'
 
 		# ReleaseNotes of this module
 		ReleaseNotes = "- FIXED: `Test-EntraIDRecords`, `Test-ExchangeOnlineRecords`, and `Test-TeamsRecords` did not return the correct `$true`/`$false` value.
@@ -165,7 +163,7 @@ PrivateData = @{
 - FIXED: Packaging improvements."
 
 		# Prerelease string of this module
-		Prerelease = 'git'
+		#Prerelease = 'git'
 
 		# Flag to indicate whether the module requires explicit user acceptance for install/update/save
 		RequireLicenseAcceptance = $false
